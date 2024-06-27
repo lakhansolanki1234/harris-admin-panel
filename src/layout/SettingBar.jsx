@@ -432,19 +432,21 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
             }
             {
               label === 'Date Time' &&
-              <>
-                <input
-                  type='datetime-local'
-                  value={datetime}
-                  onChange={handleChange}
-                />
-                <div className='flex mt-2 justify-end'>
-                  <button className='mx-1 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 
-                  px-4 text-sm border border-blue-500 hover:border-transparent rounded' onClick={() => save('date')}>Save</button>
-                  <button className='mx-1 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 
-                  px-4 text-sm border border-red-500 hover:border-transparent rounded mr-2' onClick={() => cancel('date')}>Cancel</button>
-                </div>
-              </>
+              <div style={{ padding: '10px' }}>
+                <>
+                  <input
+                    type='datetime-local'
+                    value={datetime}
+                    onChange={handleChange}
+                  />
+                  <div className='flex mt-2 justify-end'>
+                    <button className='mx-1 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 
+          px-4 text-sm border border-blue-500 hover:border-transparent rounded' onClick={() => save('date')}>Save</button>
+                    <button className='mx-1 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 
+          px-4 text-sm border border-red-500 hover:border-transparent rounded mr-2' onClick={() => cancel('date')}>Cancel</button>
+                  </div>
+                </>
+              </div>
             }
             {
               label === 'Questions' &&

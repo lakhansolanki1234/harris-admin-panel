@@ -65,6 +65,9 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
   const [datetime, setdate] = useState(formatDateTime(new Date()));
   const [advisorName, setAdvisorName] = useState('');
   const [advisorEmail, setAdvisorEmail] = useState('');
+  const [linkText, setLinkText] = useState('');
+  const [hrefValue, setHrefValue] = useState('');
+  const [linkTarget, setLinkTarget] = useState('');
 
   useEffect(() => {
     setQaQuestion(RichTextEditor.createValueFromString(nodedata?.qa_q, 'html'));
@@ -81,7 +84,6 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
     nodedata?.qu_header && setQuAnswerHeader(nodedata?.qu_header);
     nodedata?.qu_footer && setQuAnswerFooter(nodedata?.qu_footer);
     nodedata?.media_content && setMedia({ ...media, data: nodedata?.media_content, type: nodedata?.media_type, fileName: nodedata?.media_name })
-
     nodedata?.api_url && setApiUrl(nodedata?.api_url);
     nodedata?.api_method && setApiMethod(nodedata?.api_method);
     nodedata?.api_params && setApiParams([...nodedata?.api_params]);
@@ -221,6 +223,28 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
           })
         );
         toast.success('Saved successfully!');
+        break;
+      case 'anchor':
+        setNodes((nds) =>
+          nds.map((node) => {
+            if (node.id === id) {
+              node.data = {
+                ...node.data,
+                nodedata: {
+                  ...node.data.nodedata,
+                  content: {
+                    ...node.data.nodedata.content,
+                    linkText,
+                    hrefValue,
+                    linkTarget,
+                  },
+                },
+              };
+            }
+            return node;
+          })
+        );
+        toast.success('Anchor details saved successfully!');
         break;
       case 'quick-answer':
         setNodes(nds =>
@@ -770,7 +794,61 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                 </>
               )
             }
-
+            {
+              label === 'Anchor' && (
+                <>
+                  <div className='p-2'>
+                    <div className='mb-4'>
+                      <p className='text-[#555] text-sm'>Link Text</p>
+                      <input
+                        type='text'
+                        className='text-lg font-[500] mt-2 p-1 border rounded'
+                        value={linkText}
+                        onChange={(e) => setLinkText(e.target.value)}
+                        placeholder='Enter link text'
+                      />
+                    </div>
+                    <div>
+                      <p className='text-[#555] text-sm'>Link Href</p>
+                      <input
+                        type='text'
+                        className='text-lg font-[500] mt-2 p-1 border rounded'
+                        value={hrefValue}
+                        onChange={(e) => setHrefValue(e.target.value)}
+                        placeholder='Enter link href'
+                      />
+                    </div>
+                    <div className='mt-4'>
+                      <p className='text-[#555] text-sm'>Link Target</p>
+                      <select
+                        className='text-lg font-[500] mt-2 p-1 border rounded'
+                        value={linkTarget}
+                        onChange={(e) => setLinkTarget(e.target.value)}
+                      >
+                        <option value='_self'>Self</option>
+                        <option value='_blank'>Blank</option>
+                        <option value='_parent'>Parent</option>
+                        <option value='_top'>Top</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className='flex mt-2 justify-end'>
+                    <button
+                      className='mx-1 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-4 text-sm border border-blue-500 hover:border-transparent rounded'
+                      onClick={() => save('anchor')}
+                    >
+                      Save
+                    </button>
+                    <button
+                      className='mx-1 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 px-4 text-sm border border-red-500 hover:border-transparent rounded mr-2'
+                      onClick={() => cancel('anchor')}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </>
+              )
+            }
             {
               label === 'Web Service' &&
               <div className='p-2'>

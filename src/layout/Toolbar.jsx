@@ -83,13 +83,20 @@ function Toolbar() {
                 <span className="ml-3">Date Time</span>
               </button>
             </li>
-            {/* <li>
+            <li>
               <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md 
               hover:border-gray-200 border border-white my-3 w-full" onDragStart={(event) => onDragStart(event, 'Talk with advisor')} draggable>
                 <img src="imgs/talk-icon.png" alt="A" width={24} />
                 <span className="ml-3">Talk to an advisor</span>
               </button>
-            </li> */}
+            </li>
+            <li>
+              <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md 
+              hover:border-gray-200 border border-white my-3 w-full" onDragStart={(event) => onDragStart(event, 'Anchor')} draggable>
+                <img src="imgs/schedule-icon.png" alt="A" width={24} />
+                <span className="ml-3">Anchor</span>
+              </button>
+            </li>
           </ul>
         </div>
       </aside>

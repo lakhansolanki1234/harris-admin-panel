@@ -81,6 +81,11 @@ function CustomNode(props) {
         nodedata['advisorName'] = '';
         nodedata['advisorEmail'] = '';
         break;
+      case 'Anchor':
+        nodedata['linkText'] = '';
+        nodedata['hrefValue'] = '';
+        nodedata['linkTarget'] = '';
+        break;
       case 'Web Service':
         nodedata['api_url'] = 'https://example...';
         nodedata['api_method'] = 'GET';
@@ -154,6 +159,7 @@ function CustomNode(props) {
           {label === 'Talk with advisor' && <img src="imgs/talk-icon.png" className='h-5 mr-2' alt="A" width={20} />}
           {label === 'Web Service' && <img src="imgs/web-icon.png" className='h-5 mr-2' alt="A" width={20} />}
           {label === 'Date Time' && <img src="imgs/schedule-icon.png" className='h-5 mr-2' alt="A" width={20} />}
+          {label === 'Anchor' && <img src="imgs/schedule-icon.png" className='h-5 mr-2' alt="A" width={20} />}
           {label}
         </p>
 
@@ -378,7 +384,26 @@ function CustomNode(props) {
               <Handle type="source" position={Position.Bottom} id="talk-to-advisor" />
             </div>
           )}
-
+          {label === 'Anchor' && (
+            <div className='p-2'>
+              <Handle type="target" position={Position.Top} id='anchor-node' />
+              {nodedata?.content?.hrefValue ? (
+                <div>
+                  <p className='text-[#555]'>
+                    {nodedata.content.linkText}
+                  </p>
+                  <p className='text-[#555]'>
+                    <strong>
+                      {nodedata.content.hrefValue}
+                    </strong>
+                  </p>
+                </div>
+              ) : (
+                <p className='text-[#aaa]'><i>No anchor information</i></p>
+              )}
+              <Handle type="source" position={Position.Bottom} id="anchor-node" />
+            </div>
+          )}
           {
             label === 'Web Service' &&
             <div className='p-2'>

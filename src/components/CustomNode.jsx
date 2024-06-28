@@ -81,7 +81,7 @@ function CustomNode(props) {
         nodedata['advisorName'] = '';
         nodedata['advisorEmail'] = '';
         break;
-      case 'Anchor':
+      case 'Link':
         nodedata['linkText'] = '';
         nodedata['hrefValue'] = '';
         nodedata['linkTarget'] = '';
@@ -159,7 +159,7 @@ function CustomNode(props) {
           {label === 'Talk with advisor' && <img src="imgs/talk-icon.png" className='h-5 mr-2' alt="A" width={20} />}
           {label === 'Web Service' && <img src="imgs/web-icon.png" className='h-5 mr-2' alt="A" width={20} />}
           {label === 'Date Time' && <img src="imgs/schedule-icon.png" className='h-5 mr-2' alt="A" width={20} />}
-          {label === 'Anchor' && <img src="imgs/schedule-icon.png" className='h-5 mr-2' alt="A" width={20} />}
+          {label === 'Link' && <img src="imgs/broken-link-10497.png" className='h-5 mr-2' alt="A" width={20} />}
           {label}
         </p>
 
@@ -360,7 +360,7 @@ function CustomNode(props) {
                   :
                   <div className='w-full h-full border-0 bg-[#F0F2F4] py-6 rounded-b' >
                     <div className="flex flex-col items-center justify-center w-fit h-auto z-[5] relative mx-auto rounded-lg cursor-pointer bg-white hover:bg-[#fafafa]">
-                      <img src={'/imgs/empty-img.png'} className='border-0 rounded-lg w-8' />
+                      <img src={'/imgs/empty-img.png'} className='border-0 rounded-lg w-8' alt=''/>
                     </div>
                     <p className='text-center text-[#555]'><i>Empty</i></p>
                   </div>
@@ -384,7 +384,7 @@ function CustomNode(props) {
               <Handle type="source" position={Position.Bottom} id="talk-to-advisor" />
             </div>
           )}
-          {label === 'Anchor' && (
+          {label === 'Link' && (
             <div className='p-2'>
               <Handle type="target" position={Position.Top} id='anchor-node' />
               {nodedata?.content?.hrefValue ? (
@@ -399,7 +399,7 @@ function CustomNode(props) {
                   </p>
                 </div>
               ) : (
-                <p className='text-[#aaa]'><i>No anchor information</i></p>
+                <p className='text-[#aaa]'><i>No Link information</i></p>
               )}
               <Handle type="source" position={Position.Bottom} id="anchor-node" />
             </div>

@@ -244,7 +244,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
             return node;
           })
         );
-        toast.success('Anchor details saved successfully!');
+        toast.success('Saved successfully!');
         break;
       case 'quick-answer':
         setNodes(nds =>
@@ -367,6 +367,13 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
         break;
       case 'advisor':
         setShowSettingBar(false);
+        setAdvisorEmail('');
+        setAdvisorName('');
+        break;
+      case 'anchor':
+        setShowSettingBar(false);
+        setAdvisorEmail('');
+        setAdvisorName('');
         break;
       case 'web':
         setShowSettingBar(false);
@@ -407,6 +414,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
               {label === 'Talk with advisor' && <img src="imgs/talk-icon.png" className='h-6 mr-2' alt="A" width={24} />}
               {label === 'Web Service' && <img src="imgs/web-icon.png" className='h-6 mr-2' alt="A" width={24} />}
               {label === 'Date Time' && <img src="imgs/schedule-icon.png" className='h-6 mr-2' alt="A" width={24} />}
+              {label === 'Link' && <img src="imgs/broken-link-10497.png" className='h-6 mr-2' alt="A" width={24} />}
               <span>{label}</span>
             </div>
             <i className='fa fa-close float-right m-2 cursor-pointer' onClick={() => setShowSettingBar(false)}></i>
@@ -770,7 +778,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                       <p className='text-[#555] text-sm'>Advisor Name</p>
                       <input
                         type='text'
-                        className='text-lg font-[500] mt-2 p-1 border rounded'
+                        className='font-[500] mt-2 p-1 border rounded'
                         value={advisorName}
                         onChange={(e) => setAdvisorName(e.target.value)}
                         placeholder='Enter advisor name'
@@ -780,7 +788,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                       <p className='text-[#555] text-sm'>Advisor Email</p>
                       <input
                         type='email'
-                        className='text-lg font-[500] mt-2 p-1 border rounded'
+                        className='font-[500] mt-2 p-1 border rounded'
                         value={advisorEmail}
                         onChange={(e) => setAdvisorEmail(e.target.value)}
                         placeholder='Enter advisor email'
@@ -797,14 +805,14 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
               )
             }
             {
-              label === 'Anchor' && (
+              label === 'Link' && (
                 <>
                   <div className='p-2'>
                     <div className='mb-4'>
                       <p className='text-[#555] text-sm'>Link Text</p>
                       <input
                         type='text'
-                        className='text-lg font-[500] mt-2 p-1 border rounded'
+                        className='font-[500] mt-2 p-1 border rounded'
                         value={linkText}
                         onChange={(e) => setLinkText(e.target.value)}
                         placeholder='Enter link text'
@@ -814,7 +822,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                       <p className='text-[#555] text-sm'>Link Href</p>
                       <input
                         type='text'
-                        className='text-lg font-[500] mt-2 p-1 border rounded'
+                        className='font-[500] mt-2 p-1 border rounded'
                         value={hrefValue}
                         onChange={(e) => setHrefValue(e.target.value)}
                         placeholder='Enter link href'
@@ -823,7 +831,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                     <div className='mt-4'>
                       <p className='text-[#555] text-sm'>Link Target</p>
                       <select
-                        className='text-lg font-[500] mt-2 p-1 border rounded'
+                        className='font-[500] mt-2 p-1 border rounded'
                         value={linkTarget}
                         onChange={(e) => setLinkTarget(e.target.value)}
                       >

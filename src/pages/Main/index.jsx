@@ -88,6 +88,11 @@ const Main = () => {
         case 'Date Time':
           nodedata['content'] = '';
           break;
+        case 'Link':
+          nodedata['linkText'] = '';
+          nodedata['hrefValue'] = '';
+          nodedata['linkTarget'] = '';
+          break;
         case 'Questions':
           nodedata['qa_q'] = '';
           nodedata['qa_a'] = '';

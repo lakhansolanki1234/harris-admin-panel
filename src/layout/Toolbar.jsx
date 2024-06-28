@@ -41,13 +41,13 @@ function Toolbar() {
                 <span className="ml-3">List of options</span>
               </button>
             </li>
-            {/* <li>
+            <li>
               <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md 
               hover:border-gray-200 border border-white my-3 w-full" onDragStart={(event) => onDragStart(event, 'Quick Answers')} draggable>
                 <img src="imgs/qa-icon.png" alt="A" width={24} />
                 <span className="ml-3">Quick Answers</span>
               </button>
-            </li> */}
+            </li>
             {/* <li>
               <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md 
               hover:border-gray-200 border border-white my-3 w-full" onDragStart={(event) => onDragStart(event, 'Answer with Text')} draggable>

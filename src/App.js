@@ -1,21 +1,20 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
-import Main from './pages/Main';
-import Layout from './layout';
+import { BrowserRouter as Router, Route,Routes } from 'react-router-dom';
 import 'font-awesome/css/font-awesome.min.css';
 import "react-toastify/dist/ReactToastify.css";
+import LoginPage from './components/Login';
+import Dashboard from './components/Dashboard';
 
 function App() {
   return (
     <>
-      <BrowserRouter>
-        <ToastContainer position='top-right' />
-        <Routes>
-          <Route element={<Layout />}>
-            <Route index element={<Main />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+     <Router>
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        {/* Add more routes as needed */}
+      </Routes>
+    </Router>
     </>
   );
 }

@@ -248,6 +248,48 @@ function CustomNode(props) {
             )
           }
 
+{
+            label === 'Quick Answers' &&
+            <div className=''>
+              <Handle type="target" position={Position.Top} id='quick-answer' />
+              <h1 className='bg-[#336699] p-1 text-center text-white'>{nodedata?.qu_header ? nodedata?.qu_header : 'Default Header'}</h1>
+              <div className=''>
+                {
+                  nodedata.qu_data.length > 0
+                    ?
+                    nodedata.qu_data.map((data, no) => (
+                      <div key={no} className='m-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 rounded my-1 focus:ring-4 focus:ring-gray-200 text-xs px-4 py-1 border-b border-gray-500'>
+                        <span>{data.name}</span>
+                        <Handle
+                          type="source"
+                          position={Position.Right}
+                          id={`quick-answer-${no}`}
+                          style={{ top: (no + 1) * 31 + 46, background: '#555' }}
+                        />
+                        <Handle
+                          type="target"
+                          position={Position.Left}
+                          id={`quick-answer-${no}`}
+                          style={{ top: (no + 1) * 31 + 46, background: '#555' }}
+                        />
+                      </div>
+                    ))
+                    :
+                    <></>
+                }
+              </div>
+              <div className=''>
+                {
+                  nodedata.qu_content
+                    ? <div dangerouslySetInnerHTML={{ __html: nodedata.qu_content }} className="border-gray-400 border-t p-2"></div>
+                    : <p className='text-[#aaa] border-gray-400 border-t p-2'><i>no content</i></p>
+                }
+              </div>
+              <h1 className='bg-[#336699] p-1 text-center text-white'>{nodedata?.qu_footer ? nodedata?.qu_footer : 'Default Footer'}</h1>
+              <Handle type="source" position={Position.Bottom} id="quick-answer" />
+            </div>
+          }
+
 
           {
             label === 'Answer with Text' &&

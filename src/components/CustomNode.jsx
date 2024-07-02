@@ -7,6 +7,7 @@ function CustomNode(props) {
 
   const { id, xPos, yPos, data } = props;
   const { setNodes, label, getId, selectNode, nodedata } = data;
+  console.log(data);
 
   /**
    * Delete noe by click trash
@@ -202,103 +203,51 @@ function CustomNode(props) {
           }
 
           {
-            label === 'Options' &&
-            <div className=''>
-              <Handle type="target" position={Position.Top} id='options' />
-              <h1 className='bg-[#336699] p-1 text-center text-white'>{nodedata?.option_header ? nodedata?.option_header : 'Default Header'}</h1>
+            label === 'Options' && (
               <div className=''>
-                {
-                  nodedata.data.length > 0
-                    ?
-                    nodedata.data.map((section, s_no) => {
-                      let t_no = 0;
-                      if (s_no > 0) {
-                        for (let i = 0; i < s_no; i++) {
-                          t_no += nodedata.data[i].data.length;
-                        }
-                      }
-                      return (
-                        <div key={s_no}>
-                          <div className='text-[#0894b5] text-xs font-[500] my-[6px] px-1'>{section.name}</div>
-                          {section.data.map((option, o_no) => (
-                            <div className='w-full flex justify-between cursor-pointer hover:bg-[#eee] p-1 px-2' onClick={() => selectOption(s_no, o_no)} key={o_no} >
-                              <p>{option}</p>
-                              <input type="radio" className='w-2' checked={section.selectedOption === o_no} />
-                              <Handle
-                                type="source"
-                                position={Position.Right}
-                                id={`option${s_no}-${o_no}`}
-                                style={{ top: (t_no + o_no + 1) * 24 + 78 + (s_no * 28), background: '#555' }}
-                              />
-                              <Handle
-                                type="target"
-                                position={Position.Left}
-                                id={`option${s_no}-${o_no}`}
-                                style={{ top: (t_no + o_no + 1) * 24 + 78 + (s_no * 28), background: '#555' }}
-                              />
-                            </div>
-                          ))}
-
-                        </div>
-                      )
-                    })
-                    :
-                    <></>
-                }
-              </div>
-              <div className=''>
-                {
-                  nodedata.option_content
-                    ? <div dangerouslySetInnerHTML={{ __html: nodedata.option_content }} className="border-t p-2 border-gray-300"></div>
-                    : <p className='text-[#aaa] p-2 border-t border-gray-300'><i>no content</i><br /></p>
-                }
-              </div>
-              <h1 className='bg-[#336699] p-1 text-center text-white'>{nodedata?.option_footer ? nodedata?.option_footer : 'Default Footer'}</h1>
-              <Handle type="source" position={Position.Bottom} id="options" />
-            </div>
-          }
-
-          {
-            label === 'Quick Answers' &&
-            <div className=''>
-              <Handle type="target" position={Position.Top} id='quick-answer' />
-              <h1 className='bg-[#336699] p-1 text-center text-white'>{nodedata?.qu_header ? nodedata?.qu_header : 'Default Header'}</h1>
-              <div className=''>
-                {
-                  nodedata.qu_data.length > 0
-                    ?
-                    nodedata.qu_data.map((data, no) => (
-                      <div key={no} className='m-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 rounded my-1 focus:ring-4 focus:ring-gray-200 text-xs px-4 py-1 border-b border-gray-500'>
-                        <span>{data.name}</span>
+                <Handle type="target" position={Position.Top} id='options' />
+                <h1 className='bg-[#336699] p-1 text-center text-white'>{nodedata.option_header}</h1>
+                <div className=''>
+                  {nodedata.data && nodedata.data.length > 0 ? (
+                    nodedata.data.map((option, index) => (
+                      <div
+                        className='w-full flex justify-between cursor-pointer hover:bg-[#eee] p-1 px-2 relative'
+                        onClick={() => selectOption(index)}
+                        key={index}
+                      >
+                        <p>{option.value}</p> {/* Display only the option value */}
+                        <input type="radio" className='w-2' readOnly />
                         <Handle
                           type="source"
                           position={Position.Right}
-                          id={`quick-answer-${no}`}
-                          style={{ top: (no + 1) * 31 + 46, background: '#555' }}
+                          id={`option${index}`}
+                          style={{ top: '50%', transform: 'translateY(-50%)', background: '#555' }}
                         />
                         <Handle
                           type="target"
                           position={Position.Left}
-                          id={`quick-answer-${no}`}
-                          style={{ top: (no + 1) * 31 + 46, background: '#555' }}
+                          id={`option${index}`}
+                          style={{ top: '50%', transform: 'translateY(-50%)', background: '#555' }}
                         />
                       </div>
                     ))
-                    :
+                  ) : (
                     <></>
-                }
+                  )}
+                </div>
+                <div className=''>
+                  {nodedata.option_content ? (
+                    <div dangerouslySetInnerHTML={{ __html: nodedata.option_content }} className="border-t p-2 border-gray-300"></div>
+                  ) : (
+                    <p className='text-[#aaa] p-2 border-t border-gray-300'><i>no content</i><br /></p>
+                  )}
+                </div>
+                <h1 className='bg-[#336699] p-1 text-center text-white'>{nodedata.option_footer ? nodedata.option_footer : 'Default Footer'}</h1>
+                <Handle type="source" position={Position.Bottom} id="options" />
               </div>
-              <div className=''>
-                {
-                  nodedata.qu_content
-                    ? <div dangerouslySetInnerHTML={{ __html: nodedata.qu_content }} className="border-gray-400 border-t p-2"></div>
-                    : <p className='text-[#aaa] border-gray-400 border-t p-2'><i>no content</i></p>
-                }
-              </div>
-              <h1 className='bg-[#336699] p-1 text-center text-white'>{nodedata?.qu_footer ? nodedata?.qu_footer : 'Default Footer'}</h1>
-              <Handle type="source" position={Position.Bottom} id="quick-answer" />
-            </div>
+            )
           }
+
 
           {
             label === 'Answer with Text' &&
@@ -360,7 +309,7 @@ function CustomNode(props) {
                   :
                   <div className='w-full h-full border-0 bg-[#F0F2F4] py-6 rounded-b' >
                     <div className="flex flex-col items-center justify-center w-fit h-auto z-[5] relative mx-auto rounded-lg cursor-pointer bg-white hover:bg-[#fafafa]">
-                      <img src={'/imgs/empty-img.png'} className='border-0 rounded-lg w-8' alt=''/>
+                      <img src={'/imgs/empty-img.png'} className='border-0 rounded-lg w-8' alt='' />
                     </div>
                     <p className='text-center text-[#555]'><i>Empty</i></p>
                   </div>

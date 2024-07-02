@@ -147,6 +147,7 @@ const Main = () => {
   );
 
   const exportJson = () => {
+    console.log(edges);
     const obj = { nodes: nodes, links: edges };
     const jsonString = JSON.stringify(obj);
     const blob = new Blob([jsonString], { type: "application/json" });

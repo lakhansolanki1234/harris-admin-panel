@@ -69,27 +69,74 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
   const [hrefValue, setHrefValue] = useState('');
   const [linkTarget, setLinkTarget] = useState('');
 
+  const handleOptionChange = (index, value) => {
+    const newOptionsData = [...optionsData];
+    newOptionsData[index].name = value;
+    setOptionsData(newOptionsData);
+    console.log(optionsData);
+  };
+
+  const handleOptionContentChange = (sectionIndex, optionIndex, value) => {
+    const newOptionsData = [...optionsData];
+    newOptionsData[sectionIndex].data[optionIndex].value = value;
+    setOptionsData(newOptionsData);
+  };
+
+  const addOption = (sectionIndex) => {
+    const newOptionsData = [...optionsData];
+    const section = newOptionsData[sectionIndex];
+    const newOption = { id: `option${section.data.length}`, value: 'option' };
+    section.data.push(newOption);
+    setOptionsData(newOptionsData);
+    console.log(optionsData[0].data)
+  };
+
+  const removeOption = (sectionIndex, optionIndex) => {
+    const newOptionsData = [...optionsData];
+    newOptionsData[sectionIndex].data.splice(optionIndex, 1);
+    setOptionsData(newOptionsData);
+  };
+
+  const addSection = () => {
+    const newSection = { name: 'Section', data: [{ id: `option0`, value: 'option' }], selectedOption: -1 };
+    setOptionsData([...optionsData, newSection]);
+  };
+
+  const removeSection = (sectionIndex) => {
+    const newOptionsData = [...optionsData];
+    newOptionsData.splice(sectionIndex, 1);
+    setOptionsData(newOptionsData);
+  };
+
   useEffect(() => {
     setQaQuestion(RichTextEditor.createValueFromString(nodedata?.qa_q, 'html'));
     setMessageContent(RichTextEditor.createValueFromString(nodedata?.content, 'html'));
     setOptionContent(RichTextEditor.createValueFromString(nodedata?.option_content, 'html'));
     setAnswerContent(RichTextEditor.createValueFromString(nodedata?.answer_content, 'html'));
     setQuContent(RichTextEditor.createValueFromString(nodedata?.qu_content, 'html'));
-    nodedata?.content && setdate(nodedata?.content);
-    nodedata?.qa_a && setQaAnswer(nodedata?.qa_a);
-    nodedata?.qu_data && setQuData([...nodedata?.qu_data]);
-    nodedata?.data && setOptionsData([...nodedata?.data]);
-    nodedata?.option_header && setOptionsHeader(nodedata?.option_header);
-    nodedata?.option_footer && setOptionsFooter(nodedata?.option_footer);
-    nodedata?.qu_header && setQuAnswerHeader(nodedata?.qu_header);
-    nodedata?.qu_footer && setQuAnswerFooter(nodedata?.qu_footer);
-    nodedata?.media_content && setMedia({ ...media, data: nodedata?.media_content, type: nodedata?.media_type, fileName: nodedata?.media_name })
-    nodedata?.api_url && setApiUrl(nodedata?.api_url);
-    nodedata?.api_method && setApiMethod(nodedata?.api_method);
-    nodedata?.api_params && setApiParams([...nodedata?.api_params]);
-    nodedata?.api_headers && setApiHeaders([...nodedata?.api_headers]);
-    nodedata?.api_res_variable && setResApiVariable(nodedata?.api_res_variable);
-    nodedata?.answer_buttons && setAnswerButtons([...nodedata?.answer_buttons]);
+
+    if (nodedata?.content) setdate(nodedata?.content);
+    if (nodedata?.qa_a) setQaAnswer(nodedata?.qa_a);
+    if (nodedata?.qu_data) setQuData([...nodedata.qu_data]);
+
+    if (nodedata?.data) {
+      const newSection = { name: 'Section', data: nodedata.data, selectedOption: -1 };
+      setOptionsData([newSection]); // Wrap newSection in an array
+    }
+
+    if (nodedata?.option_header) setOptionsHeader(nodedata.option_header);
+    if (nodedata?.option_footer) setOptionsFooter(nodedata.option_footer);
+    if (nodedata?.qu_header) setQuAnswerHeader(nodedata.qu_header);
+    if (nodedata?.qu_footer) setQuAnswerFooter(nodedata.qu_footer);
+    if (nodedata?.media_content) setMedia({ ...media, data: nodedata.media_content, type: nodedata.media_type, fileName: nodedata.media_name });
+    if (nodedata?.api_url) setApiUrl(nodedata.api_url);
+    if (nodedata?.api_method) setApiMethod(nodedata.api_method);
+    if (nodedata?.api_params) setApiParams([...nodedata.api_params]);
+    if (nodedata?.api_headers) setApiHeaders([...nodedata.api_headers]);
+    if (nodedata?.api_res_variable) setResApiVariable(nodedata.api_res_variable);
+    if (nodedata?.answer_buttons) setAnswerButtons([...nodedata.answer_buttons]);
+
+    console.log(optionsData);
   }, [id]);
 
   const variableChangeHandler = (e, type, id) => {
@@ -215,7 +262,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                   option_header: optionsHeader,
                   option_content: optionContent.toString('html'),
                   option_footer: optionsFooter,
-                  data: optionsData
+                  data: optionsData[0].data
                 }
               }
             }
@@ -224,6 +271,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
         );
         toast.success('Saved successfully!');
         break;
+
       case 'anchor':
         setNodes((nds) =>
           nds.map((node) => {
@@ -528,103 +576,77 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
               </>
             }
 
-            {
-              label === 'Options' &&
+            {label === 'Options' && (
               <>
-                <input value={optionsHeader} onChange={(e) => setOptionsHeader(e.target.value)} placeholder="click to edit footer"
-                  className='bg-[#336699] text-white w-full text-sm p-1 py-2 outline-none font-semibold placeholder-slate-400' />
-                <RichTextEditor
-                  value={optionContent}
-                  placeholder='Edit here ...'
-                  onChange={(value) => { setOptionContent(value) }}
-                  toolbarConfig={toolbarConfig}
-                  className="font-[400] custom-rich-editor"
-                />
-                <input value={optionsFooter} onChange={(e) => setOptionsFooter(e.target.value)} placeholder="click to edit footer"
-                  className='bg-[#336699] text-white w-full text-sm p-1 py-2 outline-none font-semibold placeholder-slate-400' />
-
                 <p className='text-[#888] text-sm p-2'>Menu List</p>
                 <div className='px-2 pb-2'>
-                  {
-                    optionsData.map((section, no) => (
-                      <div key={no}>
-                        <div className='flex justify-between text-white my-1 text-left bg-gradient-to-r from-cyan-400 via-cyan-500 
-                        to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 
-                        shadow-md shadow-cyan-500/50 font-medium rounded text-sm w-full px-2 py-2.5 mr-2'>
-
-                          <input value={section.name} className='outline-none bg-transparent placeholder-gray-200'
-                            placeholder='click to edit section' onChange={(e) => {
-                              optionsData[no].name = e.target.value;
-                              setOptionsData([...optionsData]);
-                            }} />
-
-                          <div className='flex'>
-                            <i className='fa fa-plus mr-2 mt-1 cursor-pointer hover:text-[#ccc]' onClick={() => {
-                              const isAvailable = checkAddisAvailable('option');
-                              if (!isAvailable) {
-                                toast.warn('You can\'t add new option anymore.');
-                                return;
-                              }
-                              optionsData[no].data.push(`option`);
-                              setOptionsData([...optionsData]);
-                            }}></i>
-                            <i className='fa fa-trash mt-1 cursor-pointer hover:text-[#ccc]' onClick={() => {
-                              optionsData.splice(no, 1);
-                              setOptionsData([...optionsData]);
-                            }}></i>
-                          </div>
+                  {optionsData.map((section, sectionIndex) => (
+                    <div key={sectionIndex}>
+                      <div className='flex justify-between text-white my-1 text-left bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 shadow-md shadow-cyan-500/50 font-medium rounded text-sm w-full px-2 py-2.5 mr-2'>
+                        <input
+                          value={section.name}
+                          className='outline-none bg-transparent placeholder-gray-200'
+                          placeholder='Click to edit section'
+                          onChange={(e) => handleOptionChange(sectionIndex, e.target.value)}
+                        />
+                        <div className='flex'>
+                          <i
+                            className='fa fa-plus mr-2 mt-1 cursor-pointer hover:text-[#ccc]'
+                            onClick={() => addOption(sectionIndex)}
+                          ></i>
+                          <i
+                            className='fa fa-trash mt-1 cursor-pointer hover:text-[#ccc]'
+                            onClick={() => removeSection(sectionIndex)}
+                          ></i>
                         </div>
-
-                        {section.data.length > 0 &&
-                          section.data.map((option, o_no) => (
-                            <div className='text-white flex text-xs justify-between bg-red-700 w-11/12 hover:bg-red-800 
-                            focus:outline-none focus:ring-4 focus:ring-red-300 font-medium float-right text-sm px-3 rounded py-1.5 
-                            text-center mb-1' key={o_no} >
-
-                              <input value={option} className='outline-none bg-transparent placeholder-gray-200'
-                                placeholder='click to edit option' onChange={(e) => {
-                                  optionsData[no].data[o_no] = e.target.value;
-                                  setOptionsData([...optionsData]);
-                                }} />
-
-                              <div className='flex'>
-                                <i className='fa fa-trash mt-1 cursor-pointer hover:text-[#ccc]' style={{ fontSize: 12 }}
-                                  onClick={() => {
-                                    optionsData[no].data.splice(o_no, 1);
-                                    setOptionsData([...optionsData]);
-                                  }}></i>
-                              </div>
-                            </div>
-                          ))
-                        }
                       </div>
-                    ))
-                  }
-
-                  <button onClick={() => {
-                    const isAvailable = checkAddisAvailable('section');
-                    if (!isAvailable) {
-                      toast.warn('You can\'t add new section anymore.');
-                      return;
-                    }
-                    let newSection = { name: `Section`, data: [`option`], selectedOption: -1 };
-                    optionsData.push(newSection);
-                    setOptionsData([...optionsData]);
-                  }} className='w-full text-white bg-gradient-to-r from-purple-500 via-purple-600 
-                  to-purple-700 hover:bg-gradient-to-br focus:outline-none focus:ring-purple-300 font-medium rounded-full text-sm 
-                  px-4 py-1.5 text-center mt-2'>
+                      {section.data.length > 0 &&
+                        section.data.map((option, optionIndex) => (
+                          <div
+                            className='text-white flex text-xs justify-between bg-red-700 w-11/12 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium float-right text-sm px-3 rounded py-1.5 text-center mb-1'
+                            key={option.id}
+                          >
+                            <input
+                              value={option.value}
+                              className='outline-none bg-transparent placeholder-gray-200'
+                              placeholder='Click to edit option'
+                              onChange={(e) => handleOptionContentChange(sectionIndex, optionIndex, e.target.value)}
+                            />
+                            <div className='flex'>
+                              <i
+                                className='fa fa-trash mt-1 cursor-pointer hover:text-[#ccc]'
+                                style={{ fontSize: 12 }}
+                                onClick={() => removeOption(sectionIndex, optionIndex)}
+                              ></i>
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  ))}
+                  <button
+                    onClick={addSection}
+                    className='w-full text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:outline-none focus:ring-purple-300 font-medium rounded-full text-sm px-4 py-1.5 text-center mt-2'
+                  >
                     <i className='fa fa-plus mr-2' style={{ fontSize: 12 }}></i> Add new section
                   </button>
                 </div>
-
                 <div className='flex mt-2 justify-end'>
-                  <button className='mx-1 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 
-                  px-4 text-sm border border-blue-500 hover:border-transparent rounded' onClick={() => save('options')}>Save</button>
-                  <button className='mx-1 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 
-                  px-4 text-sm border border-red-500 hover:border-transparent rounded mr-2' onClick={() => cancel('options')}>Cancel</button>
+                  <button
+                    className='mx-1 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-4 text-sm border border-blue-500 hover:border-transparent rounded'
+                    onClick={() => save('options')}
+                  >
+                    Save
+                  </button>
+                  <button
+                    className='mx-1 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 px-4 text-sm border border-red-500 hover:border-transparent rounded mr-2'
+                    onClick={() => cancel('options')}
+                  >
+                    Cancel
+                  </button>
                 </div>
               </>
-            }
+            )}
+
 
             {
               label === 'Quick Answers' &&

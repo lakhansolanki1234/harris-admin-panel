@@ -579,7 +579,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
             {label === 'Options' && (
               <>
                 <p className='text-[#888] text-sm p-2'>Menu List</p>
-                <div className='px-2 pb-2'>
+                <div className='px-2'>
                   {optionsData.map((section, sectionIndex) => (
                     <div key={sectionIndex}>
                       <div className='flex justify-between text-white my-1 text-left bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 shadow-md shadow-cyan-500/50 font-medium rounded text-sm w-full px-2 py-2.5 mr-2'>
@@ -603,7 +603,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                       {section.data.length > 0 &&
                         section.data.map((option, optionIndex) => (
                           <div
-                            className='text-white flex text-xs justify-between bg-red-700 w-11/12 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium float-right text-sm px-3 rounded py-1.5 text-center mb-1'
+                            className='text-white flex text-xs justify-between bg-red-700 w-11/12 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium float-right  px-3 rounded py-1.5  mb-1'
                             key={option.id}
                           >
                             <input
@@ -621,28 +621,24 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                             </div>
                           </div>
                         ))}
+
                     </div>
                   ))}
-                  <button
-                    onClick={addSection}
-                    className='w-full text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:outline-none focus:ring-purple-300 font-medium rounded-full text-sm px-4 py-1.5 text-center mt-2'
-                  >
-                    <i className='fa fa-plus mr-2' style={{ fontSize: 12 }}></i> Add new section
-                  </button>
-                </div>
-                <div className='flex mt-2 justify-end'>
-                  <button
-                    className='mx-1 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-4 text-sm border border-blue-500 hover:border-transparent rounded'
-                    onClick={() => save('options')}
-                  >
-                    Save
-                  </button>
-                  <button
-                    className='mx-1 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 px-4 text-sm border border-red-500 hover:border-transparent rounded mr-2'
-                    onClick={() => cancel('options')}
-                  >
-                    Cancel
-                  </button>
+                  <div className='mt-2 flex pl-2 ml-20'>
+                    <button
+                      className='mx-1 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-4 text-sm border border-blue-500 hover:border-transparent rounded'
+                      onClick={() => save('options')}
+                    >
+                      Save
+                    </button>
+                    <button
+                      className='mx-1 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 px-4 text-sm border border-red-500 hover:border-transparent rounded mr-2'
+                      onClick={() => cancel('options')}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+
                 </div>
               </>
             )}

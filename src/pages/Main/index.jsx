@@ -98,14 +98,9 @@ const Main = () => {
           nodedata['qa_a'] = '';
           break;
         case 'Options':
-          nodedata['option_header'] = '';
-          nodedata['option_footer'] = '';
-          nodedata['option_content'] = '';
           nodedata['data'] = [];
           break;
         case 'Quick Answers':
-          nodedata['qu_header'] = '';
-          nodedata['qu_footer'] = '';
           nodedata['qu_content'] = '';
           nodedata['qu_data'] = [];
           break;

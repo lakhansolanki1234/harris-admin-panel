@@ -97,17 +97,6 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
     setOptionsData(newOptionsData);
   };
 
-  const addSection = () => {
-    const newSection = { name: 'Section', data: [{ id: `option0`, value: 'option' }], selectedOption: -1 };
-    setOptionsData([...optionsData, newSection]);
-  };
-
-  const removeSection = (sectionIndex) => {
-    const newOptionsData = [...optionsData];
-    newOptionsData.splice(sectionIndex, 1);
-    setOptionsData(newOptionsData);
-  };
-
   useEffect(() => {
     setQaQuestion(RichTextEditor.createValueFromString(nodedata?.qa_q, 'html'));
     setMessageContent(RichTextEditor.createValueFromString(nodedata?.content, 'html'));
@@ -259,9 +248,6 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                 ...node.data,
                 nodedata: {
                   ...node.data.nodedata,
-                  option_header: optionsHeader,
-                  option_content: optionContent.toString('html'),
-                  option_footer: optionsFooter,
                   data: optionsData[0].data
                 }
               }
@@ -302,8 +288,6 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                 ...node.data,
                 nodedata: {
                   ...node.data.nodedata,
-                  qu_header: quAnswerHeader,
-                  qu_footer: quAnswerFooter,
                   qu_data: quData,
                   qu_content: quContent.toString('html'),
                 }
@@ -594,10 +578,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                             className='fa fa-plus mr-2 mt-1 cursor-pointer hover:text-[#ccc]'
                             onClick={() => addOption(sectionIndex)}
                           ></i>
-                          <i
-                            className='fa fa-trash mt-1 cursor-pointer hover:text-[#ccc]'
-                            onClick={() => removeSection(sectionIndex)}
-                          ></i>
+                      
                         </div>
                       </div>
                       {section.data.length > 0 &&

@@ -58,14 +58,9 @@ function CustomNode(props) {
         nodedata['qa_a'] = '';
         break;
       case 'Options':
-        nodedata['option_header'] = '';
-        nodedata['option_footer'] = '';
-        nodedata['option_content'] = '';
         nodedata['data'] = [];
         break;
       case 'Quick Answers':
-        nodedata['qu_header'] = '';
-        nodedata['qu_footer'] = '';
         nodedata['qu_content'] = '';
         nodedata['qu_data'] = [];
         break;
@@ -206,7 +201,6 @@ function CustomNode(props) {
             label === 'Options' && (
               <div className=''>
                 <Handle type="target" position={Position.Top} id='options' />
-                <h1 className='bg-[#336699] p-1 text-center text-white'>{nodedata.option_header}</h1>
                 <div className=''>
                   {nodedata.data && nodedata.data.length > 0 ? (
                     nodedata.data.map((option, index) => (
@@ -242,7 +236,6 @@ function CustomNode(props) {
                     <p className='text-[#aaa] p-2 border-t border-gray-300'><i>no content</i><br /></p>
                   )}
                 </div>
-                <h1 className='bg-[#336699] p-1 text-center text-white'>{nodedata.option_footer ? nodedata.option_footer : 'Default Footer'}</h1>
                 <Handle type="source" position={Position.Bottom} id="options" />
               </div>
             )
@@ -252,7 +245,6 @@ function CustomNode(props) {
             label === 'Quick Answers' &&
             <div className=''>
               <Handle type="target" position={Position.Top} id='quick-answer' />
-              <h1 className='bg-[#336699] p-1 text-center text-white'>{nodedata?.qu_header ? nodedata?.qu_header : 'Default Header'}</h1>
               <div className=''>
                 {
                   nodedata.qu_data.length > 0
@@ -285,7 +277,6 @@ function CustomNode(props) {
                     : <p className='text-[#aaa] border-gray-400 border-t p-2'><i>no content</i></p>
                 }
               </div>
-              <h1 className='bg-[#336699] p-1 text-center text-white'>{nodedata?.qu_footer ? nodedata?.qu_footer : 'Default Footer'}</h1>
               <Handle type="source" position={Position.Bottom} id="quick-answer" />
             </div>
           }

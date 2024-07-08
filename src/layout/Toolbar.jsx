@@ -62,20 +62,7 @@ function Toolbar() {
                 <span className="ml-3">Media</span>
               </button>
             </li>
-            <li>
-              <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md 
-              hover:border-gray-200 border border-white my-3 w-full" onDragStart={(event) => onDragStart(event, 'Talk with advisor')} draggable>
-                <img src="imgs/talk-icon.png" alt="A" width={24} />
-                <span className="ml-3">Talk to an advisor</span>
-              </button>
-            </li>
-            <li>
-              <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md 
-              hover:border-gray-200 border border-white my-3 w-full" onDragStart={(event) => onDragStart(event, 'Web Service')} draggable>
-                <img src="imgs/web-icon.png" alt="A" width={24} />
-                <span className="ml-3">Web service</span>
-              </button>
-            </li> */}
+           / */}
              <li>
               <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md 
               hover:border-gray-200 border border-white my-3 w-full" onDragStart={(event) => onDragStart(event, 'Date Time')} draggable>
@@ -97,6 +84,13 @@ function Toolbar() {
                 <span className="ml-3">Link</span>
               </button>
             </li>
+            {/* <li>
+              <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md 
+              hover:border-gray-200 border border-white my-3 w-full" onDragStart={(event) => onDragStart(event, 'Web Service')} draggable>
+                <img src="imgs/broken-link-10497.png" alt="A" width={24} />
+                <span className="ml-3">API</span>
+              </button>
+            </li> */}
           </ul>
         </div>
       </aside>

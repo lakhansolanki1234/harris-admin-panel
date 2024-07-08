@@ -125,7 +125,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
     if (nodedata?.api_res_variable) setResApiVariable(nodedata.api_res_variable);
     if (nodedata?.answer_buttons) setAnswerButtons([...nodedata.answer_buttons]);
 
-    console.log(optionsData);
+    console.log(nodedata);
   }, [id]);
 
   const variableChangeHandler = (e, type, id) => {

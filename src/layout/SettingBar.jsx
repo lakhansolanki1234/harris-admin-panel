@@ -29,33 +29,17 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
   const { data, id } = selectedNodeData;
   const { setNodes, label, nodedata } = data;
   const [selectOptions, setSelectOptions] = useState([...variables]);
-  //Messaages
   const [messageContent, setMessageContent] = useState(RichTextEditor.createEmptyValue());
-
-  //Questions and answers
   const [qaQuestion, setQaQuestion] = useState(RichTextEditor.createEmptyValue());
   const [qaAnswer, setQaAnswer] = useState('default');
-
-  //Options List
-  const [optionContent, setOptionContent] = useState(RichTextEditor.createEmptyValue());
-  const [optionsHeader, setOptionsHeader] = useState('');
-  const [optionsFooter, setOptionsFooter] = useState('');
   const [optionsData, setOptionsData] = useState([]);
-
-  //Quick Answers
   const [quAnswerHeader, setQuAnswerHeader] = useState('');
   const [quAnswerFooter, setQuAnswerFooter] = useState('');
   const [quContent, setQuContent] = useState(RichTextEditor.createEmptyValue());
   const [quData, setQuData] = useState([]);
-
-  //Answer with text
   const [answerContent, setAnswerContent] = useState(RichTextEditor.createEmptyValue());
   const [answerButtons, setAnswerButtons] = useState([]);
-
-  //Upload Media
   const [media, setMedia] = useState({ data: null, type: '', fileName: '' });
-
-  //Web service
   const [isSaveResAsVal, setIsSaveResAsVal] = useState(true);
   const [apiUrl, setApiUrl] = useState('');
   const [apiMethod, setApiMethod] = useState('');
@@ -100,7 +84,6 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
   useEffect(() => {
     setQaQuestion(RichTextEditor.createValueFromString(nodedata?.qa_q, 'html'));
     setMessageContent(RichTextEditor.createValueFromString(nodedata?.content, 'html'));
-    setOptionContent(RichTextEditor.createValueFromString(nodedata?.option_content, 'html'));
     setAnswerContent(RichTextEditor.createValueFromString(nodedata?.answer_content, 'html'));
     setQuContent(RichTextEditor.createValueFromString(nodedata?.qu_content, 'html'));
 
@@ -108,13 +91,15 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
     if (nodedata?.qa_a) setQaAnswer(nodedata?.qa_a);
     if (nodedata?.qu_data) setQuData([...nodedata.qu_data]);
 
-    if (nodedata?.data) {
-      const newSection = { name: 'Section', data: nodedata.data, selectedOption: -1 };
+    if (nodedata?.content) {
+      const newSection = { name: 'Section', data: nodedata.content, selectedOption: -1 };
+      console.log(newSection)
       setOptionsData([newSection]); // Wrap newSection in an array
+      
     }
 
-    if (nodedata?.option_header) setOptionsHeader(nodedata.option_header);
-    if (nodedata?.option_footer) setOptionsFooter(nodedata.option_footer);
+    console.log(optionsData)
+
     if (nodedata?.qu_header) setQuAnswerHeader(nodedata.qu_header);
     if (nodedata?.qu_footer) setQuAnswerFooter(nodedata.qu_footer);
     if (nodedata?.media_content) setMedia({ ...media, data: nodedata.media_content, type: nodedata.media_type, fileName: nodedata.media_name });
@@ -139,20 +124,6 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
     setSelectOptions([...selectOptions]);
   };
 
-  /**
-   * Check adding new option/section is available
-   */
-  const checkAddisAvailable = () => {
-    let optionsLength = 0;
-    optionsData.map((val) => {
-      optionsLength += val.data.length;
-    });
-    if (optionsLength < 10) {
-      return true;
-    } else {
-      return false;
-    }
-  };
 
   const mediaUploadHandler = (e) => {
     let file = e.target.files[0];
@@ -248,7 +219,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                 ...node.data,
                 nodedata: {
                   ...node.data.nodedata,
-                  data: optionsData[0].data
+                  content: optionsData[0].data
                 }
               }
             }

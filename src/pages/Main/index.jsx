@@ -98,7 +98,7 @@ const Main = () => {
           nodedata['qa_a'] = '';
           break;
         case 'Options':
-          nodedata['data'] = [];
+          nodedata['content'] = [];
           break;
         case 'Quick Answers':
           nodedata['qu_content'] = '';

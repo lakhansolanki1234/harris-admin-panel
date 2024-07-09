@@ -202,8 +202,8 @@ function CustomNode(props) {
               <div className=''>
                 <Handle type="target" position={Position.Top} id='options' />
                 <div className=''>
-                  {nodedata.data && nodedata.data.length > 0 ? (
-                    nodedata.data.map((option, index) => (
+                  {nodedata.content && nodedata.content.length > 0 ? (
+                    nodedata.content.map((option, index) => (
                       <div
                         className='w-full flex justify-between cursor-pointer hover:bg-[#eee] p-1 px-2 relative'
                         onClick={() => selectOption(index)}
@@ -217,12 +217,7 @@ function CustomNode(props) {
                           id={`option${index}`}
                           style={{ top: '50%', transform: 'translateY(-50%)', background: '#555' }}
                         />
-                        <Handle
-                          type="target"
-                          position={Position.Left}
-                          id={`option${index}`}
-                          style={{ top: '50%', transform: 'translateY(-50%)', background: '#555' }}
-                        />
+                        
                       </div>
                     ))
                   ) : (
@@ -236,7 +231,6 @@ function CustomNode(props) {
                     <p className='text-[#aaa] p-2 border-t border-gray-300'><i>no content</i><br /></p>
                   )}
                 </div>
-                <Handle type="source" position={Position.Bottom} id="options" />
               </div>
             )
           }

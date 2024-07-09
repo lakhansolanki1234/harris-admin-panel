@@ -142,8 +142,16 @@ const Main = () => {
   );
 
   const exportJson = () => {
-    console.log(edges);
-    const obj = { nodes: nodes, links: edges };
+    const nodesWithTargets = nodes.map(node => {
+      const outgoingEdges = edges.filter(edge => edge.source === node.id);
+      const targets = outgoingEdges.map(edge => edge.target).join(', ');
+      return {
+        ...node,
+        target: targets
+      };
+    });
+  
+    const obj = { nodes: nodesWithTargets, links: edges };
     const jsonString = JSON.stringify(obj);
     const blob = new Blob([jsonString], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -151,7 +159,8 @@ const Main = () => {
     link.href = url;
     link.download = "data.json";
     link.click();
-  }
+  };
+  
 
   return (
     <div className='sm:ml-64 h-full mt-16'>

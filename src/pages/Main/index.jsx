@@ -142,16 +142,30 @@ const Main = () => {
   );
 
   const exportJson = () => {
-    const nodesWithTargets = nodes.map(node => {
+    const updatedNodes = nodes.map(node => {
       const outgoingEdges = edges.filter(edge => edge.source === node.id);
-      const targets = outgoingEdges.map(edge => edge.target).join(', ');
-      return {
-        ...node,
-        target: targets
-      };
+      
+      // Update target for the node itself
+      node.target = outgoingEdges.map(edge => edge.target).join(', ');
+  
+      // Update sourceHandle for options in node.data.nodedata.content
+      if (node.data && node.data.nodedata && Array.isArray(node.data.nodedata.content)) {
+        node.data.nodedata.content.forEach(option => {
+          const edge = outgoingEdges.find(edge => edge.sourceHandle === option.id);
+          if (edge) {
+            option.target = edge.target;
+            option.sourceHandle = edge.sourceHandle; // Assign sourceHandle if found
+          } else {
+            option.target = ""; // Handle case where there's no matching edge (optional)
+            option.sourceHandle = ""; // Ensure sourceHandle is cleared if no match
+          }
+        });
+      }
+  
+      return node;
     });
   
-    const obj = { nodes: nodesWithTargets, links: edges };
+    const obj = { nodes: updatedNodes, links: edges };
     const jsonString = JSON.stringify(obj);
     const blob = new Blob([jsonString], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -160,6 +174,11 @@ const Main = () => {
     link.download = "data.json";
     link.click();
   };
+  
+  
+  
+  
+  
   
 
   return (

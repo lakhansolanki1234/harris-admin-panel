@@ -29,6 +29,8 @@ const minimapStyle = {
   height: 120,
 };
 
+const flowKey = 'chatbot-flow';
+
 let id = 0;
 const getId = () => `dndnode_${id++}`;
 const nodeTypes = {
@@ -144,7 +146,7 @@ const Main = () => {
   const exportJson = () => {
     const updatedNodes = nodes.map(node => {
       const outgoingEdges = edges.filter(edge => edge.source === node.id);
-      
+  
       // Update target for the node itself
       node.target = outgoingEdges.map(edge => edge.target).join(', ');
   
@@ -162,7 +164,9 @@ const Main = () => {
         });
       }
   
-      return node;
+      // Replace id with SourceId
+      const { id, ...rest } = node;
+      return { source: id, ...rest };
     });
   
     const obj = { nodes: updatedNodes, links: edges };
@@ -173,17 +177,67 @@ const Main = () => {
     link.href = url;
     link.download = "data.json";
     link.click();
+  
+    // Log the payload before sending it to the API
+    console.log("Payload being sent to the API:", obj);
+  
+    // Send the JSON data to the API endpoint
+    fetch('http://192.168.1.45:7007/api/savedata', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: jsonString
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success:', data);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
   };
+
+  const onSave = () => {
+    if (reactFlowInstance) {
+      const flow = reactFlowInstance.toObject();
+      localStorage.setItem(flowKey, JSON.stringify(flow));
+    }
+  };
+
+  const onRestore = () => {
+    const restoreFlow = async () => {
+      const flow = JSON.parse(localStorage.getItem(flowKey));
   
+      if (flow) {
+        const { x = 0, y = 0, zoom = 1 } = flow.viewport;
+        
+        // Ensure selectNode is included in restored nodes
+        const restoredNodes = flow.nodes.map(node => ({
+          ...node,
+          data: {
+            ...node.data,
+            setNodes,
+            getId,
+            selectNode
+          }
+        }));
+        
+        setNodes(restoredNodes);
+        setEdges(flow.edges || []);
+        setTimeout(() => reactFlowInstance.setViewport({ x, y, zoom }), 100);
+      }
+    };
   
-  
-  
-  
+    if (reactFlowInstance) {
+      restoreFlow();
+    }
+  };
   
 
   return (
     <div className='sm:ml-64 h-full mt-16'>
-      <Navbar exportJson={exportJson} />
+      <Navbar exportJson={exportJson} onSave={onSave} onRestore={onRestore} />
       <ReactFlowProvider>
         <div className="reactflow-wrapper w-full h-full" ref={reactFlowWrapper}>
           <ReactFlow
@@ -216,7 +270,6 @@ const Main = () => {
       ) : (
         <Toolbar />
       )}
-
     </div>
   );
 };

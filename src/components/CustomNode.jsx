@@ -120,20 +120,20 @@ function CustomNode(props) {
   /**
    * Select ratio option in node
    */
-  const selectOption = (s_no, o_no) => {
-    nodedata.data[s_no].selectedOption = o_no;
-    setNodes(nds =>
-      nds.map((node) => {
-        if (node.id === id) {
-          node.data = {
-            ...node.data,
-            nodedata: { ...nodedata }
-          }
-        }
-        return node;
-      })
-    );
-  };
+  // const selectOption = (s_no, o_no) => {
+  //   nodedata.data[s_no].selectedOption = o_no;
+  //   setNodes(nds =>
+  //     nds.map((node) => {
+  //       if (node.id === id) {
+  //         node.data = {
+  //           ...node.data,
+  //           nodedata: { ...nodedata }
+  //         }
+  //       }
+  //       return node;
+  //     })
+  //   );
+  // };
 
   return (
     <>
@@ -206,18 +206,18 @@ function CustomNode(props) {
                     nodedata.content.map((option, index) => (
                       <div
                         className='w-full flex justify-between cursor-pointer hover:bg-[#eee] p-1 px-2 relative'
-                        onClick={() => selectOption(index)}
+
                         key={index}
                       >
                         <p>{option.value}</p> {/* Display only the option value */}
-                        <input type="radio" className='w-2' readOnly />
+
                         <Handle
                           type="source"
                           position={Position.Right}
                           id={`option${index}`}
                           style={{ top: '50%', transform: 'translateY(-50%)', background: '#555' }}
                         />
-                        
+
                       </div>
                     ))
                   ) : (
@@ -235,7 +235,7 @@ function CustomNode(props) {
             )
           }
 
-{
+          {
             label === 'Quick Answers' &&
             <div className=''>
               <Handle type="target" position={Position.Top} id='quick-answer' />

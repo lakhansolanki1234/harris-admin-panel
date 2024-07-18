@@ -48,7 +48,7 @@ function Toolbar() {
                 <span className="ml-3">Quick Answers</span>
               </button>
             </li>
-            {/* <li>
+            <li>
               <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md 
               hover:border-gray-200 border border-white my-3 w-full" onDragStart={(event) => onDragStart(event, 'Answer with Text')} draggable>
                 <img src="imgs/text-icon.png" alt="A" width={24} />
@@ -62,7 +62,7 @@ function Toolbar() {
                 <span className="ml-3">Media</span>
               </button>
             </li>
-           / */}
+           
              <li>
               <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md 
               hover:border-gray-200 border border-white my-3 w-full" onDragStart={(event) => onDragStart(event, 'Date Time')} draggable>

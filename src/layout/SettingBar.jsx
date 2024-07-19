@@ -628,7 +628,6 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                       </div>
                     ))
                   }
-
                   <button onClick={() => {
                     if (quData.length >= 3) {
                       toast.warn('You can\'t add new button anymore.');

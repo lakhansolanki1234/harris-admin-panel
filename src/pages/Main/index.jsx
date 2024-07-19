@@ -15,6 +15,8 @@ import Navbar from '../../layout/Navbar';
 import Toolbar from '../../layout/Toolbar';
 import SettingBar from '../../layout/SettingBar';
 import ConnectionLine from '../../components/ConnectionLine';
+import { toast } from 'react-toastify';
+
 
 const defaultViewport = { x: 0, y: 0, zoom: 1.2 };
 const initialNodes = [
@@ -196,6 +198,7 @@ const Main = () => {
     .catch((error) => {
       console.error('Error:', error);
     });
+    toast.success('Export successfully!');
   };
 
   const onSave = () => {
@@ -203,6 +206,7 @@ const Main = () => {
       const flow = reactFlowInstance.toObject();
       localStorage.setItem(flowKey, JSON.stringify(flow));
     }
+    toast.success('Saved successfully!');
   };
 
   const onRestore = () => {
@@ -232,6 +236,7 @@ const Main = () => {
     if (reactFlowInstance) {
       restoreFlow();
     }
+    toast.success('Restored successfully!');
   };
   
 

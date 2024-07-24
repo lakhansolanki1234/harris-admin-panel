@@ -7,38 +7,31 @@ function CustomNode(props) {
 
   const { id, xPos, yPos, data } = props;
   const { setNodes, label, getId, selectNode, nodedata } = data;
-  console.log(data);
+  const [dateTimeOption, setDateTimeOption] = useState(nodedata.dateTimeOption || 'dateTime');
 
-  /**
-   * Delete noe by click trash
-   */
+  useEffect(() => {
+    setDateTimeOption(nodedata.dateTimeOption || 'dateTime');
+  }, [nodedata]);
+
   const deleteNodeById = () => {
     setNodes(nds => nds.filter(node => node.id !== id));
   };
 
   const useOutsideAlerter = (ref) => {
     useEffect(() => {
-      /**
-       * Alert if clicked on outside of element
-       */
       function handleClickOutside(event) {
         if (ref.current && !ref.current.contains(event.target)) {
           setShowToolbar(false);
         }
       }
-      // Bind the event listener
       document.addEventListener("mousedown", handleClickOutside);
       return () => {
-        // Unbind the event listener on clean up
         document.removeEventListener("mousedown", handleClickOutside);
       };
     }, [ref]);
   }
   useOutsideAlerter(wrapperRef);
 
-  /**
-   * Add new node by click +
-   */
   const addNewNode = () => {
     const position = {
       x: xPos + 10,
@@ -52,44 +45,45 @@ function CustomNode(props) {
         break;
       case 'Date Time':
         nodedata['content'] = '';
+        nodedata['dateTimeOption'] = 'dateTime';
         break;
-      case 'Questions':
-        nodedata['qa_q'] = '';
-        nodedata['qa_a'] = '';
-        break;
-      case 'Options':
-        nodedata['data'] = [];
-        break;
-      case 'Quick Answers':
-        nodedata['qu_content'] = '';
-        nodedata['qu_data'] = [];
-        break;
-      case 'Answer with Text':
-        nodedata['answer_content'] = '';
-        nodedata['answer_buttons'] = [];
-        break;
-      case 'Upload Media':
-        nodedata['media_type'] = '';
-        nodedata['media_name'] = '';
-        nodedata['media_content'] = null;
-        break;
-      case 'Talk with advisor':
-        nodedata['advisorName'] = '';
-        nodedata['advisorEmail'] = '';
-        break;
-      case 'Link':
-        nodedata['linkText'] = '';
-        nodedata['hrefValue'] = '';
-        nodedata['linkTarget'] = '';
-        break;
-      case 'Web Service':
-        nodedata['api_url'] = 'https://example...';
-        nodedata['api_method'] = 'GET';
-        nodedata['api_headers'] = [];
-        nodedata['api_params'] = [];
-        nodedata['api_res_variable'] = null;
-        nodedata['api_res_data'] = null;
-        break;
+        case 'Questions':
+          nodedata['qa_q'] = '';
+          nodedata['qa_a'] = '';
+          break;
+        case 'Options':
+          nodedata['data'] = [];
+          break;
+        case 'Quick Answers':
+          nodedata['qu_content'] = '';
+          nodedata['qu_data'] = [];
+          break;
+        case 'Answer with Text':
+          nodedata['answer_content'] = '';
+          nodedata['answer_buttons'] = [];
+          break;
+        case 'Upload Media':
+          nodedata['media_type'] = '';
+          nodedata['media_name'] = '';
+          nodedata['media_content'] = null;
+          break;
+        case 'Talk with advisor':
+          nodedata['advisorName'] = '';
+          nodedata['advisorEmail'] = '';
+          break;
+        case 'Link':
+          nodedata['linkText'] = '';
+          nodedata['hrefValue'] = '';
+          nodedata['linkTarget'] = '';
+          break;
+        case 'Web Service':
+          nodedata['api_url'] = 'https://example...';
+          nodedata['api_method'] = 'GET';
+          nodedata['api_headers'] = [];
+          nodedata['api_params'] = [];
+          nodedata['api_res_variable'] = null;
+          nodedata['api_res_data'] = null;
+          break;
       default:
         break;
     }
@@ -110,30 +104,10 @@ function CustomNode(props) {
     setShowToolbar(false);
   };
 
-  /**
-   * When click node handler
-   */
   const onSelectedNode = () => {
-    setShowToolbar(true)
+    setShowToolbar(true);
     selectNode(props);
   };
-  /**
-   * Select ratio option in node
-   */
-  // const selectOption = (s_no, o_no) => {
-  //   nodedata.data[s_no].selectedOption = o_no;
-  //   setNodes(nds =>
-  //     nds.map((node) => {
-  //       if (node.id === id) {
-  //         node.data = {
-  //           ...node.data,
-  //           nodedata: { ...nodedata }
-  //         }
-  //       }
-  //       return node;
-  //     })
-  //   );
-  // };
 
   return (
     <>
@@ -146,7 +120,7 @@ function CustomNode(props) {
       }
       <div className='border border-gray-500 rounded bg-white cursor-pointer w-44' onClick={onSelectedNode}>
         <p className="text-xs font-bold border-b border-gray-500 p-2 flex">
-          {label === 'Message' && <img src="imgs/message-icon.png" className='h-5 mr-2' alt="A" width={20} />}
+        {label === 'Message' && <img src="imgs/message-icon.png" className='h-5 mr-2' alt="A" width={20} />}
           {label === 'Questions' && <img src="imgs/ask-icon.png" className='h-5 mr-2' alt="A" width={20} />}
           {label === 'Options' && <img src="imgs/options-icon.png" className='h-5 mr-2' alt="A" width={20} />}
           {label === 'Quick Answers' && <img src="imgs/qa-icon.png" className='h-5 mr-2' alt="A" width={20} />}
@@ -158,9 +132,8 @@ function CustomNode(props) {
           {label === 'Link' && <img src="imgs/broken-link-10497.png" className='h-5 mr-2' alt="A" width={20} />}
           {label}
         </p>
-
         <div className='text-xs max-w-44 break-words h-fit'>
-          {
+        {
             label === 'Message' &&
             <div className='p-2'>
               <Handle type="target" position={Position.Top} id='message' />
@@ -182,9 +155,67 @@ function CustomNode(props) {
                   : <p className='text-[#aaa]'><i>no messages</i><br /></p>
               }
               <Handle type="source" position={Position.Bottom} id="date" />
+              
+              <div>
+                <label>
+                  <input
+                    type="radio"
+                    value="date"
+                    checked={dateTimeOption === 'date'}
+                    onChange={(e) => {
+                      const newOption = e.target.value;
+                      setDateTimeOption(newOption);
+                      setNodes(nds =>
+                        nds.map((node) => {
+                          if (node.id === id) {
+                            node.data.nodedata.dateTimeOption = newOption;
+                          }
+                          return node;
+                        })  );
+                    }} />
+                  Date
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    value="time"
+                    checked={dateTimeOption === 'time'}
+                    onChange={(e) => {
+                      const newOption = e.target.value;
+                      setDateTimeOption(newOption);
+                      setNodes(nds =>
+                        nds.map((node) => {
+                          if (node.id === id) {
+                            node.data.nodedata.dateTimeOption = newOption;
+                          }
+                          return node;
+                        })
+                      );
+                    }}
+                  />
+                  Time
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    value="dateTime"
+                    checked={dateTimeOption === 'dateTime'}
+                    onChange={(e) => {
+                      const newOption = e.target.value;
+                      setDateTimeOption(newOption);
+                      setNodes(nds =>
+                        nds.map((node) => {
+                          if (node.id === id) {
+                            node.data.nodedata.dateTimeOption = newOption;
+                          }
+                          return node;
+                        })
+                      );
+                    }} />  Date and Time   </label> </div><Handle type="source" position={Position.Bottom} id="date" />
             </div>
+
           }
-          {
+       {
             label === 'Questions' &&
             <div className='p-2'>
               <Handle type="target" position={Position.Top} id='question' />

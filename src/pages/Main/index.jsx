@@ -1,4 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import ReactFlow, {
   ReactFlowProvider,
   addEdge,
@@ -16,7 +17,7 @@ import Toolbar from '../../layout/Toolbar';
 import SettingBar from '../../layout/SettingBar';
 import ConnectionLine from '../../components/ConnectionLine';
 import { toast } from 'react-toastify';
-
+import 'react-toastify/dist/ReactToastify.css';
 
 const defaultViewport = { x: 0, y: 0, zoom: 1.2 };
 const initialNodes = [
@@ -40,6 +41,8 @@ const nodeTypes = {
 };
 
 const Main = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const reactFlowWrapper = useRef(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
@@ -57,6 +60,47 @@ const Main = () => {
   useEffect(() => {
     setConversation([{ id: initialNodes[0].id, label: initialNodes[0].data.label, content: initialNodes[0].data.nodedata }]);
   }, [nodes]);
+
+  useEffect(() => {
+    if (location.state) {
+      if (location.state.action === 'createNew') {
+        setNodes(initialNodes);
+        setEdges([]);
+      } else if (location.state.action === 'loadPrevious') {
+        onRestore();
+      } else if (location.state.action === 'loadSpecific') {
+        const { chatFlowKey } = location.state;
+        const flow = JSON.parse(localStorage.getItem(chatFlowKey));
+        if (flow) {
+          const { x = 0, y = 0, zoom = 1 } = flow.viewport;
+
+          const restoredNodes = flow.nodes.map(node => ({
+            ...node,
+            data: {
+              ...node.data,
+              setNodes,
+              getId,
+              selectNode
+            }
+          }));
+
+          setNodes(restoredNodes);
+          setEdges(flow.edges || []);
+          if (reactFlowInstance) {
+            reactFlowInstance.setViewport({ x, y, zoom });
+          } else {
+            setTimeout(() => {
+              if (reactFlowInstance) {
+                reactFlowInstance.setViewport({ x, y, zoom });
+              }
+            }, 100);
+          }
+        } else {
+          toast.error('Failed to restore the chat flow!');
+        }
+      }
+    }
+  }, [location.state, reactFlowInstance]);
 
   const onConnect = useCallback((params) => setEdges((eds) => addEdge({ ...params, animated: true }, eds)), []);
   const onDragOver = useCallback((event) => {
@@ -91,6 +135,7 @@ const Main = () => {
           break;
         case 'Date Time':
           nodedata['content'] = '';
+          nodedata['dateTimeOption'] = 'dateTime';
           break;
         case 'Link':
           nodedata['linkText'] = '';
@@ -148,29 +193,21 @@ const Main = () => {
   const exportJson = () => {
     const updatedNodes = nodes.map(node => {
       const outgoingEdges = edges.filter(edge => edge.source === node.id);
-  
-      // Update target for the node itself
       node.target = outgoingEdges.map(edge => edge.target).join(', ');
-  
-      // Update sourceHandle for options in node.data.nodedata.content
-      if (node.data && node.data.nodedata && Array.isArray(node.data.nodedata.content)) {
-        node.data.nodedata.content.forEach(option => {
-          const edge = outgoingEdges.find(edge => edge.sourceHandle === option.id);
-          if (edge) {
-            option.target = edge.target;
-            option.sourceHandle = edge.sourceHandle; // Assign sourceHandle if found
-          } else {
-            option.target = ""; // Handle case where there's no matching edge (optional)
-            option.sourceHandle = ""; // Ensure sourceHandle is cleared if no match
-          }
-        });
+
+      if (node.data && node.data.nodedata) {
+        if (node.data.label === 'Date Time') {
+          node.data.nodedata = {
+            type: node.data.nodedata.dateTimeOption,
+            content: node.data.nodedata.content
+          };
+        }
       }
-  
-      // Replace id with SourceId
+
       const { id, ...rest } = node;
       return { source: id, ...rest };
     });
-  
+
     const obj = { nodes: updatedNodes, links: edges };
     const jsonString = JSON.stringify(obj);
     const blob = new Blob([jsonString], { type: "application/json" });
@@ -179,11 +216,8 @@ const Main = () => {
     link.href = url;
     link.download = "data.json";
     link.click();
-  
-    // Log the payload before sending it to the API
     console.log("Payload being sent to the API:", obj);
-  
-    // Send the JSON data to the API endpoint
+
     fetch('http://192.168.1.45:7007/api/savedata', {
       method: 'POST',
       headers: {
@@ -201,22 +235,31 @@ const Main = () => {
     toast.success('Export successfully!');
   };
 
-  const onSave = () => {
-    if (reactFlowInstance) {
+  const onSave = async () => {
+    const chatFlowName = window.prompt('Enter the name of your chat flow');
+    const chatFlowDescription = window.prompt('Enter the description of your chat flow');
+  
+    if (chatFlowName) {
       const flow = reactFlowInstance.toObject();
-      localStorage.setItem(flowKey, JSON.stringify(flow));
+      const flowWithDescription = { ...flow, description: chatFlowDescription };
+      localStorage.setItem(`chatflow_${chatFlowName}`, JSON.stringify(flowWithDescription));
+      toast.success('Chat Flow Saved Successfully!');
+    } else {
+      toast.error('Chat Flow name is required to save!');
     }
-    toast.success('Saved successfully!');
   };
 
-  const onRestore = () => {
-    const restoreFlow = async () => {
-      const flow = JSON.parse(localStorage.getItem(flowKey));
-  
+  const onRestore = async () => {
+    const chatFlowKeys = Object.keys(localStorage).filter(key => key.startsWith('chatflow_'));
+    const chatFlowNames = chatFlowKeys.map(key => key.replace('chatflow_', ''));
+    const selectedChatFlow = window.prompt(`Enter the name of the chat flow to restore:\n${chatFlowNames.join('\n')}`);
+    
+    if (selectedChatFlow) {
+      const flow = JSON.parse(localStorage.getItem(`chatflow_${selectedChatFlow}`));
+
       if (flow) {
         const { x = 0, y = 0, zoom = 1 } = flow.viewport;
-        
-        // Ensure selectNode is included in restored nodes
+
         const restoredNodes = flow.nodes.map(node => ({
           ...node,
           data: {
@@ -226,19 +269,25 @@ const Main = () => {
             selectNode
           }
         }));
-        
+
         setNodes(restoredNodes);
         setEdges(flow.edges || []);
-        setTimeout(() => reactFlowInstance.setViewport({ x, y, zoom }), 100);
+        if (reactFlowInstance) {
+          reactFlowInstance.setViewport({ x, y, zoom });
+        } else {
+          setTimeout(() => {
+            if (reactFlowInstance) {
+              reactFlowInstance.setViewport({ x, y, zoom });
+            }
+          }, 100);
+        }
+      } else {
+        toast.error('No such Chat Flow found!');
       }
-    };
-  
-    if (reactFlowInstance) {
-      restoreFlow();
+    } else {
+      toast.error('Chat Flow name is required to restore!');
     }
-    toast.success('Restored successfully!');
   };
-  
 
   return (
     <div className='sm:ml-64 h-full mt-16'>

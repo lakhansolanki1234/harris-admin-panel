@@ -1,82 +1,121 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import './styles.css'; // Ensure you have the CSS file for card styling
 
-const LoginPage = () => {
-  const navigate = useNavigate(); // Get the navigation function
+const HomePage = () => {
+  const navigate = useNavigate();
+  const [chatFlows, setChatFlows] = useState([]);
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    navigate('/dashboard');
-
-    try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
+  useEffect(() => {
+    // Retrieve saved chat flows from localStorage
+    const savedChatFlows = Object.keys(localStorage)
+      .filter(key => key.startsWith('chatflow_'))
+      .map(key => {
+        const flow = JSON.parse(localStorage.getItem(key));
+        return {
+          name: key.replace('chatflow_', ''),
+          key,
+          description: flow.description || '',
+        };
       });
+    setChatFlows(savedChatFlows);
+  }, []);
 
-      if (response.ok) {
-        const data = await response.json();
-        // Handle successful login (e.g., store token in localStorage, redirect)
-        console.log('Login successful:', data);
-        // Navigate to the dashboard page
-        navigate('/dashboard');
-      } else {
-        const errorData = await response.json();
-        // Handle error (e.g., display error message)
-        console.error('Login failed:', errorData);
-      }
-    } catch (error) {
-      console.error('Error during login:', error.message);
-    }
+  const handleCreateNewChatFlow = () => {
+    navigate('/dashboard', { state: { action: 'createNew' } });
+  };
+
+  const handleLoadChatFlow = (chatFlowKey) => {
+    navigate('/dashboard', { state: { action: 'loadSpecific', chatFlowKey } });
+  };
+
+  const handleDeleteChatFlow = (e, chatFlowKey) => {
+    e.stopPropagation(); // Prevent triggering the load event
+    localStorage.removeItem(chatFlowKey);
+    setChatFlows(chatFlows.filter(chatFlow => chatFlow.key !== chatFlowKey));
+  };
+
+  const handleEditChatFlow = (e, chatFlowKey) => {
+    e.stopPropagation(); // Prevent triggering the load event
+    navigate('/dashboard', { state: { action: 'edit', chatFlowKey } });
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm">
-        <h2 className="text-2xl font-semibold mb-6 text-center">Login</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 w-1/4">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-            />
-          </div>
-          <div className="mb-6">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 w-1/4">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+    <div className="min-h-screen bg-gray-100 p-8">
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-4xl font-bold">My Chat Flows</h1>
+        <button
+          onClick={handleCreateNewChatFlow}
+          className="inline-flex items-center p-2 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+        >
+          <span className="mr-2">Create New Chat Flow</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            className="w-6 h-6"
           >
-            Login
-          </button>
-        </form>
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+          </svg>
+        </button>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {chatFlows.length > 0 ? (
+          chatFlows.map((chatFlow) => (
+            <div
+              key={chatFlow.key}
+              className="card"
+              onClick={() => handleLoadChatFlow(chatFlow.key)}
+            >
+              <div className="card-content">
+                <div className="card-top">
+                  <span className="card-title">{chatFlow.name}</span>
+                  <div className="flex space-x-2">
+                    <button
+                      className="icon-button text-gray-400 hover:text-blue-600"
+                      onClick={(e) => handleEditChatFlow(e, chatFlow.key)}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        className="w-5 h-5"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12h.01M19.5 11A2.5 2.5 0 0017 8.5H7A2.5 2.5 0 004.5 11v5A2.5 2.5 0 007 18.5h10a2.5 2.5 0 002.5-2.5v-5z" />
+                      </svg>
+                    </button>
+                    <button
+                      className="icon-button text-gray-400 hover:text-red-600"
+                      onClick={(e) => handleDeleteChatFlow(e, chatFlow.key)}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        className="w-5 h-5"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                <div className="card-bottom">
+                  <p>{chatFlow.description || 'No description provided'}</p>
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className="text-center text-gray-600 col-span-full">No saved chat flows found.</p>
+        )}
       </div>
     </div>
   );
 };
 
-export default LoginPage;
+export default HomePage;

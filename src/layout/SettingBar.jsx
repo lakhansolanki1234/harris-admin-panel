@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import RichTextEditor from 'react-rte';
 import { toast } from 'react-toastify';
 
 const toolbarConfig = {
-  // Optionally specify the groups to display (displayed in the order listed).
   display: ['INLINE_STYLE_BUTTONS', 'BLOCK_TYPE_BUTTONS'],
   INLINE_STYLE_BUTTONS: [
     { label: 'Bold', style: 'BOLD', className: 'custom-css-class' },
@@ -12,7 +11,6 @@ const toolbarConfig = {
   ],
 }
 
-
 function formatDateTime(date) {
   const d = new Date(date);
   const year = d.getFullYear();
@@ -20,10 +18,8 @@ function formatDateTime(date) {
   const day = String(d.getDate()).padStart(2, '0');
   const hours = String(d.getHours()).padStart(2, '0');
   const minutes = String(d.getMinutes()).padStart(2, '0');
-
   return `${year}-${month}-${day} ${hours}:${minutes}`;
 }
-
 
 function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variables }) {
   const { data, id } = selectedNodeData;
@@ -52,6 +48,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
   const [linkText, setLinkText] = useState('');
   const [hrefValue, setHrefValue] = useState('');
   const [linkTarget, setLinkTarget] = useState('');
+  const [dateTimeOption, setDateTimeOption] = useState(nodedata.dateTimeOption || 'dateTime');
 
   const handleOptionChange = (index, value) => {
     const newOptionsData = [...optionsData];
@@ -90,7 +87,6 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
     if (nodedata?.content) setdate(nodedata?.content);
     if (nodedata?.qa_a) setQaAnswer(nodedata?.qa_a);
     if (nodedata?.qu_data) setQuData([...nodedata.qu_data]);
-
     if (nodedata?.content) {
       const newSection = { name: 'Section', data: nodedata.content, selectedOption: -1 };
       console.log(newSection)
@@ -99,7 +95,6 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
     }
 
     console.log(optionsData)
-
     if (nodedata?.qu_header) setQuAnswerHeader(nodedata.qu_header);
     if (nodedata?.qu_footer) setQuAnswerFooter(nodedata.qu_footer);
     if (nodedata?.media_content) setMedia({ ...media, data: nodedata.media_content, type: nodedata.media_type, fileName: nodedata.media_name });
@@ -109,30 +104,29 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
     if (nodedata?.api_headers) setApiHeaders([...nodedata.api_headers]);
     if (nodedata?.api_res_variable) setResApiVariable(nodedata.api_res_variable);
     if (nodedata?.answer_buttons) setAnswerButtons([...nodedata.answer_buttons]);
-
+    if (nodedata?.dateTimeOption) setDateTimeOption(nodedata.dateTimeOption);
     console.log(nodedata);
   }, [id]);
 
   const variableChangeHandler = (e, type, id) => {
     let newVal = { ...selectOptions[id] };
     if (type === 'key') {
-      newVal = { ...selectOptions[id], key: e.target.value }
+      newVal = { ...selectOptions[id], key: e.target.value };
     } else {
-      newVal = { ...selectOptions[id], value: e.target.value }
+      newVal = { ...selectOptions[id], value: e.target.value };
     }
     selectOptions[id] = newVal;
     setSelectOptions([...selectOptions]);
   };
 
-
   const mediaUploadHandler = (e) => {
     let file = e.target.files[0];
     if (file.type.includes('video') || file.type.includes("audio")) {
-      setMedia({ ...media, type: file.type.includes('video') ? "video" : "audio", data: file, fileName: file.name })
+      setMedia({ ...media, type: file.type.includes('video') ? "video" : "audio", data: file, fileName: file.name });
     } else if (file.type.includes('image')) {
-      setMedia({ ...media, type: "image", data: file, fileName: file.name })
+      setMedia({ ...media, type: "image", data: file, fileName: file.name });
     } else {
-      setMedia({ ...media, type: "document", data: file, fileName: file.name })
+      setMedia({ ...media, type: "document", data: file, fileName: file.name });
     }
   };
 
@@ -163,7 +157,8 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                 ...node.data,
                 nodedata: {
                   ...node.data.nodedata,
-                  content: datetime
+                  content: datetime,
+                  dateTimeOption: dateTimeOption // Save the dateTimeOption
                 }
               }
             }
@@ -172,7 +167,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
         );
         toast.success('Saved successfully!');
         break;
-      case 'advisor':
+        case 'advisor':
         setNodes((nds) =>
           nds.map((node) => {
             if (node.id === id) {
@@ -228,8 +223,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
         );
         toast.success('Saved successfully!');
         break;
-
-      case 'anchor':
+        case 'anchor':
         setNodes((nds) =>
           nds.map((node) => {
             if (node.id === id) {
@@ -346,46 +340,46 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
         setdate('');
         setShowSettingBar(false);
         break;
-      case 'question-answer':
-        setQaQuestion(RichTextEditor.createEmptyValue());
-        setQaAnswer(variables[0]?.value);
-        setShowSettingBar(false);
-        break;
-      case 'options':
-        setOptionsData([]);
-        setShowSettingBar(false);
-        break;
-      case 'quick-answer':
-        setQuData([]);
-        setShowSettingBar(false);
-        break;
-      case 'answer-text':
-        setShowSettingBar(false);
-        setAnswerContent(RichTextEditor.createEmptyValue());
-        setAnswerButtons([]);
-        break;
-      case 'media':
-        setShowSettingBar(false);
-        setMedia({ data: null, type: '', fileName: '' })
-        break;
-      case 'advisor':
-        setShowSettingBar(false);
-        setAdvisorEmail('');
-        setAdvisorName('');
-        break;
-      case 'anchor':
-        setShowSettingBar(false);
-        setAdvisorEmail('');
-        setAdvisorName('');
-        break;
-      case 'web':
-        setShowSettingBar(false);
-        setApiUrl('');
-        setApiMethod('');
-        setApiParams([]);
-        setApiHeaders([]);
-        setResApiVariable(variables[0]?.key);
-        break;
+        case 'question-answer':
+          setQaQuestion(RichTextEditor.createEmptyValue());
+          setQaAnswer(variables[0]?.value);
+          setShowSettingBar(false);
+          break;
+        case 'options':
+          setOptionsData([]);
+          setShowSettingBar(false);
+          break;
+        case 'quick-answer':
+          setQuData([]);
+          setShowSettingBar(false);
+          break;
+        case 'answer-text':
+          setShowSettingBar(false);
+          setAnswerContent(RichTextEditor.createEmptyValue());
+          setAnswerButtons([]);
+          break;
+        case 'media':
+          setShowSettingBar(false);
+          setMedia({ data: null, type: '', fileName: '' })
+          break;
+        case 'advisor':
+          setShowSettingBar(false);
+          setAdvisorEmail('');
+          setAdvisorName('');
+          break;
+        case 'anchor':
+          setShowSettingBar(false);
+          setAdvisorEmail('');
+          setAdvisorName('');
+          break;
+        case 'web':
+          setShowSettingBar(false);
+          setApiUrl('');
+          setApiMethod('');
+          setApiParams([]);
+          setApiHeaders([]);
+          setResApiVariable(variables[0]?.key);
+          break;
       default:
         break;
     }
@@ -450,16 +444,45 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                     value={datetime}
                     onChange={handleChange}
                   />
+                  <div className="mt-2">
+                    <label>
+                      <input
+                        type="radio"
+                        value="date"
+                        checked={dateTimeOption === 'date'}
+                        onChange={(e) => setDateTimeOption(e.target.value)}
+                      />
+                      Date
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value="time"
+                        checked={dateTimeOption === 'time'}
+                        onChange={(e) => setDateTimeOption(e.target.value)}
+                      />
+                      Time
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value="dateTime"
+                        checked={dateTimeOption === 'dateTime'}
+                        onChange={(e) => setDateTimeOption(e.target.value)}
+                      />
+                      Date and Time
+                    </label>
+                  </div>
                   <div className='flex mt-2 justify-end'>
                     <button className='mx-1 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 
-          px-4 text-sm border border-blue-500 hover:border-transparent rounded' onClick={() => save('date')}>Save</button>
+                    px-4 text-sm border border-blue-500 hover:border-transparent rounded' onClick={() => save('date')}>Save</button>
                     <button className='mx-1 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 
-          px-4 text-sm border border-red-500 hover:border-transparent rounded mr-2' onClick={() => cancel('date')}>Cancel</button>
+                    px-4 text-sm border border-red-500 hover:border-transparent rounded mr-2' onClick={() => cancel('date')}>Cancel</button>
                   </div>
                 </>
               </div>
             }
-            {
+             {
               label === 'Questions' &&
               <>
                 <p className='pl-2 pt-2 text-sm'>Question Text</p>

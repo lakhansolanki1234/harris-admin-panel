@@ -54,7 +54,6 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
     const newOptionsData = [...optionsData];
     newOptionsData[index].name = value;
     setOptionsData(newOptionsData);
-    console.log(optionsData);
   };
 
   const handleOptionContentChange = (sectionIndex, optionIndex, value) => {
@@ -69,7 +68,6 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
     const newOption = { id: `option${section.data.length}`, value: 'option' };
     section.data.push(newOption);
     setOptionsData(newOptionsData);
-    console.log(optionsData[0].data)
   };
 
   const removeOption = (sectionIndex, optionIndex) => {
@@ -105,7 +103,6 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
     if (nodedata?.api_res_variable) setResApiVariable(nodedata.api_res_variable);
     if (nodedata?.answer_buttons) setAnswerButtons([...nodedata.answer_buttons]);
     if (nodedata?.dateTimeOption) setDateTimeOption(nodedata.dateTimeOption);
-    console.log(nodedata);
   }, [id]);
 
   const variableChangeHandler = (e, type, id) => {
@@ -393,7 +390,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
       dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
         <span className="sr-only">Open sidebar</span>
         <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-          <path clipRule="evenodd" fillRule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+          <path clipRule="evenodd" fillRule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 a.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 a.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
         </svg>
       </button>
 
@@ -443,37 +440,41 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                     type='datetime-local'
                     value={datetime}
                     onChange={handleChange}
+                    className="w-full p-2 border rounded mb-4"
                   />
                   <div className="mt-2">
-                    <label>
+                    <label className="block mb-2">
                       <input
                         type="radio"
                         value="date"
                         checked={dateTimeOption === 'date'}
                         onChange={(e) => setDateTimeOption(e.target.value)}
+                        className="mr-2"
                       />
                       Date
                     </label>
-                    <label>
+                    <label className="block mb-2">
                       <input
                         type="radio"
                         value="time"
                         checked={dateTimeOption === 'time'}
                         onChange={(e) => setDateTimeOption(e.target.value)}
+                        className="mr-2"
                       />
                       Time
                     </label>
-                    <label>
+                    <label className="block mb-2">
                       <input
                         type="radio"
                         value="dateTime"
                         checked={dateTimeOption === 'dateTime'}
                         onChange={(e) => setDateTimeOption(e.target.value)}
+                        className="mr-2"
                       />
                       Date and Time
                     </label>
                   </div>
-                  <div className='flex mt-2 justify-end'>
+                  <div className='flex mt-4 justify-end'>
                     <button className='mx-1 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 
                     px-4 text-sm border border-blue-500 hover:border-transparent rounded' onClick={() => save('date')}>Save</button>
                     <button className='mx-1 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 
@@ -482,7 +483,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                 </>
               </div>
             }
-             {
+            {
               label === 'Questions' &&
               <>
                 <p className='pl-2 pt-2 text-sm'>Question Text</p>

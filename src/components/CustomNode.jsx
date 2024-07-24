@@ -47,43 +47,43 @@ function CustomNode(props) {
         nodedata['content'] = '';
         nodedata['dateTimeOption'] = 'dateTime';
         break;
-        case 'Questions':
-          nodedata['qa_q'] = '';
-          nodedata['qa_a'] = '';
-          break;
-        case 'Options':
-          nodedata['data'] = [];
-          break;
-        case 'Quick Answers':
-          nodedata['qu_content'] = '';
-          nodedata['qu_data'] = [];
-          break;
-        case 'Answer with Text':
-          nodedata['answer_content'] = '';
-          nodedata['answer_buttons'] = [];
-          break;
-        case 'Upload Media':
-          nodedata['media_type'] = '';
-          nodedata['media_name'] = '';
-          nodedata['media_content'] = null;
-          break;
-        case 'Talk with advisor':
-          nodedata['advisorName'] = '';
-          nodedata['advisorEmail'] = '';
-          break;
-        case 'Link':
-          nodedata['linkText'] = '';
-          nodedata['hrefValue'] = '';
-          nodedata['linkTarget'] = '';
-          break;
-        case 'Web Service':
-          nodedata['api_url'] = 'https://example...';
-          nodedata['api_method'] = 'GET';
-          nodedata['api_headers'] = [];
-          nodedata['api_params'] = [];
-          nodedata['api_res_variable'] = null;
-          nodedata['api_res_data'] = null;
-          break;
+      case 'Questions':
+        nodedata['qa_q'] = '';
+        nodedata['qa_a'] = '';
+        break;
+      case 'Options':
+        nodedata['data'] = [];
+        break;
+      case 'Quick Answers':
+        nodedata['qu_content'] = '';
+        nodedata['qu_data'] = [];
+        break;
+      case 'Answer with Text':
+        nodedata['answer_content'] = '';
+        nodedata['answer_buttons'] = [];
+        break;
+      case 'Upload Media':
+        nodedata['media_type'] = '';
+        nodedata['media_name'] = '';
+        nodedata['media_content'] = null;
+        break;
+      case 'Talk with advisor':
+        nodedata['advisorName'] = '';
+        nodedata['advisorEmail'] = '';
+        break;
+      case 'Link':
+        nodedata['linkText'] = '';
+        nodedata['hrefValue'] = '';
+        nodedata['linkTarget'] = '';
+        break;
+      case 'Web Service':
+        nodedata['api_url'] = 'https://example...';
+        nodedata['api_method'] = 'GET';
+        nodedata['api_headers'] = [];
+        nodedata['api_params'] = [];
+        nodedata['api_res_variable'] = null;
+        nodedata['api_res_data'] = null;
+        break;
       default:
         break;
     }
@@ -118,22 +118,13 @@ function CustomNode(props) {
           <i className='fa fa-plus cursor-pointer ml-2' onClick={addNewNode}></i>
         </div>
       }
-      <div className='border border-gray-500 rounded bg-white cursor-pointer w-44' onClick={onSelectedNode}>
+      <div className='border border-gray-500 rounded bg-white cursor-pointer w-44 p-2' onClick={onSelectedNode}>
         <p className="text-xs font-bold border-b border-gray-500 p-2 flex">
-        {label === 'Message' && <img src="imgs/message-icon.png" className='h-5 mr-2' alt="A" width={20} />}
-          {label === 'Questions' && <img src="imgs/ask-icon.png" className='h-5 mr-2' alt="A" width={20} />}
-          {label === 'Options' && <img src="imgs/options-icon.png" className='h-5 mr-2' alt="A" width={20} />}
-          {label === 'Quick Answers' && <img src="imgs/qa-icon.png" className='h-5 mr-2' alt="A" width={20} />}
-          {label === 'Answer with Text' && <img src="imgs/text-icon.png" className='h-5 mr-2' alt="A" width={20} />}
-          {label === 'Upload Media' && <img src="imgs/media-icon.png" className='h-5 mr-2' alt="A" width={20} />}
-          {label === 'Talk with advisor' && <img src="imgs/talk-icon.png" className='h-5 mr-2' alt="A" width={20} />}
-          {label === 'Web Service' && <img src="imgs/web-icon.png" className='h-5 mr-2' alt="A" width={20} />}
           {label === 'Date Time' && <img src="imgs/schedule-icon.png" className='h-5 mr-2' alt="A" width={20} />}
-          {label === 'Link' && <img src="imgs/broken-link-10497.png" className='h-5 mr-2' alt="A" width={20} />}
           {label}
         </p>
         <div className='text-xs max-w-44 break-words h-fit'>
-        {
+          {
             label === 'Message' &&
             <div className='p-2'>
               <Handle type="target" position={Position.Top} id='message' />
@@ -154,68 +145,15 @@ function CustomNode(props) {
                   ? <div dangerouslySetInnerHTML={{ __html: nodedata.content }}></div>
                   : <p className='text-[#aaa]'><i>no messages</i><br /></p>
               }
+              <div className="mt-2">
+                <p className='text-sm text-gray-700'>
+                  Selected Option: <strong>{dateTimeOption === 'date' ? 'Date' : dateTimeOption === 'time' ? 'Time' : 'Date and Time'}</strong>
+                </p>
+              </div>
               <Handle type="source" position={Position.Bottom} id="date" />
-              
-              <div>
-                <label>
-                  <input
-                    type="radio"
-                    value="date"
-                    checked={dateTimeOption === 'date'}
-                    onChange={(e) => {
-                      const newOption = e.target.value;
-                      setDateTimeOption(newOption);
-                      setNodes(nds =>
-                        nds.map((node) => {
-                          if (node.id === id) {
-                            node.data.nodedata.dateTimeOption = newOption;
-                          }
-                          return node;
-                        })  );
-                    }} />
-                  Date
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    value="time"
-                    checked={dateTimeOption === 'time'}
-                    onChange={(e) => {
-                      const newOption = e.target.value;
-                      setDateTimeOption(newOption);
-                      setNodes(nds =>
-                        nds.map((node) => {
-                          if (node.id === id) {
-                            node.data.nodedata.dateTimeOption = newOption;
-                          }
-                          return node;
-                        })
-                      );
-                    }}
-                  />
-                  Time
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    value="dateTime"
-                    checked={dateTimeOption === 'dateTime'}
-                    onChange={(e) => {
-                      const newOption = e.target.value;
-                      setDateTimeOption(newOption);
-                      setNodes(nds =>
-                        nds.map((node) => {
-                          if (node.id === id) {
-                            node.data.nodedata.dateTimeOption = newOption;
-                          }
-                          return node;
-                        })
-                      );
-                    }} />  Date and Time   </label> </div><Handle type="source" position={Position.Bottom} id="date" />
             </div>
-
           }
-       {
+          {
             label === 'Questions' &&
             <div className='p-2'>
               <Handle type="target" position={Position.Top} id='question' />
@@ -237,18 +175,15 @@ function CustomNode(props) {
                     nodedata.content.map((option, index) => (
                       <div
                         className='w-full flex justify-between cursor-pointer hover:bg-[#eee] p-1 px-2 relative'
-
                         key={index}
                       >
                         <p>{option.value}</p> {/* Display only the option value */}
-
                         <Handle
                           type="source"
                           position={Position.Right}
                           id={`option${index}`}
                           style={{ top: '50%', transform: 'translateY(-50%)', background: '#555' }}
                         />
-
                       </div>
                     ))
                   ) : (

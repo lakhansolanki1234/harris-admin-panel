@@ -193,21 +193,29 @@ const Main = () => {
   const exportJson = () => {
     const updatedNodes = nodes.map(node => {
       const outgoingEdges = edges.filter(edge => edge.source === node.id);
+  
+      // Update target for the node itself
       node.target = outgoingEdges.map(edge => edge.target).join(', ');
-
-      if (node.data && node.data.nodedata) {
-        if (node.data.label === 'Date Time') {
-          node.data.nodedata = {
-            type: node.data.nodedata.dateTimeOption,
-            content: node.data.nodedata.content
-          };
-        }
+  
+      // Update sourceHandle for options in node.data.nodedata.content
+      if (node.data && node.data.nodedata && Array.isArray(node.data.nodedata.content)) {
+        node.data.nodedata.content.forEach(option => {
+          const edge = outgoingEdges.find(edge => edge.sourceHandle === option.id);
+          if (edge) {
+            option.target = edge.target;
+            option.sourceHandle = edge.sourceHandle; // Assign sourceHandle if found
+          } else {
+            option.target = ""; // Handle case where there's no matching edge (optional)
+            option.sourceHandle = ""; // Ensure sourceHandle is cleared if no match
+          }
+        });
       }
-
+  
+      // Replace id with SourceId
       const { id, ...rest } = node;
       return { source: id, ...rest };
     });
-
+  
     const obj = { nodes: updatedNodes, links: edges };
     const jsonString = JSON.stringify(obj);
     const blob = new Blob([jsonString], { type: "application/json" });
@@ -216,8 +224,7 @@ const Main = () => {
     link.href = url;
     link.download = "data.json";
     link.click();
-    console.log("Payload being sent to the API:", obj);
-
+  
     fetch('http://192.168.1.45:7007/api/savedata', {
       method: 'POST',
       headers: {
@@ -234,6 +241,7 @@ const Main = () => {
     });
     toast.success('Export successfully!');
   };
+  
 
   const onSave = async () => {
     const chatFlowName = window.prompt('Enter the name of your chat flow');

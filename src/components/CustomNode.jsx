@@ -124,11 +124,16 @@ function CustomNode(props) {
       <div className='border border-gray-500 rounded bg-white cursor-pointer w-44 p-2' onClick={onSelectedNode}>
         <p className="text-xs font-bold border-b border-gray-500 p-2 flex">
           {label === 'Date Time' && <img src="imgs/schedule-icon.png" className='h-5 mr-2' alt="A" width={20} />}
+          {label === 'Options' && <img src="imgs/options-icon.png" className='h-5 mr-2' alt="A" width={20} />}
+          {label === 'Message' && <img src="imgs/message-icon.png" className='h-5 mr-2' alt="A" width={20} />}
+          {label === 'Upload Media' && <img src="imgs/media-icon.png" className='h-5 mr-2' alt="A" width={20} />}
+          {label === 'Input' && <img src="imgs/message-icon.png" className='h-5 mr-2' alt="A" width={20} />}
           {label}
+          
         </p>
         <div className='text-xs max-w-44 break-words h-fit'>
           {
-            label === 'Message' &&
+            label === 'Message'  && 
             <div className='p-2'>
               <Handle type="target" position={Position.Top} id='message' />
               {
@@ -152,7 +157,8 @@ function CustomNode(props) {
             </div>
           }
           {
-            label === 'Date Time' &&
+            label === 'Date Time' && 
+            
             <div className='p-2'>
               <Handle type="target" position={Position.Top} id='date' />
               {
@@ -171,6 +177,7 @@ function CustomNode(props) {
           {
             label === 'Questions' &&
             <div className='p-2'>
+              
               <Handle type="target" position={Position.Top} id='question' />
               {
                 nodedata.qa_q

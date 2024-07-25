@@ -23,7 +23,7 @@ function Toolbar() {
             <li>
               <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md 
               hover:border-gray-200 border border-white my-3 w-full" onDragStart={(event) => onDragStart(event, 'Message')} draggable>
-                <img src="imgs/message-icon.png" alt="A" width={24}/>
+                <img src="imgs/message-icon.png" alt="A" width={24} />
                 <span className="ml-3">Message</span>
               </button>
             </li>
@@ -62,8 +62,8 @@ function Toolbar() {
                 <span className="ml-3">Media</span>
               </button>
             </li>
-           
-             <li>
+
+            <li>
               <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md 
               hover:border-gray-200 border border-white my-3 w-full" onDragStart={(event) => onDragStart(event, 'Date Time')} draggable>
                 <img src="imgs/schedule-icon.png" alt="A" width={24} />
@@ -91,6 +91,14 @@ function Toolbar() {
                 <span className="ml-3">API</span>
               </button>
             </li> */}
+
+            <li>
+              <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md 
+              hover:border-gray-200 border border-white my-3 w-full" onDragStart={(event) => onDragStart(event, 'Input')} draggable>
+                <img src="imgs/message-icon.png" alt="A" width={24} />
+                <span className="ml-3">Input</span>
+              </button>
+            </li>
           </ul>
         </div>
       </aside>

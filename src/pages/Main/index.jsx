@@ -109,8 +109,13 @@ const Main = () => {
   }, []);
 
   const selectNode = (props) => {
+    console.log(props.data.label)
     setSelectedNodeData(props);
-    setShowSettingBar(true);
+    if (props.data.label === 'Input') {
+      setShowSettingBar(false);
+    } else {
+      setShowSettingBar(true);
+    }
   };
 
   const onDrop = useCallback(
@@ -131,6 +136,9 @@ const Main = () => {
       let nodedata = {};
       switch (label) {
         case 'Message':
+          nodedata['content'] = '';
+          break;
+        case 'Input':
           nodedata['content'] = '';
           break;
         case 'Date Time':
@@ -193,10 +201,10 @@ const Main = () => {
   const exportJson = () => {
     const updatedNodes = nodes.map(node => {
       const outgoingEdges = edges.filter(edge => edge.source === node.id);
-  
+
       // Update target for the node itself
       node.target = outgoingEdges.map(edge => edge.target).join(', ');
-  
+
       // Update sourceHandle for options in node.data.nodedata.content
       if (node.data && node.data.nodedata && Array.isArray(node.data.nodedata.content)) {
         node.data.nodedata.content.forEach(option => {
@@ -210,12 +218,12 @@ const Main = () => {
           }
         });
       }
-  
+
       // Replace id with SourceId
       const { id, ...rest } = node;
       return { source: id, ...rest };
     });
-  
+
     const obj = { nodes: updatedNodes, links: edges };
     const jsonString = JSON.stringify(obj);
     const blob = new Blob([jsonString], { type: "application/json" });
@@ -224,7 +232,7 @@ const Main = () => {
     link.href = url;
     link.download = "data.json";
     link.click();
-  
+
     fetch('http://192.168.1.45:7007/api/savedata', {
       method: 'POST',
       headers: {
@@ -232,21 +240,21 @@ const Main = () => {
       },
       body: jsonString
     })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Success:', data);
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
     toast.success('Export successfully!');
   };
-  
+
 
   const onSave = async () => {
     const chatFlowName = window.prompt('Enter the name of your chat flow');
     const chatFlowDescription = window.prompt('Enter the description of your chat flow');
-  
+
     if (chatFlowName) {
       const flow = reactFlowInstance.toObject();
       const flowWithDescription = { ...flow, description: chatFlowDescription };
@@ -261,7 +269,7 @@ const Main = () => {
     const chatFlowKeys = Object.keys(localStorage).filter(key => key.startsWith('chatflow_'));
     const chatFlowNames = chatFlowKeys.map(key => key.replace('chatflow_', ''));
     const selectedChatFlow = window.prompt(`Enter the name of the chat flow to restore:\n${chatFlowNames.join('\n')}`);
-    
+
     if (selectedChatFlow) {
       const flow = JSON.parse(localStorage.getItem(`chatflow_${selectedChatFlow}`));
 

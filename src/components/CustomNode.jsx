@@ -43,6 +43,9 @@ function CustomNode(props) {
       case 'Message':
         nodedata['content'] = '';
         break;
+      case 'Input':
+        nodedata['content'] = '';
+        break;
       case 'Date Time':
         nodedata['content'] = '';
         nodedata['dateTimeOption'] = 'dateTime';
@@ -132,6 +135,18 @@ function CustomNode(props) {
                 nodedata.content
                   ? <div dangerouslySetInnerHTML={{ __html: nodedata.content }}></div>
                   : <p className='text-[#aaa]'><i>no messages</i><br /></p>
+              }
+              <Handle type="source" position={Position.Bottom} id="message" />
+            </div>
+          }
+           {
+            label === 'Input' &&
+            <div className='p-2'>
+              <Handle type="target" position={Position.Top} id='message' />
+              {
+                nodedata.content
+                  ? <div dangerouslySetInnerHTML={{ __html: nodedata.content }}></div>
+                  : <p className='text-[#aaa]'><i>User Input</i><br /></p>
               }
               <Handle type="source" position={Position.Bottom} id="message" />
             </div>

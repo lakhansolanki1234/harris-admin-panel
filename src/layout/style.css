@@ -1,0 +1,98 @@
+/* Add this CSS to your stylesheet */
+
+.toolbar-button {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    padding: 16px;
+    margin: 12px 0;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    width: 100%; 
+    box-sizing: border-box;
+    font-size: 16px; 
+  }
+  
+  .toolbar-button:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-color: #ccc;
+  }
+  
+  .toolbar-button img {
+    margin-right: 16px;
+    width: 32px; /* Increase the icon size */
+    height: 32px;
+  }
+  
+  .toolbar-button span {
+    font-size: 16px; /* Match the font size */
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .toolbar-button:active {
+    transform: scale(0.98);
+  }
+  
+  .sidebar {
+    width: 260px; /* Ensure the sidebar has a consistent width */
+  }
+  
+  .sidebar ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+  }
+  
+  .sidebar li {
+    width: 100%; /* Ensure list items take the full width of the container */
+  }
+
+  /* Add this CSS to your stylesheet */
+
+.settings-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 25px 16px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .settings-header img {
+    margin-right: 12px;
+  }
+  
+  .settings-header span {
+    font-size: 18px;
+    font-weight: 500;
+  }
+  
+  .settings-header .fa-close {
+    cursor: pointer;
+    font-size: 18px;
+    margin-left: auto;
+  }
+  
+  .settings-body {
+    padding: 0px 10px;
+  }
+  
+  
+  .settings-footer button {
+    margin-left: 8px;
+  }
+  .settings-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+  }
+  .settings-body .flex {
+    align-items: center;
+  }
+  .settings-body .items-center {
+    align-items: center;
+  }
+  
+  

@@ -78,4 +78,84 @@
   .icon-button:hover {
     color: #007bff;
   }
-  
+
+/* Add this CSS to your stylesheet */
+
+.node-wrapper {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  width: 200px; /* Set a fixed width */
+}
+
+.node-wrapper:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.node-header {
+  font-size: 14px;
+  font-weight: bold;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  background: #f7f9fc;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.node-header img {
+  margin-right: 8px;
+}
+
+.node-content {
+  padding: 10px;
+  font-size: 12px;
+  color: #333;
+}
+
+.node-content .empty-message {
+  color: #aaa;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.icon {
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.icon:hover {
+  color: #007bff;
+}
+
+.handle {
+  background: #007bff;
+  border: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.handle.top {
+  top: -5px;
+}
+
+.handle.bottom {
+  bottom: -5px;
+}
+
+.handle.left {
+  left: -5px;
+}
+
+.handle.right {
+  right: -5px;
+}

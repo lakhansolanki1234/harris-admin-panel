@@ -1,5 +1,6 @@
 import React, { memo, useState, useRef, useEffect } from 'react';
 import { Handle, Position } from 'reactflow';
+import './styles.css';
 
 function CustomNode(props) {
   const [showToolbar, setShowToolbar] = useState(false);
@@ -117,82 +118,78 @@ function CustomNode(props) {
       {
         showToolbar &&
         <div className='flex absolute -top-6 border border-gray-400 rounded-full p-1 px-2' style={{ fontSize: 10 }} ref={wrapperRef}>
-          <i className='fa fa-trash cursor-pointer' onClick={deleteNodeById}></i>
-          <i className='fa fa-plus cursor-pointer ml-2' onClick={addNewNode}></i>
+          <i className='fa fa-trash cursor-pointer icon' onClick={deleteNodeById}></i>
+          <i className='fa fa-plus cursor-pointer icon' onClick={addNewNode}></i>
         </div>
       }
-      <div className='border border-gray-500 rounded bg-white cursor-pointer w-44 p-2' onClick={onSelectedNode}>
-        <p className="text-xs font-bold border-b border-gray-500 p-2 flex">
+      <div className='node-wrapper cursor-pointer' onClick={onSelectedNode}>
+        <p className="node-header">
           {label === 'Date Time' && <img src="imgs/schedule-icon.png" className='h-5 mr-2' alt="A" width={20} />}
           {label === 'Options' && <img src="imgs/options-icon.png" className='h-5 mr-2' alt="A" width={20} />}
           {label === 'Message' && <img src="imgs/message-icon.png" className='h-5 mr-2' alt="A" width={20} />}
           {label === 'Upload Media' && <img src="imgs/media-icon.png" className='h-5 mr-2' alt="A" width={20} />}
           {label === 'Input' && <img src="imgs/message-icon.png" className='h-5 mr-2' alt="A" width={20} />}
           {label}
-          
         </p>
-        <div className='text-xs max-w-44 break-words h-fit'>
+        <div className='node-content'>
           {
-            label === 'Message'  && 
+            label === 'Message' && 
             <div className='p-2'>
-              <Handle type="target" position={Position.Top} id='message' />
+              <Handle type="target" position={Position.Top} id='message' className='handle top' />
               {
                 nodedata.content
                   ? <div dangerouslySetInnerHTML={{ __html: nodedata.content }}></div>
-                  : <p className='text-[#aaa]'><i>no messages</i><br /></p>
+                  : <p className='empty-message'><i>no messages</i><br /></p>
               }
-              <Handle type="source" position={Position.Bottom} id="message" />
+              <Handle type="source" position={Position.Bottom} id="message" className='handle bottom' />
             </div>
           }
-           {
+          {
             label === 'Input' &&
             <div className='p-2'>
-              <Handle type="target" position={Position.Top} id='message' />
+              <Handle type="target" position={Position.Top} id='input' className='handle top' />
               {
                 nodedata.content
                   ? <div dangerouslySetInnerHTML={{ __html: nodedata.content }}></div>
-                  : <p className='text-[#aaa]'><i>User Input</i><br /></p>
+                  : <p className='empty-message'><i>User Input</i><br /></p>
               }
-              <Handle type="source" position={Position.Bottom} id="message" />
+              <Handle type="source" position={Position.Bottom} id="input" className='handle bottom' />
             </div>
           }
           {
             label === 'Date Time' && 
-            
             <div className='p-2'>
-              <Handle type="target" position={Position.Top} id='date' />
+              <Handle type="target" position={Position.Top} id='date' className='handle top' />
               {
                 nodedata.content
                   ? <div dangerouslySetInnerHTML={{ __html: nodedata.content }}></div>
-                  : <p className='text-[#aaa]'><i>no messages</i><br /></p>
+                  : <p className='empty-message'><i>no messages</i><br /></p>
               }
               <div className="mt-2">
                 <p className='text-sm text-gray-700'>
                   Selected Option: <strong>{dateTimeOption === 'date' ? 'Date' : dateTimeOption === 'time' ? 'Time' : 'Date and Time'}</strong>
                 </p>
               </div>
-              <Handle type="source" position={Position.Bottom} id="date" />
+              <Handle type="source" position={Position.Bottom} id="date" className='handle bottom' />
             </div>
           }
           {
             label === 'Questions' &&
             <div className='p-2'>
-              
-              <Handle type="target" position={Position.Top} id='question' />
+              <Handle type="target" position={Position.Top} id='question' className='handle top' />
               {
                 nodedata.qa_q
                   ? <div dangerouslySetInnerHTML={{ __html: nodedata.qa_q }}></div>
-                  : <p className='text-[#aaa]'><i>no questions</i><br /></p>
+                  : <p className='empty-message'><i>no questions</i><br /></p>
               }
-              <Handle type="source" position={Position.Bottom} id="question" />
+              <Handle type="source" position={Position.Bottom} id="question" className='handle bottom' />
             </div>
           }
-
           {
             label === 'Options' && (
-              <div className=''>
-                <Handle type="target" position={Position.Top} id='options' />
-                <div className=''>
+              <div className='p-2'>
+                <Handle type="target" position={Position.Top} id='options' className='handle top' />
+                <div>
                   {nodedata.content && nodedata.content.length > 0 ? (
                     nodedata.content.map((option, index) => (
                       <div
@@ -204,7 +201,8 @@ function CustomNode(props) {
                           type="source"
                           position={Position.Right}
                           id={`option${index}`}
-                          style={{ top: '50%', transform: 'translateY(-50%)', background: '#555' }}
+                          className='handle right'
+                          style={{ top: '50%', transform: 'translateY(-50%)' }}
                         />
                       </div>
                     ))
@@ -212,130 +210,117 @@ function CustomNode(props) {
                     <></>
                   )}
                 </div>
-                <div className=''>
-                  {nodedata.option_content ? (
-                    <div dangerouslySetInnerHTML={{ __html: nodedata.option_content }} className="border-t p-2 border-gray-300"></div>
-                  ) : (
-                    <p className='text-[#aaa] p-2 border-t border-gray-300'><i>no content</i><br /></p>
-                  )}
-                </div>
+                
+                
               </div>
             )
           }
-
           {
             label === 'Quick Answers' &&
-            <div className=''>
-              <Handle type="target" position={Position.Top} id='quick-answer' />
-              <div className=''>
+            <div className='p-2'>
+              <Handle type="target" position={Position.Top} id='quick-answer' className='handle top' />
+              <div>
                 {
                   nodedata.qu_data.length > 0
-                    ?
-                    nodedata.qu_data.map((data, no) => (
-                      <div key={no} className='m-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 rounded my-1 focus:ring-4 focus:ring-gray-200 text-xs px-4 py-1 border-b border-gray-500'>
-                        <span>{data.name}</span>
-                        <Handle
-                          type="source"
-                          position={Position.Right}
-                          id={`quick-answer-${no}`}
-                          style={{ top: (no + 1) * 31 + 46, background: '#555' }}
-                        />
-                        <Handle
-                          type="target"
-                          position={Position.Left}
-                          id={`quick-answer-${no}`}
-                          style={{ top: (no + 1) * 31 + 46, background: '#555' }}
-                        />
-                      </div>
-                    ))
-                    :
-                    <></>
+                    ? nodedata.qu_data.map((data, no) => (
+                        <div key={no} className='m-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 rounded my-1 focus:ring-4 focus:ring-gray-200 text-xs px-4 py-1'>
+                          <span>{data.name}</span>
+                          <Handle
+                            type="source"
+                            position={Position.Right}
+                            id={`quick-answer-${no}`}
+                            className='handle right'
+                            style={{ top: (no + 1) * 31 + 46 }}
+                          />
+                          <Handle
+                            type="target"
+                            position={Position.Left}
+                            id={`quick-answer-${no}`}
+                            className='handle left'
+                            style={{ top: (no + 1) * 31 + 46 }}
+                          />
+                        </div>
+                      ))
+                    : <></>
                 }
               </div>
               <div className=''>
                 {
                   nodedata.qu_content
                     ? <div dangerouslySetInnerHTML={{ __html: nodedata.qu_content }} className="border-gray-400 border-t p-2"></div>
-                    : <p className='text-[#aaa] border-gray-400 border-t p-2'><i>no content</i></p>
+                    : <p className='empty-message border-gray-400 border-t p-2'><i>no content</i></p>
                 }
               </div>
-              <Handle type="source" position={Position.Bottom} id="quick-answer" />
+              <Handle type="source" position={Position.Bottom} id="quick-answer" className='handle bottom' />
             </div>
           }
-
-
           {
             label === 'Answer with Text' &&
-            <div className=''>
-              <Handle type="target" position={Position.Top} id='answer-with-text' />
-              <div className=''>
+            <div className='p-2'>
+              <Handle type="target" position={Position.Top} id='answer-with-text' className='handle top' />
+              <div>
                 {
                   nodedata.answer_buttons.length > 0
-                    ?
-                    nodedata.answer_buttons.map((data, no) => (
-                      <div key={no} className='m-2 text-gray-900 bg-white border border-[#9d174d] focus:outline-none hover:bg-[#9d174d] rounded my-1 hover:text-white text-[#9d174d] text-xs px-4 py-[5px]'>
-                        <span>{data.name}</span>
-                        <Handle
-                          type="source"
-                          position={Position.Right}
-                          id={`answer-text-${no}`}
-                          style={{ top: (no + 1) * 32 + 24, background: '#555' }}
-                        />
-                        <Handle
-                          type="target"
-                          position={Position.Left}
-                          id={`answer-text-${no}`}
-                          style={{ top: (no + 1) * 32 + 24, background: '#555' }}
-                        />
-                      </div>
-                    ))
-                    :
-                    <></>
+                    ? nodedata.answer_buttons.map((data, no) => (
+                        <div key={no} className='m-2 text-gray-900 bg-white border border-[#9d174d] focus:outline-none hover:bg-[#9d174d] rounded my-1 hover:text-white text-[#9d174d] text-xs px-4 py-[5px]'>
+                          <span>{data.name}</span>
+                          <Handle
+                            type="source"
+                            position={Position.Right}
+                            id={`answer-text-${no}`}
+                            className='handle right'
+                            style={{ top: (no + 1) * 32 + 24 }}
+                          />
+                          <Handle
+                            type="target"
+                            position={Position.Left}
+                            id={`answer-text-${no}`}
+                            className='handle left'
+                            style={{ top: (no + 1) * 32 + 24 }}
+                          />
+                        </div>
+                      ))
+                    : <></>
                 }
               </div>
               {
                 nodedata.answer_content
                   ? <div dangerouslySetInnerHTML={{ __html: nodedata.answer_content }} className='border-t border-gray-300 p-2'></div>
-                  : <p className='text-[#aaa] border-t p-2 border-gray-300'><i>no answer</i><br /></p>
+                  : <p className='empty-message border-t p-2 border-gray-300'><i>no answer</i><br /></p>
               }
-              <Handle type="source" position={Position.Bottom} id="answer-with-text" />
+              <Handle type="source" position={Position.Bottom} id="answer-with-text" className='handle bottom' />
             </div>
           }
-
           {
             label === 'Upload Media' &&
-            <div className=''>
-              <Handle type="target" position={Position.Top} id='media' />
+            <div className='p-2'>
+              <Handle type="target" position={Position.Top} id='media' className='handle top' />
               {
                 nodedata.media_content
-                  ?
-                  <div className='relative border rounded p-2'>
-                    {
-                      nodedata.media_type === 'video' ?
-                        <video className='w-full h-auto rounded' controls>
-                          <source src={URL.createObjectURL(nodedata.media_content)} type="video/mp4" />
-                        </video>
-                        :
-                        nodedata.media_type === 'image'
-                          ? <img src={URL.createObjectURL(nodedata.media_content)} className='w-full h-auto rounded' alt='B' />
-                          : <div className='p-2 py-4 text-xs'>{nodedata.media_name}</div>
-                    }
-                  </div>
-                  :
-                  <div className='w-full h-full border-0 bg-[#F0F2F4] py-6 rounded-b' >
-                    <div className="flex flex-col items-center justify-center w-fit h-auto z-[5] relative mx-auto rounded-lg cursor-pointer bg-white hover:bg-[#fafafa]">
-                      <img src={'/imgs/empty-img.png'} className='border-0 rounded-lg w-8' alt='' />
+                  ? <div className='relative border rounded p-2'>
+                      {
+                        nodedata.media_type === 'video'
+                          ? <video className='w-full h-auto rounded' controls>
+                              <source src={URL.createObjectURL(nodedata.media_content)} type="video/mp4" />
+                            </video>
+                          : nodedata.media_type === 'image'
+                            ? <img src={URL.createObjectURL(nodedata.media_content)} className='w-full h-auto rounded' alt='Media' />
+                            : <div className='p-2 py-4 text-xs'>{nodedata.media_name}</div>
+                      }
                     </div>
-                    <p className='text-center text-[#555]'><i>Empty</i></p>
-                  </div>
+                  : <div className='w-full h-full border-0 bg-[#F0F2F4] py-6 rounded-b' >
+                      <div className="flex flex-col items-center justify-center w-fit h-auto z-[5] relative mx-auto rounded-lg cursor-pointer bg-white hover:bg-[#fafafa]">
+                        <img src={'/imgs/empty-img.png'} className='border-0 rounded-lg w-8' alt='Empty' />
+                      </div>
+                      <p className='text-center text-[#555]'><i>Empty</i></p>
+                    </div>
               }
-              <Handle type="source" position={Position.Bottom} id="media" />
+              <Handle type="source" position={Position.Bottom} id="media" className='handle bottom' />
             </div>
           }
-
           {label === 'Talk with advisor' && (
             <div className='p-2'>
-              <Handle type="target" position={Position.Top} id='talk-to-advisor' />
+              <Handle type="target" position={Position.Top} id='talk-to-advisor' className='handle top' />
               {nodedata?.content?.advisorName && nodedata?.content?.advisorEmail ? (
                 <div>
                   <p className='text-[#555]'>
@@ -343,14 +328,14 @@ function CustomNode(props) {
                   </p>
                 </div>
               ) : (
-                <p className='text-[#aaa]'><i>No advisor information</i><br /></p>
+                <p className='empty-message'><i>No advisor information</i><br /></p>
               )}
-              <Handle type="source" position={Position.Bottom} id="talk-to-advisor" />
+              <Handle type="source" position={Position.Bottom} id="talk-to-advisor" className='handle bottom' />
             </div>
           )}
           {label === 'Link' && (
             <div className='p-2'>
-              <Handle type="target" position={Position.Top} id='anchor-node' />
+              <Handle type="target" position={Position.Top} id='anchor-node' className='handle top' />
               {nodedata?.content?.hrefValue ? (
                 <div>
                   <p className='text-[#555]'>
@@ -363,21 +348,20 @@ function CustomNode(props) {
                   </p>
                 </div>
               ) : (
-                <p className='text-[#aaa]'><i>No Link information</i></p>
+                <p className='empty-message'><i>No Link information</i></p>
               )}
-              <Handle type="source" position={Position.Bottom} id="anchor-node" />
+              <Handle type="source" position={Position.Bottom} id="anchor-node" className='handle bottom' />
             </div>
           )}
           {
             label === 'Web Service' &&
             <div className='p-2'>
-              <Handle type="target" position={Position.Top} id='web-service' />
+              <Handle type="target" position={Position.Top} id='web-service' className='handle top' />
               <p className='text-[#555]'>Service API</p>
               <p className='mt-1 text-sm'>{nodedata.api_url}</p>
-              <Handle type="source" position={Position.Bottom} id="web-service" />
+              <Handle type="source" position={Position.Bottom} id="web-service" className='handle bottom' />
             </div>
           }
-
         </div>
       </div>
     </>

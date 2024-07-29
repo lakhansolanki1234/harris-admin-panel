@@ -89,7 +89,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
       const newSection = { name: 'Section', data: nodedata.content, selectedOption: -1 };
       console.log(newSection)
       setOptionsData([newSection]); // Wrap newSection in an array
-      
+
     }
 
     console.log(optionsData)
@@ -164,7 +164,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
         );
         toast.success('Saved successfully!');
         break;
-        case 'advisor':
+      case 'advisor':
         setNodes((nds) =>
           nds.map((node) => {
             if (node.id === id) {
@@ -220,7 +220,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
         );
         toast.success('Saved successfully!');
         break;
-        case 'anchor':
+      case 'anchor':
         setNodes((nds) =>
           nds.map((node) => {
             if (node.id === id) {
@@ -337,46 +337,46 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
         setdate('');
         setShowSettingBar(false);
         break;
-        case 'question-answer':
-          setQaQuestion(RichTextEditor.createEmptyValue());
-          setQaAnswer(variables[0]?.value);
-          setShowSettingBar(false);
-          break;
-        case 'options':
-          setOptionsData([]);
-          setShowSettingBar(false);
-          break;
-        case 'quick-answer':
-          setQuData([]);
-          setShowSettingBar(false);
-          break;
-        case 'answer-text':
-          setShowSettingBar(false);
-          setAnswerContent(RichTextEditor.createEmptyValue());
-          setAnswerButtons([]);
-          break;
-        case 'media':
-          setShowSettingBar(false);
-          setMedia({ data: null, type: '', fileName: '' })
-          break;
-        case 'advisor':
-          setShowSettingBar(false);
-          setAdvisorEmail('');
-          setAdvisorName('');
-          break;
-        case 'anchor':
-          setShowSettingBar(false);
-          setAdvisorEmail('');
-          setAdvisorName('');
-          break;
-        case 'web':
-          setShowSettingBar(false);
-          setApiUrl('');
-          setApiMethod('');
-          setApiParams([]);
-          setApiHeaders([]);
-          setResApiVariable(variables[0]?.key);
-          break;
+      case 'question-answer':
+        setQaQuestion(RichTextEditor.createEmptyValue());
+        setQaAnswer(variables[0]?.value);
+        setShowSettingBar(false);
+        break;
+      case 'options':
+        setOptionsData([]);
+        setShowSettingBar(false);
+        break;
+      case 'quick-answer':
+        setQuData([]);
+        setShowSettingBar(false);
+        break;
+      case 'answer-text':
+        setShowSettingBar(false);
+        setAnswerContent(RichTextEditor.createEmptyValue());
+        setAnswerButtons([]);
+        break;
+      case 'media':
+        setShowSettingBar(false);
+        setMedia({ data: null, type: '', fileName: '' })
+        break;
+      case 'advisor':
+        setShowSettingBar(false);
+        setAdvisorEmail('');
+        setAdvisorName('');
+        break;
+      case 'anchor':
+        setShowSettingBar(false);
+        setAdvisorEmail('');
+        setAdvisorName('');
+        break;
+      case 'web':
+        setShowSettingBar(false);
+        setApiUrl('');
+        setApiMethod('');
+        setApiParams([]);
+        setApiHeaders([]);
+        setResApiVariable(variables[0]?.key);
+        break;
       default:
         break;
     }
@@ -396,26 +396,25 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
 
       <aside id="sidebar-multi-level-sidebar" className="fixed top-[76px] left-0 z-40 w-64 h-screen transition-transform 
       -translate-x-full sm:translate-x-0 border-r border-gray-200" aria-label="Sidebar">
-        <div className="h-full py-4 overflow-y-auto">
-          <div className='flex justify-between border-b pb-4 pt-2'>
-            <div className='w-full px-4 text-lg font-[500] flex'>
-              {label === 'Message' && <img src="imgs/message-icon.png" className='h-6 mr-2' alt="A" width={24} />}
-              {label === 'Questions' && <img src="imgs/ask-icon.png" className='h-6 mr-2' alt="A" width={24} />}
-              {label === 'Options' && <img src="imgs/options-icon.png" className='h-6 mr-2' alt="A" width={24} />}
-              {label === 'Quick Answers' && <img src="imgs/qa-icon.png" className='h-6 mr-2' alt="A" width={24} />}
-              {label === 'Answer with Text' && <img src="imgs/text-icon.png" className='h-6 mr-2' alt="A" width={24} />}
-              {label === 'Upload Media' && <img src="imgs/media-icon.png" className='h-6 mr-2' alt="A" width={24} />}
-              {label === 'Talk with advisor' && <img src="imgs/talk-icon.png" className='h-6 mr-2' alt="A" width={24} />}
-              {label === 'Web Service' && <img src="imgs/web-icon.png" className='h-6 mr-2' alt="A" width={24} />}
-              {label === 'Date Time' && <img src="imgs/schedule-icon.png" className='h-6 mr-2' alt="A" width={24} />}
-              {label === 'Link' && <img src="imgs/broken-link-10497.png" className='h-6 mr-2' alt="A" width={24} />}
+        <div className="h-full overflow-y-auto">
+          <div className='settings-header'>
+            <div className='flex items-center'>
+              {label === 'Message' && <img src="imgs/message-icon.png" alt="Message Icon" width={24} />}
+              {label === 'Questions' && <img src="imgs/ask-icon.png" alt="Question Icon" width={24} />}
+              {label === 'Options' && <img src="imgs/options-icon.png" alt="Options Icon" width={24} />}
+              {label === 'Quick Answers' && <img src="imgs/qa-icon.png" alt="Quick Answers Icon" width={24} />}
+              {label === 'Answer with Text' && <img src="imgs/text-icon.png" alt="Answer with Text Icon" width={24} />}
+              {label === 'Upload Media' && <img src="imgs/media-icon.png" alt="Upload Media Icon" width={24} />}
+              {label === 'Talk with advisor' && <img src="imgs/talk-icon.png" alt="Talk with Advisor Icon" width={24} />}
+              {label === 'Web Service' && <img src="imgs/web-icon.png" alt="Web Service Icon" width={24} />}
+              {label === 'Date Time' && <img src="imgs/schedule-icon.png" alt="Date Time Icon" width={24} />}
+              {label === 'Link' && <img src="imgs/broken-link-10497.png" alt="Link Icon" width={24} />}
               <span>{label}</span>
             </div>
-            <i className='fa fa-close float-right m-2 cursor-pointer' onClick={() => setShowSettingBar(false)}></i>
+            <i className='fa fa-close' onClick={() => setShowSettingBar(false)}></i>
           </div>
-          <div>
-            {
-              label === 'Message' &&
+          <div className='settings-body'>
+            {label === 'Message' &&
               <>
                 <RichTextEditor
                   value={messageContent}
@@ -424,70 +423,65 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                   toolbarConfig={toolbarConfig}
                   className="font-[400] custom-rich-editor"
                 />
-                <div className='flex mt-2 justify-end'>
-                  <button className='mx-1 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 
+                <div className='settings-footer'>
+                  <button className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 
                   px-4 text-sm border border-blue-500 hover:border-transparent rounded' onClick={() => save('message')}>Save</button>
-                  <button className='mx-1 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 
-                  px-4 text-sm border border-red-500 hover:border-transparent rounded mr-2' onClick={() => cancel('message')}>Cancel</button>
+                  <button className='bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 
+                  px-4 text-sm border border-red-500 hover:border-transparent rounded' onClick={() => cancel('message')}>Cancel</button>
                 </div>
               </>
             }
-            {
-              label === 'Date Time' &&
-              <div style={{ padding: '10px' }}>
-                <>
-                  <input
-                    type='datetime-local'
-                    value={datetime}
-                    onChange={handleChange}
-                    className="w-full p-2 border rounded mb-4"
-                  />
-                  <div className="mt-2">
-                    <label className="block mb-2">
-                      <input
-                        type="radio"
-                        value="date"
-                        checked={dateTimeOption === 'date'}
-                        onChange={(e) => setDateTimeOption(e.target.value)}
-                        className="mr-2"
-                      />
-                      Date
-                    </label>
-                    <label className="block mb-2">
-                      <input
-                        type="radio"
-                        value="time"
-                        checked={dateTimeOption === 'time'}
-                        onChange={(e) => setDateTimeOption(e.target.value)}
-                        className="mr-2"
-                      />
-                      Time
-                    </label>
-                    <label className="block mb-2">
-                      <input
-                        type="radio"
-                        value="dateTime"
-                        checked={dateTimeOption === 'dateTime'}
-                        onChange={(e) => setDateTimeOption(e.target.value)}
-                        className="mr-2"
-                      />
-                      Date and Time
-                    </label>
-                  </div>
-                  <div className='flex mt-4 justify-end'>
-                    <button className='mx-1 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 
-                    px-4 text-sm border border-blue-500 hover:border-transparent rounded' onClick={() => save('date')}>Save</button>
-                    <button className='mx-1 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 
-                    px-4 text-sm border border-red-500 hover:border-transparent rounded mr-2' onClick={() => cancel('date')}>Cancel</button>
-                  </div>
-                </>
+            {label === 'Date Time' &&
+              <div>
+                <input
+                  type='datetime-local'
+                  value={datetime}
+                  onChange={handleChange}
+                  className="w-full p-2 border rounded mb-4"
+                />
+                <div className="mt-2">
+                  <label className="block mb-2">
+                    <input
+                      type="radio"
+                      value="date"
+                      checked={dateTimeOption === 'date'}
+                      onChange={(e) => setDateTimeOption(e.target.value)}
+                      className="mr-2"
+                    />
+                    Date
+                  </label>
+                  <label className="block mb-2">
+                    <input
+                      type="radio"
+                      value="time"
+                      checked={dateTimeOption === 'time'}
+                      onChange={(e) => setDateTimeOption(e.target.value)}
+                      className="mr-2"
+                    />
+                    Time
+                  </label>
+                  <label className="block mb-2">
+                    <input
+                      type="radio"
+                      value="dateTime"
+                      checked={dateTimeOption === 'dateTime'}
+                      onChange={(e) => setDateTimeOption(e.target.value)}
+                      className="mr-2"
+                    />
+                    Date and Time
+                  </label>
+                </div>
+                <div className='settings-footer'>
+                  <button className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 
+                  px-4 text-sm border border-blue-500 hover:border-transparent rounded' onClick={() => save('date')}>Save</button>
+                  <button className='bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 
+                  px-4 text-sm border border-red-500 hover:border-transparent rounded' onClick={() => cancel('date')}>Cancel</button>
+                </div>
               </div>
             }
-            {
-              label === 'Questions' &&
+            {label === 'Questions' &&
               <>
                 <p className='pl-2 pt-2 text-sm'>Question Text</p>
-
                 <RichTextEditor
                   value={qaQuestion}
                   placeholder='Edit here ...'
@@ -495,9 +489,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                   toolbarConfig={toolbarConfig}
                   className="font-[400] custom-rich-editor"
                 />
-
                 <p className='pl-2 py-2 text-sm text-[#555]'>Save answers in the variable</p>
-
                 <div className='w-full px-2'>
                   <select id="answer_vals" className="pl-6 bg-gray-50 border w-full border-gray-300 text-gray-600 text-sm rounded-lg 
                   outline-none focus:ring-blue-500 focus:border-blue-500 block p-2.5" value={qaAnswer} onChange={(e) => setQaAnswer(e.target.value)}>
@@ -509,119 +501,92 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                     )}
                   </select>
                 </div>
-
-                <div className='flex mt-2 justify-end'>
-                  <button className='mx-1 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 
+                <div className='settings-footer'>
+                  <button className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 
                   px-4 text-sm border border-blue-500 hover:border-transparent rounded' onClick={() => save('question-answer')}>Save</button>
-                  <button className='mx-1 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 
-                  px-4 text-sm border border-red-500 hover:border-transparent rounded mr-2' onClick={() => cancel('question-answer')}>Cancel</button>
+                  <button className='bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 
+                  px-4 text-sm border border-red-500 hover:border-transparent rounded' onClick={() => cancel('question-answer')}>Cancel</button>
                 </div>
-
                 <hr className='mt-2' />
                 <p className='pl-2 pt-2 text-sm text-[#555]'>Set Variables</p>
                 <div className='mt-2'>
-                  {
-                    selectOptions.map((data, id) =>
-                      <li className='flex justify-between text-sm text-[#333] mt-1 mr-1'>
-                        <input value={data.key} className="text-left border p-1 w-20 ml-2 outline-none focus:border-gray-400 mr-1"
-                          onChange={(e) => variableChangeHandler(e, 'key', id)} />
-                        :
-                        <div className='flex'>
-                          <input value={data.value} className=" border p-1 w-32 outline-none focus:border-gray-400 ml-1"
-                            onChange={(e) => variableChangeHandler(e, 'value', id)} />
-                          <i className='fa fa-trash cursor-pointer hover:text-[#888] mt-2 ml-1' onClick={() => {
-                            selectOptions.splice(id, 1);
-                            setSelectOptions([...selectOptions]);
-                          }}></i>
-                        </div>
-                      </li>
-                    )
-                  }
+                  {selectOptions.map((data, id) => (
+                    <li className='flex justify-between text-sm text-[#333] mt-1 mr-1'>
+                      <input value={data.key} className="text-left border p-1 w-20 ml-2 outline-none focus:border-gray-400 mr-1"
+                        onChange={(e) => variableChangeHandler(e, 'key', id)} />
+                      :
+                      <div className='flex'>
+                        <input value={data.value} className=" border p-1 w-32 outline-none focus:border-gray-400 ml-1"
+                          onChange={(e) => variableChangeHandler(e, 'value', id)} />
+                        <i className='fa fa-trash cursor-pointer hover:text-[#888] mt-2 ml-1' onClick={() => {
+                          selectOptions.splice(id, 1);
+                          setSelectOptions([...selectOptions]);
+                        }}></i>
+                      </div>
+                    </li>
+                  ))}
                 </div>
-                <div className='flex justify-end'>
-                  <button className='mx-1 bg-transparent hover:bg-gray-500 text-gray-700 font-semibold hover:text-white py-1 mt-2 float-right
+                <div className='settings-footer'>
+                  <button className='bg-transparent hover:bg-gray-500 text-gray-700 font-semibold hover:text-white py-1 
                   px-4 text-sm border border-gray-500 hover:border-transparent rounded' onClick={() => {
-                      setVariables([...selectOptions]);
-                      setQaAnswer('default');
-                      toast.success('Variables are applied successfully');
-                    }}>Apply</button>
-                  <button className='mx-1 bg-transparent hover:bg-gray-500 text-gray-700 font-semibold hover:text-white py-1 mt-2 float-right
+                    setVariables([...selectOptions]);
+                    setQaAnswer('default');
+                    toast.success('Variables are applied successfully');
+                  }}>Apply</button>
+                  <button className='bg-transparent hover:bg-gray-500 text-gray-700 font-semibold hover:text-white py-1 
                   px-4 text-sm border border-gray-500 hover:border-transparent rounded' onClick={() => {
-                      let obj = { key: 'Key', value: 'value' };
-                      selectOptions.push(obj);
-                      setSelectOptions([...selectOptions]);
-                    }}>Add new</button>
+                    let obj = { key: 'Key', value: 'value' };
+                    selectOptions.push(obj);
+                    setSelectOptions([...selectOptions]);
+                  }}>Add new</button>
                 </div>
               </>
             }
-
-            {label === 'Options' && (
-              <>
-                <p className='text-[#888] text-sm p-2'>Menu List</p>
-                <div className='px-2'>
-                  {optionsData.map((section, sectionIndex) => (
-                    <div key={sectionIndex}>
-                      <div className='flex justify-between text-white my-1 text-left bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 shadow-md shadow-cyan-500/50 font-medium rounded text-sm w-full px-2 py-2.5 mr-2'>
-                        <input
-                          value={section.name}
-                          className='outline-none bg-transparent placeholder-gray-200'
-                          placeholder='Click to edit section'
-                          onChange={(e) => handleOptionChange(sectionIndex, e.target.value)}
-                        />
-                        <div className='flex'>
-                          <i
-                            className='fa fa-plus mr-2 mt-1 cursor-pointer hover:text-[#ccc]'
-                            onClick={() => addOption(sectionIndex)}
-                          ></i>
-                      
-                        </div>
-                      </div>
-                      {section.data.length > 0 &&
-                        section.data.map((option, optionIndex) => (
-                          <div
-                            className='text-white flex text-xs justify-between bg-red-700 w-11/12 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium float-right  px-3 rounded py-1.5  mb-1'
-                            key={option.id}
-                          >
-                            <input
-                              value={option.value}
-                              className='outline-none bg-transparent placeholder-gray-200'
-                              placeholder='Click to edit option'
-                              onChange={(e) => handleOptionContentChange(sectionIndex, optionIndex, e.target.value)}
-                            />
-                            <div className='flex'>
-                              <i
-                                className='fa fa-trash mt-1 cursor-pointer hover:text-[#ccc]'
-                                style={{ fontSize: 12 }}
-                                onClick={() => removeOption(sectionIndex, optionIndex)}
-                              ></i>
-                            </div>
-                          </div>
-                        ))}
-
-                    </div>
-                  ))}
-                  <div className='mt-2 flex pl-2 ml-20'>
-                    <button
-                      className='mx-1 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-4 text-sm border border-blue-500 hover:border-transparent rounded'
-                      onClick={() => save('options')}
-                    >
-                      Save
-                    </button>
-                    <button
-                      className='mx-1 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 px-4 text-sm border border-red-500 hover:border-transparent rounded mr-2'
-                      onClick={() => cancel('options')}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-
+           {label === 'Options' && (
+  <>
+    <p className='text-[#888] text-sm p-2'>Menu List</p>
+    <div className='px-2'>
+      {optionsData.map((section, sectionIndex) => (
+        <div key={sectionIndex}>
+          <div className='flex justify-between items-center text-white my-1 text-left bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 shadow-md shadow-cyan-500/50 font-medium rounded text-sm w-full px-2 py-2.5 mr-2'>
+            <input
+              value={section.name}
+              className='outline-none bg-transparent placeholder-gray-200'
+              placeholder='Click to edit section'
+              onChange={(e) => handleOptionChange(sectionIndex, e.target.value)}
+            />
+            <div className='flex'>
+              <i className='fa fa-plus mr-2 mt-1 cursor-pointer hover:text-[#ccc]' onClick={() => addOption(sectionIndex)}></i>
+            </div>
+          </div>
+          {section.data.length > 0 &&
+            section.data.map((option, optionIndex) => (
+              <div
+                className='text-white flex text-xs justify-between items-center bg-red-700 w-full hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium px-3 rounded py-1.5 mb-1'
+                key={option.id}
+              >
+                <input
+                  value={option.value}
+                  className='outline-none bg-transparent placeholder-gray-200 w-full'
+                  placeholder='Click to edit option'
+                  onChange={(e) => handleOptionContentChange(sectionIndex, optionIndex, e.target.value)}
+                />
+                <div className='flex'>
+                  <i className='fa fa-trash mt-1 cursor-pointer hover:text-[#ccc]' style={{ fontSize: 12 }} onClick={() => removeOption(sectionIndex, optionIndex)}></i>
                 </div>
-              </>
-            )}
+              </div>
+            ))}
+        </div>
+      ))}
+      <div className=' flex-col mt-4 justify-end'>
+        <button className='mx-1 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-4 text-sm border border-blue-500 hover:border-transparent rounded' onClick={() => save('options')}>Save</button>
+        <button className='mx-1 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 px-4 text-sm border border-red-500 hover:border-transparent rounded' onClick={() => cancel('options')}>Cancel</button>
+      </div>
+    </div>
+  </>
+)}
 
-
-            {
-              label === 'Quick Answers' &&
+            {label === 'Quick Answers' &&
               <>
                 <input value={quAnswerHeader} onChange={(e) => setQuAnswerHeader(e.target.value)} placeholder="click to edit footer"
                   className='bg-[#336699] text-white w-full text-sm p-1 py-2 outline-none font-semibold placeholder-slate-400' />
@@ -634,24 +599,21 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                 />
                 <input value={quAnswerFooter} onChange={(e) => setQuAnswerFooter(e.target.value)} placeholder="click to edit footer"
                   className='bg-[#336699] text-white w-full text-sm p-1 py-2 outline-none font-semibold placeholder-slate-400' />
-
                 <div className='px-2 pb-2'>
-                  {
-                    quData.map((data, no) => (
-                      <div key={no} className='flex justify-between text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 
+                  {quData.map((data, no) => (
+                    <div key={no} className='flex justify-between text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 
                       focus:ring-4 focus:ring-gray-200 rounded text-sm px-4 py-2 mr-2 mt-2'>
-                        <input value={data.name} className='outline-none bg-transparent placeholder-gray-200'
-                          placeholder='click to edit' onChange={(e) => {
-                            quData[no].name = e.target.value;
-                            setQuData([...quData]);
-                          }} />
-                        <i className='fa fa-trash mt-1 cursor-pointer hover:text-[#ccc]' onClick={() => {
-                          quData.splice(no, 1);
+                      <input value={data.name} className='outline-none bg-transparent placeholder-gray-200'
+                        placeholder='click to edit' onChange={(e) => {
+                          quData[no].name = e.target.value;
                           setQuData([...quData]);
-                        }}></i>
-                      </div>
-                    ))
-                  }
+                        }} />
+                      <i className='fa fa-trash mt-1 cursor-pointer hover:text-[#ccc]' onClick={() => {
+                        quData.splice(no, 1);
+                        setQuData([...quData]);
+                      }}></i>
+                    </div>
+                  ))}
                   <button onClick={() => {
                     if (quData.length >= 3) {
                       toast.warn('You can\'t add new button anymore.');
@@ -666,18 +628,15 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                     <i className='fa fa-plus mr-2' style={{ fontSize: 12 }}></i> Add new button
                   </button>
                 </div>
-
-                <div className='flex mt-2 justify-end'>
-                  <button className='mx-1 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 
+                <div className='settings-footer'>
+                  <button className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 
                   px-4 text-sm border border-blue-500 hover:border-transparent rounded' onClick={() => save('quick-answer')}>Save</button>
-                  <button className='mx-1 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 
-                  px-4 text-sm border border-red-500 hover:border-transparent rounded mr-2' onClick={() => cancel('quick-answer')}>Cancel</button>
+                  <button className='bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 
+                  px-4 text-sm border border-red-500 hover:border-transparent rounded' onClick={() => cancel('quick-answer')}>Cancel</button>
                 </div>
               </>
             }
-
-            {
-              label === 'Answer with Text' &&
+            {label === 'Answer with Text' &&
               <>
                 <RichTextEditor
                   value={answerContent}
@@ -687,23 +646,20 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                   className="font-[400] custom-rich-editor"
                 />
                 <div className='px-2 pb-2'>
-                  {
-                    answerButtons.map((data, no) => (
-                      <div key={no} className='flex justify-between text-[#9d174d] bg-white border border-[#9d174d] focus:outline-none hover:bg-[#9d174d] 
+                  {answerButtons.map((data, no) => (
+                    <div key={no} className='flex justify-between text-[#9d174d] bg-white border border-[#9d174d] focus:outline-none hover:bg-[#9d174d] 
                       focus:ring-4 focus:ring-gray-200 rounded text-sm px-4 py-2 mr-2 mt-2 hover:text-white cursor-pointer'>
-                        <input value={data.name} className='outline-none bg-transparent placeholder-gray-400'
-                          placeholder='click to edit' onChange={(e) => {
-                            answerButtons[no].name = e.target.value;
-                            setAnswerButtons([...answerButtons]);
-                          }} />
-                        <i className='fa fa-trash mt-1 cursor-pointer hover:text-[#ccc]' onClick={() => {
-                          answerButtons.splice(no, 1);
+                      <input value={data.name} className='outline-none bg-transparent placeholder-gray-400'
+                        placeholder='click to edit' onChange={(e) => {
+                          answerButtons[no].name = e.target.value;
                           setAnswerButtons([...answerButtons]);
-                        }}></i>
-                      </div>
-                    ))
-                  }
-
+                        }} />
+                      <i className='fa fa-trash mt-1 cursor-pointer hover:text-[#ccc]' onClick={() => {
+                        answerButtons.splice(no, 1);
+                        setAnswerButtons([...answerButtons]);
+                      }}></i>
+                    </div>
+                  ))}
                   <button onClick={() => {
                     let newButton = { name: `Button`, data: {} };
                     answerButtons.push(newButton);
@@ -714,146 +670,126 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                     <i className='fa fa-plus mr-2' style={{ fontSize: 12 }}></i> Add new button
                   </button>
                 </div>
-                <div className='flex mt-2 justify-end'>
-                  <button className='mx-1 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 
+                <div className='settings-footer'>
+                  <button className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 
                   px-4 text-sm border border-blue-500 hover:border-transparent rounded' onClick={() => save('answer-text')}>Save</button>
-                  <button className='mx-1 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 
-                  px-4 text-sm border border-red-500 hover:border-transparent rounded mr-2' onClick={() => cancel('answer-text')}>Cancel</button>
+                  <button className='bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 
+                  px-4 text-sm border border-red-500 hover:border-transparent rounded' onClick={() => cancel('answer-text')}>Cancel</button>
                 </div>
               </>
             }
-            {
-              label === 'Upload Media' &&
+            {label === 'Upload Media' &&
               <div>
                 <p className='text-[#555] text-sm p-3'>Media File</p>
-                {
-                  media.data ?
-                    <div className='relative border rounded m-2'>
-                      <button className='border rounded-full h-5 w-5 z-10 absolute top-1 right-1 font-[500] flex justify-center items-center'
-                        onClick={() => { setMedia({ data: null, type: '', fileName: '' }) }}><i className='fa fa-close' style={{ fontSize: 12 }} ></i></button>
-                      {
-                        media.type === 'video' ?
-                          <video className='w-full h-auto' controls>
-                            <source src={URL.createObjectURL(media.data)} type="video/mp4" />
-                          </video>
-                          :
-                          media.type === 'image'
-                            ? <img src={URL.createObjectURL(media.data)} className='w-full h-auto' alt='B' />
-                            : <div className='p-2 py-4 text-sm'>{media.fileName}</div>
-                      }
-                    </div>
-                    :
-                    <div className="flex items-center justify-center w-full p-2">
-                      <label htmlFor="dropzone-file1" className="w-full h-full border-0 bg-[#F0F2F4] py-10">
-                        <div className="flex flex-col items-center justify-center w-fit h-auto z-[5] relative mx-auto rounded-lg cursor-pointer bg-white hover:bg-[#fafafa]">
-                          <img src={'/imgs/empty-img.png'} className='border-0 rounded-lg w-10' />
-                        </div>
-                        <p className='w-full text-center text-xs text-[#888] mt-1'>File Upload</p>
-                        <input id="dropzone-file1" type="file" className="hidden" onChange={mediaUploadHandler} name='nftfile' />
-                      </label>
-                    </div>
+                {media.data ?
+                  <div className='relative border rounded m-2'>
+                    <button className='border rounded-full h-5 w-5 z-10 absolute top-1 right-1 font-[500] flex justify-center items-center'
+                      onClick={() => { setMedia({ data: null, type: '', fileName: '' }) }}><i className='fa fa-close' style={{ fontSize: 12 }} ></i></button>
+                    {media.type === 'video' ?
+                      <video className='w-full h-auto' controls>
+                        <source src={URL.createObjectURL(media.data)} type="video/mp4" />
+                      </video>
+                      :
+                      media.type === 'image'
+                        ? <img src={URL.createObjectURL(media.data)} className='w-full h-auto' alt='B' />
+                        : <div className='p-2 py-4 text-sm'>{media.fileName}</div>
+                    }
+                  </div>
+                  :
+                  <div className="flex items-center justify-center w-full p-2">
+                    <label htmlFor="dropzone-file1" className="w-full h-full border-0 bg-[#F0F2F4] py-10">
+                      <div className="flex flex-col items-center justify-center w-fit h-auto z-[5] relative mx-auto rounded-lg cursor-pointer bg-white hover:bg-[#fafafa]">
+                        <img src={'/imgs/empty-img.png'} className='border-0 rounded-lg w-10' />
+                      </div>
+                      <p className='w-full text-center text-xs text-[#888] mt-1'>File Upload</p>
+                      <input id="dropzone-file1" type="file" className="hidden" onChange={mediaUploadHandler} name='nftfile' />
+                    </label>
+                  </div>
                 }
-
-                <div className='flex mt-2 justify-end'>
-                  <button className='mx-1 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 
+                <div className='settings-footer'>
+                  <button className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 
                   px-4 text-sm border border-blue-500 hover:border-transparent rounded' onClick={() => save('media')}>Save</button>
-                  <button className='mx-1 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 
-                  px-4 text-sm border border-red-500 hover:border-transparent rounded mr-2' onClick={() => cancel('media')}>Cancel</button>
+                  <button className='bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 
+                  px-4 text-sm border border-red-500 hover:border-transparent rounded' onClick={() => cancel('media')}>Cancel</button>
                 </div>
               </div>
             }
-
-            {
-              label === 'Talk with advisor' && (
-                <>
-                  <div className='p-2'>
-                    <div className='mb-4'>
-                      <p className='text-[#555] text-sm'>Advisor Name</p>
-                      <input
-                        type='text'
-                        className='font-[500] mt-2 p-1 border rounded'
-                        value={advisorName}
-                        onChange={(e) => setAdvisorName(e.target.value)}
-                        placeholder='Enter advisor name'
-                      />
-                    </div>
-                    <div>
-                      <p className='text-[#555] text-sm'>Advisor Email</p>
-                      <input
-                        type='email'
-                        className='font-[500] mt-2 p-1 border rounded'
-                        value={advisorEmail}
-                        onChange={(e) => setAdvisorEmail(e.target.value)}
-                        placeholder='Enter advisor email'
-                      />
-                    </div>
+            {label === 'Talk with advisor' && (
+              <>
+                <div className='p-2'>
+                  <div className='mb-4'>
+                    <p className='text-[#555] text-sm'>Advisor Name</p>
+                    <input
+                      type='text'
+                      className='font-[500] mt-2 p-1 border rounded'
+                      value={advisorName}
+                      onChange={(e) => setAdvisorName(e.target.value)}
+                      placeholder='Enter advisor name'
+                    />
                   </div>
-                  <div className='flex mt-2 justify-end'>
+                  <div>
+                    <p className='text-[#555] text-sm'>Advisor Email</p>
+                    <input
+                      type='email'
+                      className='font-[500] mt-2 p-1 border rounded'
+                      value={advisorEmail}
+                      onChange={(e) => setAdvisorEmail(e.target.value)}
+                      placeholder='Enter advisor email'
+                    />
+                  </div>
+                </div>
+                <div className='flex mt-2 justify-end'>
                     <button className='mx-1 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 
                 px-4 text-sm border border-blue-500 hover:border-transparent rounded' onClick={() => save('advisor')}>Save</button>
                     <button className='mx-1 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 
                 px-4 text-sm border border-red-500 hover:border-transparent rounded mr-2' onClick={() => cancel('advisor')}>Cancel</button>
                   </div>
-                </>
-              )
-            }
-            {
-              label === 'Link' && (
-                <>
-                  <div className='p-2'>
-                    <div className='mb-4'>
-                      <p className='text-[#555] text-sm'>Link Text</p>
-                      <input
-                        type='text'
-                        className='font-[500] mt-2 p-1 border rounded'
-                        value={linkText}
-                        onChange={(e) => setLinkText(e.target.value)}
-                        placeholder='Enter link text'
-                      />
-                    </div>
-                    <div>
-                      <p className='text-[#555] text-sm'>Link Href</p>
-                      <input
-                        type='text'
-                        className='font-[500] mt-2 p-1 border rounded'
-                        value={hrefValue}
-                        onChange={(e) => setHrefValue(e.target.value)}
-                        placeholder='Enter link href'
-                      />
-                    </div>
-                    <div className='mt-4'>
-                      <p className='text-[#555] text-sm'>Link Target</p>
-                      <select
-                        className='font-[500] mt-2 p-1 border rounded'
-                        value={linkTarget}
-                        onChange={(e) => setLinkTarget(e.target.value)}
-                      >
-                        <option value='_self'>Self</option>
-                        <option value='_blank'>Blank</option>
-                        <option value='_parent'>Parent</option>
-                        <option value='_top'>Top</option>
-                      </select>
-                    </div>
+              </>
+            )}
+            {label === 'Link' && (
+              <>
+                <div className='p-2'>
+                  <div className='mb-4'>
+                    <p className='text-[#555] text-sm'>Link Text</p>
+                    <input
+                      type='text'
+                      className='font-[500] mt-2 p-1 border rounded'
+                      value={linkText}
+                      onChange={(e) => setLinkText(e.target.value)}
+                      placeholder='Enter link text'
+                    />
                   </div>
-                  <div className='flex mt-2 justify-end'>
-                    <button
-                      className='mx-1 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-4 text-sm border border-blue-500 hover:border-transparent rounded'
-                      onClick={() => save('anchor')}
-                    >
-                      Save
-                    </button>
-                    <button
-                      className='mx-1 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 px-4 text-sm border border-red-500 hover:border-transparent rounded mr-2'
-                      onClick={() => cancel('anchor')}
-                    >
-                      Cancel
-                    </button>
+                  <div>
+                    <p className='text-[#555] text-sm'>Link Href</p>
+                    <input
+                      type='text'
+                      className='font-[500] mt-2 p-1 border rounded'
+                      value={hrefValue}
+                      onChange={(e) => setHrefValue(e.target.value)}
+                      placeholder='Enter link href'
+                    />
                   </div>
-                </>
-              )
-            }
-            {
-              label === 'Web Service' &&
+                  <div className='mt-4'>
+                    <p className='text-[#555] text-sm'>Link Target</p>
+                    <select
+                      className='font-[500] mt-2 p-1 border rounded'
+                      value={linkTarget}
+                      onChange={(e) => setLinkTarget(e.target.value)}
+                    >
+                      <option value='_self'>Self</option>
+                      <option value='_blank'>Blank</option>
+                      <option value='_parent'>Parent</option>
+                      <option value='_top'>Top</option>
+                    </select>
+                  </div>
+                </div>
+                <div className='settings-footer'>
+                  <button className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-4 text-sm border border-blue-500 hover:border-transparent rounded' onClick={() => save('anchor')}>Save</button>
+                  <button className='bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 px-4 text-sm border border-red-500 hover:border-transparent rounded' onClick={() => cancel('anchor')}>Cancel</button>
+                </div>
+              </>
+            )}
+            {label === 'Web Service' &&
               <div className='p-2'>
                 <p className='text-[#555] text-sm px-1'>Web Hook Settings</p>
                 <div className='body border text-sm p-1 mt-2'>
@@ -871,86 +807,80 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                   </div>
                   <hr className='my-2' />
                   <p className='mb-2 text-sm'>Send Params</p>
-                  {
-                    apiParams.map((val, no) => (
-                      <div className='flex justify-between flex' key={no}>
-                        <div className='flex justify-between w-11/12'>
-                          <div className='w-1/2 mr-1'>
-                            <p className='text-xs'>Key</p>
-                            <input className='text-left border p-1 w-full outline-none focus:border-gray-400 mr-1' value={val.key}
-                              onChange={(e) => {
-                                apiParams[no].key = e.target.value;
-                                setApiParams([...apiParams]);
-                              }} />
-                          </div>
-                          <div className='w-1/2'>
-                            <p className='text-xs'>Value</p>
-                            <input className='text-left border p-1 w-full outline-none focus:border-gray-400 mr-1' value={val.value}
-                              onChange={(e) => {
-                                apiParams[no].value = e.target.value;
-                                setApiParams([...apiParams]);
-                              }} />
-                          </div>
-                        </div>
-                        <div className='py-5 px-1'>
-                          <i className='fa fa-trash mt-1 cursor-pointer hover:text-[#888]'
-                            onClick={() => {
-                              apiParams.splice(no, 1);
+                  {apiParams.map((val, no) => (
+                    <div className='flex justify-between flex' key={no}>
+                      <div className='flex justify-between w-11/12'>
+                        <div className='w-1/2 mr-1'>
+                          <p className='text-xs'>Key</p>
+                          <input className='text-left border p-1 w-full outline-none focus:border-gray-400 mr-1' value={val.key}
+                            onChange={(e) => {
+                              apiParams[no].key = e.target.value;
                               setApiParams([...apiParams]);
-                            }}></i>
+                            }} />
+                        </div>
+                        <div className='w-1/2'>
+                          <p className='text-xs'>Value</p>
+                          <input className='text-left border p-1 w-full outline-none focus:border-gray-400 mr-1' value={val.value}
+                            onChange={(e) => {
+                              apiParams[no].value = e.target.value;
+                              setApiParams([...apiParams]);
+                            }} />
                         </div>
                       </div>
-                    ))
-                  }
-                  <button className='mx-1 bg-transparent hover:bg-[#4338ca] text-[#4338ca] font-semibold hover:text-white py-1 
+                      <div className='py-5 px-1'>
+                        <i className='fa fa-trash mt-1 cursor-pointer hover:text-[#888]'
+                          onClick={() => {
+                            apiParams.splice(no, 1);
+                            setApiParams([...apiParams]);
+                          }}></i>
+                      </div>
+                    </div>
+                  ))}
+                  <button className='bg-transparent hover:bg-[#4338ca] text-[#4338ca] font-semibold hover:text-white py-1 
                   px-4 text-xs border border-[#4338ca] hover:border-transparent rounded' onClick={() => {
-                      apiParams.push({ key: '', value: '' })
-                      setApiParams([...apiParams]);
-                    }}>
+                    apiParams.push({ key: '', value: '' })
+                    setApiParams([...apiParams]);
+                  }}>
                     <i className='fa fa-plus mr-1'></i>Add New
                   </button>
-
                   <hr className='my-2' />
                   <p className='mb-2 text-sm'>Send Headers</p>
-                  {
-                    apiHeaders.map((val, no) => (
-                      <div className='flex justify-between flex' key={no}>
-                        <div className='flex justify-between w-11/12'>
-                          <div className='w-1/2 mr-1'>
-                            <p className='text-xs'>Key</p>
-                            <input className='text-left border p-1 w-full outline-none focus:border-gray-400 mr-1' value={val.key}
-                              onChange={(e) => {
-                                apiHeaders[no].key = e.target.value;
-                                setApiHeaders([...apiHeaders]);
-                              }} />
-                          </div>
-                          <div className='w-1/2'>
-                            <p className='text-xs'>Value</p>
-                            <input className='text-left border p-1 w-full outline-none focus:border-gray-400 mr-1' value={val.value}
-                              onChange={(e) => {
-                                apiHeaders[no].value = e.target.value;
-                                setApiHeaders([...apiHeaders]);
-                              }} />
-                          </div>
-                        </div>
-                        <div className='py-5 px-1'>
-                          <i className='fa fa-trash mt-1 cursor-pointer hover:text-[#888]'
-                            onClick={() => {
-                              apiHeaders.splice(no, 1);
+                  {apiHeaders.map((val, no) => (
+                    <div className='flex justify-between flex' key={no}>
+                      <div className='flex justify-between w-11/12'>
+                        <div className='w-1/2 mr-1'>
+                          <p className='text-xs'>Key</p>
+                          <input className='text-left border p-1 w-full outline-none focus:border-gray-400 mr-1' value={val.key}
+                            onChange={(e) => {
+                              apiHeaders[no].key = e.target.value;
                               setApiHeaders([...apiHeaders]);
-                            }}></i>
+                            }} />
+                        </div>
+                        <div className='w-1/2'>
+                          <p className='text-xs'>Value</p>
+                          <input className='text-left border p-1 w-full outline-none focus:border-gray-400 mr-1' value={val.value}
+                            onChange={(e) => {
+                              apiHeaders[no].value = e.target.value;
+                              setApiHeaders([...apiHeaders]);
+                            }} />
                         </div>
                       </div>
-                    ))
-                  }
-                  <button className='mx-1 bg-transparent hover:bg-[#4338ca] text-[#4338ca] font-semibold hover:text-white py-1 
+                      <div className='py-5 px-1'>
+                        <i className='fa fa-trash mt-1 cursor-pointer hover:text-[#888]'
+                          onClick={() => {
+                            apiHeaders.splice(no, 1);
+                            setApiHeaders([...apiHeaders]);
+                          }}></i>
+                      </div>
+                    </div>
+                  ))}
+                  <button className='bg-transparent hover:bg-[#4338ca] text-[#4338ca] font-semibold hover:text-white py-1 
                   px-4 text-xs border border-[#4338ca] hover:border-transparent rounded' onClick={() => {
-                      apiHeaders.push({ key: '', value: '' })
-                      setApiHeaders([...apiHeaders]);
-                    }}>
+                    apiHeaders.push({ key: '', value: '' })
+                    setApiHeaders([...apiHeaders]);
+                  }}>
                     <i className='fa fa-plus mr-1'></i>Add New
                   </button>
-
                   <hr className='my-2' />
                   <div className='flex justify-between'>
                     <p className='mb-2 text-sm'>Save response as variable</p>
@@ -960,20 +890,18 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                   </div>
                   <select id="req" className="w-full rounded bg-[#4338ca] border-0 text-white mt-2 cursor-pointer
                   outline-none block p-1" onChange={(e) => { console.log(e.target.value); setResApiVariable(e.target.value); }} >
-                    {
-                      variables.map((data, id) =>
-                        <option key={id} selected={resApiVariable === data.key} value={data.key}>
-                          {data.key}
-                        </option>
-                      )
-                    }
+                    {variables.map((data, id) =>
+                      <option key={id} selected={resApiVariable === data.key} value={data.key}>
+                        {data.key}
+                      </option>
+                    )}
                   </select>
                 </div>
-                <div className='flex mt-2 justify-end'>
-                  <button className='mx-1 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 
+                <div className='settings-footer'>
+                  <button className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 
                   px-4 text-sm border border-blue-500 hover:border-transparent rounded' onClick={() => save('web')}>Save</button>
-                  <button className='mx-1 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 
-                  px-4 text-sm border border-red-500 hover:border-transparent rounded mr-2' onClick={() => cancel('web')}>Cancel</button>
+                  <button className='bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 
+                  px-4 text-sm border border-red-500 hover:border-transparent rounded' onClick={() => cancel('web')}>Cancel</button>
                 </div>
               </div>
             }

@@ -33,12 +33,6 @@ function Toolbar() {
               </button>
             </li>
             <li>
-              <button className="toolbar-button" onDragStart={(event) => onDragStart(event, 'Upload Media')} draggable>
-                <img src="imgs/media-icon.png" alt="Media Icon" width={24} />
-                <span>Media</span>
-              </button>
-            </li>
-            <li>
               <button className="toolbar-button" onDragStart={(event) => onDragStart(event, 'Date Time')} draggable>
                 <img src="imgs/schedule-icon.png" alt="Date Time Icon" width={24} />
                 <span>Date Time</span>
@@ -61,12 +55,7 @@ export default Toolbar;
 
 
 
-// function Toolbar() {
-//   const onDragStart = (event, label, nodeType = 'customNode') => {
-//     event.dataTransfer.setData('type', nodeType);
-//     event.dataTransfer.setData('label', label);
-//     event.dataTransfer.effectAllowed = 'move';
-//   };
+
 
 //   return (
 //     <>

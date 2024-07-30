@@ -7,7 +7,7 @@ function CustomNode(props) {
   const wrapperRef = useRef(null);
 
   const { id, xPos, yPos, data } = props;
-  const { setNodes, label, getId, selectNode, nodedata } = data;
+  const { setNodes,sublabel, label, getId, selectNode, nodedata } = data;
   const [dateTimeOption, setDateTimeOption] = useState(nodedata.dateTimeOption || 'dateTime');
 
   useEffect(() => {
@@ -100,7 +100,7 @@ function CustomNode(props) {
       id: getId(),
       type: 'customNode',
       position,
-      data: { label: `${label}`, setNodes, getId, selectNode, nodedata },
+      data: { label: `${label}`,sublabel:`${sublabel}`, setNodes, getId, selectNode, nodedata },
       style: edgeStyle,
       animated: true,
     };
@@ -129,7 +129,7 @@ function CustomNode(props) {
           {label === 'Message' && <img src="imgs/message-icon.png" className='h-5 mr-2' alt="A" width={20} />}
           {label === 'Upload Media' && <img src="imgs/media-icon.png" className='h-5 mr-2' alt="A" width={20} />}
           {label === 'Input' && <img src="imgs/message-icon.png" className='h-5 mr-2' alt="A" width={20} />}
-          {label}
+          {sublabel}
         </p>
         <div className='node-content'>
           {

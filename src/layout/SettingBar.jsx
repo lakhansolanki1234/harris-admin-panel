@@ -23,7 +23,9 @@ function formatDateTime(date) {
 
 function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variables }) {
   const { data, id } = selectedNodeData;
-  const { setNodes, label, nodedata } = data;
+  const { setNodes, sublabel, label, nodedata } = data;
+  const [sublabel1,setsublabel]=useState(sublabel);
+  
   const [selectOptions, setSelectOptions] = useState([...variables]);
   const [messageContent, setMessageContent] = useState(RichTextEditor.createEmptyValue());
   const [qaQuestion, setQaQuestion] = useState(RichTextEditor.createEmptyValue());
@@ -81,18 +83,15 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
     setMessageContent(RichTextEditor.createValueFromString(nodedata?.content, 'html'));
     setAnswerContent(RichTextEditor.createValueFromString(nodedata?.answer_content, 'html'));
     setQuContent(RichTextEditor.createValueFromString(nodedata?.qu_content, 'html'));
+    setsublabel(sublabel)
 
     if (nodedata?.content) setdate(nodedata?.content);
     if (nodedata?.qa_a) setQaAnswer(nodedata?.qa_a);
     if (nodedata?.qu_data) setQuData([...nodedata.qu_data]);
     if (nodedata?.content) {
       const newSection = { name: 'Section', data: nodedata.content, selectedOption: -1 };
-      console.log(newSection)
       setOptionsData([newSection]); // Wrap newSection in an array
-
     }
-
-    console.log(optionsData)
     if (nodedata?.qu_header) setQuAnswerHeader(nodedata.qu_header);
     if (nodedata?.qu_footer) setQuAnswerFooter(nodedata.qu_footer);
     if (nodedata?.media_content) setMedia({ ...media, data: nodedata.media_content, type: nodedata.media_type, fileName: nodedata.media_name });
@@ -135,6 +134,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
             if (node.id === id) {
               node.data = {
                 ...node.data,
+                sublabel: sublabel1,
                 nodedata: {
                   ...node.data.nodedata,
                   content: messageContent.toString('html')
@@ -152,6 +152,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
             if (node.id === id) {
               node.data = {
                 ...node.data,
+                sublabel: sublabel1,
                 nodedata: {
                   ...node.data.nodedata,
                   content: datetime,
@@ -170,6 +171,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
             if (node.id === id) {
               node.data = {
                 ...node.data,
+                sublabel: sublabel1,
                 nodedata: {
                   ...node.data.nodedata,
                   content: {
@@ -191,6 +193,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
             if (node.id === id) {
               node.data = {
                 ...node.data,
+                sublabel: sublabel1,
                 nodedata: {
                   ...node.data.nodedata,
                   qa_q: qaQuestion.toString('html'),
@@ -209,6 +212,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
             if (node.id === id) {
               node.data = {
                 ...node.data,
+                sublabel: sublabel1,
                 nodedata: {
                   ...node.data.nodedata,
                   content: optionsData[0].data
@@ -226,6 +230,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
             if (node.id === id) {
               node.data = {
                 ...node.data,
+                sublabel: sublabel1,
                 nodedata: {
                   ...node.data.nodedata,
                   content: {
@@ -248,6 +253,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
             if (node.id === id) {
               node.data = {
                 ...node.data,
+                sublabel: sublabel1,
                 nodedata: {
                   ...node.data.nodedata,
                   qu_data: quData,
@@ -266,6 +272,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
             if (node.id === id) {
               node.data = {
                 ...node.data,
+                sublabel: sublabel1,
                 nodedata: {
                   ...node.data.nodedata,
                   answer_content: answerContent.toString('html'),
@@ -283,6 +290,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
             if (node.id === id) {
               node.data = {
                 ...node.data,
+                sublabel: sublabel1,
                 nodedata: {
                   ...node.data.nodedata,
                   media_content: media.data,
@@ -302,6 +310,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
             if (node.id === id) {
               node.data = {
                 ...node.data,
+                sublabel: sublabel1,
                 nodedata: {
                   ...node.data.nodedata,
                   api_url: apiUrl,
@@ -409,7 +418,12 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
               {label === 'Web Service' && <img src="imgs/web-icon.png" alt="Web Service Icon" width={24} />}
               {label === 'Date Time' && <img src="imgs/schedule-icon.png" alt="Date Time Icon" width={24} />}
               {label === 'Link' && <img src="imgs/broken-link-10497.png" alt="Link Icon" width={24} />}
-              <span>{label}</span>
+              <input
+                type='text'
+                value={sublabel1}
+                onChange={(e) => setsublabel(e.target.value)}
+                className="w-full p-2 border rounded mb-4"
+              />
             </div>
             <i className='fa fa-close' onClick={() => setShowSettingBar(false)}></i>
           </div>
@@ -529,62 +543,62 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                 <div className='settings-footer'>
                   <button className='bg-transparent hover:bg-gray-500 text-gray-700 font-semibold hover:text-white py-1 
                   px-4 text-sm border border-gray-500 hover:border-transparent rounded' onClick={() => {
-                    setVariables([...selectOptions]);
-                    setQaAnswer('default');
-                    toast.success('Variables are applied successfully');
-                  }}>Apply</button>
+                      setVariables([...selectOptions]);
+                      setQaAnswer('default');
+                      toast.success('Variables are applied successfully');
+                    }}>Apply</button>
                   <button className='bg-transparent hover:bg-gray-500 text-gray-700 font-semibold hover:text-white py-1 
                   px-4 text-sm border border-gray-500 hover:border-transparent rounded' onClick={() => {
-                    let obj = { key: 'Key', value: 'value' };
-                    selectOptions.push(obj);
-                    setSelectOptions([...selectOptions]);
-                  }}>Add new</button>
+                      let obj = { key: 'Key', value: 'value' };
+                      selectOptions.push(obj);
+                      setSelectOptions([...selectOptions]);
+                    }}>Add new</button>
                 </div>
               </>
             }
-           {label === 'Options' && (
-  <>
-    <p className='text-[#888] text-sm p-2'>Menu List</p>
-    <div className='px-2'>
-      {optionsData.map((section, sectionIndex) => (
-        <div key={sectionIndex}>
-          <div className='flex justify-between items-center text-white my-1 text-left bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 shadow-md shadow-cyan-500/50 font-medium rounded text-sm w-full px-2 py-2.5 mr-2'>
-            <input
-              value={section.name}
-              className='outline-none bg-transparent placeholder-gray-200'
-              placeholder='Click to edit section'
-              onChange={(e) => handleOptionChange(sectionIndex, e.target.value)}
-            />
-            <div className='flex'>
-              <i className='fa fa-plus mr-2 mt-1 cursor-pointer hover:text-[#ccc]' onClick={() => addOption(sectionIndex)}></i>
-            </div>
-          </div>
-          {section.data.length > 0 &&
-            section.data.map((option, optionIndex) => (
-              <div
-                className='text-white flex text-xs justify-between items-center bg-red-700 w-full hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium px-3 rounded py-1.5 mb-1'
-                key={option.id}
-              >
-                <input
-                  value={option.value}
-                  className='outline-none bg-transparent placeholder-gray-200 w-full'
-                  placeholder='Click to edit option'
-                  onChange={(e) => handleOptionContentChange(sectionIndex, optionIndex, e.target.value)}
-                />
-                <div className='flex'>
-                  <i className='fa fa-trash mt-1 cursor-pointer hover:text-[#ccc]' style={{ fontSize: 12 }} onClick={() => removeOption(sectionIndex, optionIndex)}></i>
+            {label === 'Options' && (
+              <>
+                <p className='text-[#888] text-sm p-2'>Menu List</p>
+                <div className='px-2'>
+                  {optionsData.map((section, sectionIndex) => (
+                    <div key={sectionIndex}>
+                      <div className='flex justify-between items-center text-white my-1 text-left bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 shadow-md shadow-cyan-500/50 font-medium rounded text-sm w-full px-2 py-2.5 mr-2'>
+                        <input
+                          value={section.name}
+                          className='outline-none bg-transparent placeholder-gray-200'
+                          placeholder='Click to edit section'
+                          onChange={(e) => handleOptionChange(sectionIndex, e.target.value)}
+                        />
+                        <div className='flex'>
+                          <i className='fa fa-plus mr-2 mt-1 cursor-pointer hover:text-[#ccc]' onClick={() => addOption(sectionIndex)}></i>
+                        </div>
+                      </div>
+                      {section.data.length > 0 &&
+                        section.data.map((option, optionIndex) => (
+                          <div
+                            className='text-white flex text-xs justify-between items-center bg-red-700 w-full hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium px-3 rounded py-1.5 mb-1'
+                            key={option.id}
+                          >
+                            <input
+                              value={option.value}
+                              className='outline-none bg-transparent placeholder-gray-200 w-full'
+                              placeholder='Click to edit option'
+                              onChange={(e) => handleOptionContentChange(sectionIndex, optionIndex, e.target.value)}
+                            />
+                            <div className='flex'>
+                              <i className='fa fa-trash mt-1 cursor-pointer hover:text-[#ccc]' style={{ fontSize: 12 }} onClick={() => removeOption(sectionIndex, optionIndex)}></i>
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  ))}
+                  <div className=' flex-col mt-4 justify-end'>
+                    <button className='mx-1 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-4 text-sm border border-blue-500 hover:border-transparent rounded' onClick={() => save('options')}>Save</button>
+                    <button className='mx-1 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 px-4 text-sm border border-red-500 hover:border-transparent rounded' onClick={() => cancel('options')}>Cancel</button>
+                  </div>
                 </div>
-              </div>
-            ))}
-        </div>
-      ))}
-      <div className=' flex-col mt-4 justify-end'>
-        <button className='mx-1 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-4 text-sm border border-blue-500 hover:border-transparent rounded' onClick={() => save('options')}>Save</button>
-        <button className='mx-1 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 px-4 text-sm border border-red-500 hover:border-transparent rounded' onClick={() => cancel('options')}>Cancel</button>
-      </div>
-    </div>
-  </>
-)}
+              </>
+            )}
 
             {label === 'Quick Answers' &&
               <>
@@ -739,11 +753,11 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                   </div>
                 </div>
                 <div className='flex mt-2 justify-end'>
-                    <button className='mx-1 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 
+                  <button className='mx-1 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 
                 px-4 text-sm border border-blue-500 hover:border-transparent rounded' onClick={() => save('advisor')}>Save</button>
-                    <button className='mx-1 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 
+                  <button className='mx-1 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 
                 px-4 text-sm border border-red-500 hover:border-transparent rounded mr-2' onClick={() => cancel('advisor')}>Cancel</button>
-                  </div>
+                </div>
               </>
             )}
             {label === 'Link' && (
@@ -838,9 +852,9 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                   ))}
                   <button className='bg-transparent hover:bg-[#4338ca] text-[#4338ca] font-semibold hover:text-white py-1 
                   px-4 text-xs border border-[#4338ca] hover:border-transparent rounded' onClick={() => {
-                    apiParams.push({ key: '', value: '' })
-                    setApiParams([...apiParams]);
-                  }}>
+                      apiParams.push({ key: '', value: '' })
+                      setApiParams([...apiParams]);
+                    }}>
                     <i className='fa fa-plus mr-1'></i>Add New
                   </button>
                   <hr className='my-2' />
@@ -876,9 +890,9 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                   ))}
                   <button className='bg-transparent hover:bg-[#4338ca] text-[#4338ca] font-semibold hover:text-white py-1 
                   px-4 text-xs border border-[#4338ca] hover:border-transparent rounded' onClick={() => {
-                    apiHeaders.push({ key: '', value: '' })
-                    setApiHeaders([...apiHeaders]);
-                  }}>
+                      apiHeaders.push({ key: '', value: '' })
+                      setApiHeaders([...apiHeaders]);
+                    }}>
                     <i className='fa fa-plus mr-1'></i>Add New
                   </button>
                   <hr className='my-2' />
@@ -889,7 +903,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                     </div>
                   </div>
                   <select id="req" className="w-full rounded bg-[#4338ca] border-0 text-white mt-2 cursor-pointer
-                  outline-none block p-1" onChange={(e) => { console.log(e.target.value); setResApiVariable(e.target.value); }} >
+                  outline-none block p-1" onChange={(e) => { setResApiVariable(e.target.value); }} >
                     {variables.map((data, id) =>
                       <option key={id} selected={resApiVariable === data.key} value={data.key}>
                         {data.key}

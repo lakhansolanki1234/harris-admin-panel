@@ -32,8 +32,6 @@ const minimapStyle = {
   height: 120,
 };
 
-const flowKey = 'chatbot-flow';
-
 let id = 0;
 const getId = () => `dndnode_${id++}`;
 const nodeTypes = {
@@ -42,7 +40,6 @@ const nodeTypes = {
 
 const Main = () => {
   const location = useLocation();
-  const navigate = useNavigate();
   const reactFlowWrapper = useRef(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
@@ -109,7 +106,7 @@ const Main = () => {
   }, []);
 
   const selectNode = (props) => {
-    console.log(props.data.label)
+    setShowSettingBar(false);
     setSelectedNodeData(props);
     if (props.data.label === 'Input') {
       setShowSettingBar(false);
@@ -125,6 +122,7 @@ const Main = () => {
       const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
       const type = event.dataTransfer.getData('type');
       const label = event.dataTransfer.getData('label');
+      const sublabel = nodes.data?.sublabel || event.dataTransfer.getData('label');
 
       if (typeof type === 'undefined' || !type) return;
 
@@ -190,7 +188,7 @@ const Main = () => {
         id: getId(),
         type: 'customNode',
         position,
-        data: { label: `${label}`, nodedata, setNodes, getId, selectNode },
+        data: { label: `${label}`,sublabel:`${sublabel}`, nodedata, setNodes, getId, selectNode },
       };
 
       setNodes((nds) => nds.concat(newNode));

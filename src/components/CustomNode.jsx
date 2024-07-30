@@ -2,6 +2,16 @@ import React, { memo, useState, useRef, useEffect } from 'react';
 import { Handle, Position } from 'reactflow';
 import './styles.css';
 
+function formatDateTime(date) {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  const hours = String(d.getHours()).padStart(2, '0');
+  const minutes = String(d.getMinutes()).padStart(2, '0');
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
+}
+
 function CustomNode(props) {
   const [showToolbar, setShowToolbar] = useState(false);
   const wrapperRef = useRef(null);
@@ -9,6 +19,7 @@ function CustomNode(props) {
   const { id, xPos, yPos, data } = props;
   const { setNodes,sublabel, label, getId, selectNode, nodedata } = data;
   const [dateTimeOption, setDateTimeOption] = useState(nodedata.dateTimeOption || 'dateTime');
+  const [datetime, setdate] = useState(formatDateTime(new Date()));
 
   useEffect(() => {
     setDateTimeOption(nodedata.dateTimeOption || 'dateTime');
@@ -163,7 +174,7 @@ function CustomNode(props) {
               {
                 nodedata.content
                   ? <div dangerouslySetInnerHTML={{ __html: nodedata.content }}></div>
-                  : <p className='empty-message'><i>no messages</i><br /></p>
+                  : <p ><i>{datetime}</i><br /></p>
               }
               <div className="mt-2">
                 <p className='text-sm text-gray-700'>

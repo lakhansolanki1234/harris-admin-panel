@@ -459,7 +459,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                       type="radio"
                       value="date"
                       checked={dateTimeOption === 'date'}
-                      onChange={(e) => setDateTimeOption(e.target.value)}
+                      onChange={(e) =>{ setDateTimeOption(e.target.value); setsublabel('Date')}}
                       className="mr-2"
                     />
                     Date
@@ -469,7 +469,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                       type="radio"
                       value="time"
                       checked={dateTimeOption === 'time'}
-                      onChange={(e) => setDateTimeOption(e.target.value)}
+                      onChange={(e) =>{ setDateTimeOption(e.target.value); setsublabel('Time')}}
                       className="mr-2"
                     />
                     Time
@@ -479,7 +479,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                       type="radio"
                       value="dateTime"
                       checked={dateTimeOption === 'dateTime'}
-                      onChange={(e) => setDateTimeOption(e.target.value)}
+                      onChange={(e) =>{ setDateTimeOption(e.target.value); setsublabel('Date And Time')}}
                       className="mr-2"
                     />
                     Date and Time

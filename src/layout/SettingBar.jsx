@@ -567,6 +567,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                           value={section.name}
                           className='outline-none bg-transparent placeholder-gray-200'
                           placeholder='Click to edit section'
+                          readOnly
                           onChange={(e) => handleOptionChange(sectionIndex, e.target.value)}
                         />
                         <div className='flex'>

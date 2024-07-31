@@ -1,5 +1,5 @@
 import React from 'react';
-import './style.css'; 
+import './style.css';
 
 function Toolbar() {
   const onDragStart = (event, label, nodeType = 'customNode') => {
@@ -44,6 +44,12 @@ function Toolbar() {
                 <span>Input</span>
               </button>
             </li>
+            <li>
+              <button className="toolbar-button" onDragStart={(event) => onDragStart(event, 'Web Service')} draggable>
+                <img src="imgs/broken-link-10497.png" alt="A" width={24} />
+                <span className="ml-3">API</span>
+              </button>
+            </li>
           </ul>
         </div>
       </aside>
@@ -66,47 +72,47 @@ export default Toolbar;
 //         </svg>
 //       </button>
 
-//       <aside id="sidebar-multi-level-sidebar" className="fixed top-[80px] flex items-center left-0 z-40 w-64 transition-transform 
+//       <aside id="sidebar-multi-level-sidebar" className="fixed top-[80px] flex items-center left-0 z-40 w-64 transition-transform
 //       -translate-x-full sm:translate-x-0 border-r border-gray-200" aria-label="Sidebar">
 //         <div className="h-full px-3 py-4 overflow-y-auto">
 //           <ul className="space-y-2 font-medium">
 //             <li>
-//               <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md 
+//               <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md
 //               hover:border-gray-200 border border-white my-3 w-full" onDragStart={(event) => onDragStart(event, 'Message')} draggable>
 //                 <img src="imgs/message-icon.png" alt="A" width={24} />
 //                 <span className="ml-3">Message</span>
 //               </button>
 //             </li>
 //             {/* <li>
-//               <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md 
+//               <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md
 //               hover:border-gray-200 border border-white my-3 w-full" onDragStart={(event) => onDragStart(event, 'Questions')} draggable>
 //                 <img src="imgs/ask-icon.png" alt="A" width={24} />
 //                 <span className="ml-3">Question</span>
 //               </button>
 //             </li> */}
 //             <li>
-//               <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md 
+//               <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md
 //               hover:border-gray-200 border border-white my-3 w-full" onDragStart={(event) => onDragStart(event, 'Options')} draggable>
 //                 <img src="imgs/options-icon.png" alt="A" width={24} />
 //                 <span className="ml-3">List of options</span>
 //               </button>
 //             </li>
 //             {/* <li>
-//               <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md 
+//               <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md
 //               hover:border-gray-200 border border-white my-3 w-full" onDragStart={(event) => onDragStart(event, 'Quick Answers')} draggable>
 //                 <img src="imgs/qa-icon.png" alt="A" width={24} />
 //                 <span className="ml-3">Quick Answers</span>
 //               </button>
 //             </li> */}
 //             {/* <li>
-//               <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md 
+//               <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md
 //               hover:border-gray-200 border border-white my-3 w-full" onDragStart={(event) => onDragStart(event, 'Answer with Text')} draggable>
 //                 <img src="imgs/text-icon.png" alt="A" width={24} />
 //                 <span className="ml-3">Answer with text</span>
 //               </button>
 //             </li> */}
 //             <li>
-//               <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md 
+//               <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md
 //               hover:border-gray-200 border border-white my-3 w-full" onDragStart={(event) => onDragStart(event, 'Upload Media')} draggable>
 //                 <img src="imgs/media-icon.png" alt="A" width={24} />
 //                 <span className="ml-3">Media</span>
@@ -114,36 +120,30 @@ export default Toolbar;
 //             </li>
 
 //             <li>
-//               <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md 
+//               <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md
 //               hover:border-gray-200 border border-white my-3 w-full" onDragStart={(event) => onDragStart(event, 'Date Time')} draggable>
 //                 <img src="imgs/schedule-icon.png" alt="A" width={24} />
 //                 <span className="ml-3">Date Time</span>
 //               </button>
 //             </li>
 //             {/* <li>
-//               <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md 
+//               <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md
 //               hover:border-gray-200 border border-white my-3 w-full" onDragStart={(event) => onDragStart(event, 'Talk with advisor')} draggable>
 //                 <img src="imgs/talk-icon.png" alt="A" width={24} />
 //                 <span className="ml-3">Talk to an advisor</span>
 //               </button>
 //             </li> */}
 //             {/* <li>
-//               <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md 
+//               <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md
 //               hover:border-gray-200 border border-white my-3 w-full" onDragStart={(event) => onDragStart(event, 'Link')} draggable>
 //                 <img src="imgs/broken-link-10497.png" alt="A" width={24} />
 //                 <span className="ml-3">Link</span>
 //               </button>
 //             </li> */}
-//             {/* <li>
-//               <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md 
-//               hover:border-gray-200 border border-white my-3 w-full" onDragStart={(event) => onDragStart(event, 'Web Service')} draggable>
-//                 <img src="imgs/broken-link-10497.png" alt="A" width={24} />
-//                 <span className="ml-3">API</span>
-//               </button>
-//             </li> */}
+//             {/* */}
 
 //             <li>
-//               <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md 
+//               <button className="flex items-center p-2 py-4 text-gray-900 rounded-lg hover:shadow-md
 //               hover:border-gray-200 border border-white my-3 w-full" onDragStart={(event) => onDragStart(event, 'Input')} draggable>
 //                 <img src="imgs/message-icon.png" alt="A" width={24} />
 //                 <span className="ml-3">Input</span>

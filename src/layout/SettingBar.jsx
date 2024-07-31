@@ -866,43 +866,46 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                     />
                   </div>
                   <hr className='my-2' />
-                  <p className='mb-2 text-sm'>Send Params</p>
-                  {apiParams.map((val, no) => (
-                    <div className='flex justify-between flex' key={no}>
-                      <div className='flex justify-between w-11/12'>
-                        <div className='w-1/2 mr-1'>
-                          <p className='text-xs'>Key</p>
-                          <input className='text-left border p-1 w-full outline-none focus:border-gray-400 mr-1' value={val.key}
-                            onChange={(e) => {
-                              apiParams[no].key = e.target.value;
-                              setApiParams([...apiParams]);
-                            }} />
+                  {apiMethod === 'post' && (
+                    <>
+                      <p className='mb-2 text-sm'>Send body</p>
+                      {apiParams.map((val, no) => (
+                        <div className='flex justify-between flex' key={no}>
+                          <div className='flex justify-between w-11/12'>
+                            <div className='w-1/2 mr-1'>
+                              <p className='text-xs'>Key</p>
+                              <input className='text-left border p-1 w-full outline-none focus:border-gray-400 mr-1' value={val.key}
+                                onChange={(e) => {
+                                  apiParams[no].key = e.target.value;
+                                  setApiParams([...apiParams]);
+                                }} />
+                            </div>
+                            <div className='w-1/2'>
+                              <p className='text-xs'>Value</p>
+                              <input className='text-left border p-1 w-full outline-none focus:border-gray-400 mr-1' value={val.value}
+                                onChange={(e) => {
+                                  apiParams[no].value = e.target.value;
+                                  setApiParams([...apiParams]);
+                                }} />
+                            </div>
+                          </div>
+                          <div className='py-5 px-1'>
+                            <i className='fa fa-trash mt-1 cursor-pointer hover:text-[#888]'
+                              onClick={() => {
+                                apiParams.splice(no, 1);
+                                setApiParams([...apiParams]);
+                              }}></i>
+                          </div>
                         </div>
-                        <div className='w-1/2'>
-                          <p className='text-xs'>Value</p>
-                          <input className='text-left border p-1 w-full outline-none focus:border-gray-400 mr-1' value={val.value}
-                            onChange={(e) => {
-                              apiParams[no].value = e.target.value;
-                              setApiParams([...apiParams]);
-                            }} />
-                        </div>
-                      </div>
-                      <div className='py-5 px-1'>
-                        <i className='fa fa-trash mt-1 cursor-pointer hover:text-[#888]'
-                          onClick={() => {
-                            apiParams.splice(no, 1);
-                            setApiParams([...apiParams]);
-                          }}></i>
-                      </div>
-                    </div>
-                  ))}
-                  <button className='bg-transparent hover:bg-[#4338ca] text-[#4338ca] font-semibold hover:text-white py-1 
+                      ))}
+                      <button className='bg-transparent hover:bg-[#4338ca] text-[#4338ca] font-semibold hover:text-white py-1 
                   px-4 text-xs border border-[#4338ca] hover:border-transparent rounded' onClick={() => {
-                      apiParams.push({ key: '', value: '' })
-                      setApiParams([...apiParams]);
-                    }}>
-                    <i className='fa fa-plus mr-1'></i>Add New
-                  </button>
+                          apiParams.push({ key: '', value: '' })
+                          setApiParams([...apiParams]);
+                        }}>
+                        <i className='fa fa-plus mr-1'></i>Add New
+                      </button>
+                    </>)}
                   <hr className='my-2' />
                   <p className='mb-2 text-sm'>Send Headers</p>
                   {apiHeaders.map((val, no) => (
@@ -942,20 +945,6 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                     <i className='fa fa-plus mr-1'></i>Add New
                   </button>
                   <hr className='my-2' />
-                  <div className='flex justify-between'>
-                    <p className='mb-2 text-sm'>Save response as variable</p>
-                    <div className="form-control">
-                      <input type="checkbox" className="toggle toggle-primary" checked={isSaveResAsVal} onChange={() => setIsSaveResAsVal(!isSaveResAsVal)} />
-                    </div>
-                  </div>
-                  <select id="req" className="w-full rounded bg-[#4338ca] border-0 text-white mt-2 cursor-pointer
-                  outline-none block p-1" onChange={(e) => { setResApiVariable(e.target.value); }} >
-                    {variables.map((data, id) =>
-                      <option key={id} selected={resApiVariable === data.key} value={data.key}>
-                        {data.key}
-                      </option>
-                    )}
-                  </select>
                 </div>
                 <div className='settings-footer py-2'>
                   <button className='bg-transparent m-1 hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 

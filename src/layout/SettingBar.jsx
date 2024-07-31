@@ -51,6 +51,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
   const [hrefValue, setHrefValue] = useState('');
   const [linkTarget, setLinkTarget] = useState('');
   const [dateTimeOption, setDateTimeOption] = useState(nodedata.dateTimeOption || 'dateTime');
+  const [maxchar, setmaxchar] = useState('');
 
   const handleOptionChange = (index, value) => {
     const newOptionsData = [...optionsData];
@@ -138,6 +139,24 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                 nodedata: {
                   ...node.data.nodedata,
                   content: messageContent.toString('html')
+                }
+              }
+            }
+            return node;
+          })
+        );
+        toast.success('Saved successfully!');
+        break;
+      case 'Input':
+        setNodes(nds =>
+          nds.map((node) => {
+            if (node.id === id) {
+              node.data = {
+                ...node.data,
+                sublabel: sublabel1,
+                nodedata: {
+                  ...node.data.nodedata,
+                  content: maxchar
                 }
               }
             }
@@ -340,6 +359,10 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
     switch (type) {
       case 'message':
         setMessageContent(RichTextEditor.createEmptyValue());
+        setShowSettingBar(false);
+        break;
+      case 'Input':
+        setmaxchar('')
         setShowSettingBar(false);
         break;
       case 'date':
@@ -804,6 +827,25 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                 <div className='settings-footer'>
                   <button className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-4 text-sm border border-blue-500 hover:border-transparent rounded' onClick={() => save('anchor')}>Save</button>
                   <button className='bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 px-4 text-sm border border-red-500 hover:border-transparent rounded' onClick={() => cancel('anchor')}>Cancel</button>
+                </div>
+              </>
+            )}
+            {label === 'Input' && (
+              <>
+                <div className='p-2'>
+                  <div>
+                    <p className='text-[#555] text-sm'>Max Characters</p>
+                    <input
+                      type='number'
+                      className='font-[500] mt-2 p-1 border rounded'
+                      value={maxchar}
+                      onChange={(e) => setmaxchar(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div className='settings-footer'>
+                  <button className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-4 text-sm border border-blue-500 hover:border-transparent rounded' onClick={() => save('Input')}>Save</button>
+                  <button className='bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 px-4 text-sm border border-red-500 hover:border-transparent rounded' onClick={() => cancel('Input')}>Cancel</button>
                 </div>
               </>
             )}

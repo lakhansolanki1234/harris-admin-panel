@@ -17,7 +17,7 @@ function CustomNode(props) {
   const wrapperRef = useRef(null);
 
   const { id, xPos, yPos, data } = props;
-  const { setNodes,sublabel, label, getId, selectNode, nodedata } = data;
+  const { setNodes, sublabel, label, getId, selectNode, nodedata } = data;
   const [dateTimeOption, setDateTimeOption] = useState(nodedata.dateTimeOption || 'dateTime');
   const [datetime, setdate] = useState(formatDateTime(new Date()));
 
@@ -111,7 +111,7 @@ function CustomNode(props) {
       id: getId(),
       type: 'customNode',
       position,
-      data: { label: `${label}`,sublabel:`${sublabel}`, setNodes, getId, selectNode, nodedata },
+      data: { label: `${label}`, sublabel: `${sublabel}`, setNodes, getId, selectNode, nodedata },
       style: edgeStyle,
       animated: true,
     };
@@ -144,7 +144,7 @@ function CustomNode(props) {
         </p>
         <div className='node-content'>
           {
-            label === 'Message' && 
+            label === 'Message' &&
             <div className='p-2'>
               <Handle type="target" position={Position.Top} id='message' className='handle top' />
               {
@@ -159,16 +159,19 @@ function CustomNode(props) {
             label === 'Input' &&
             <div className='p-2'>
               <Handle type="target" position={Position.Top} id='input' className='handle top' />
-              {
-                nodedata.content
-                  ? <div dangerouslySetInnerHTML={{ __html: nodedata.content }}></div>
-                  : <p className='empty-message'><i>User Input</i><br /></p>
-              }
+              <strong>Max Characters:
+                {
+                  nodedata.content
+                    ? <div dangerouslySetInnerHTML={{ __html: nodedata.content }}></div>
+                    : <p className='empty-message'><br /></p>
+                }
+              </strong>
               <Handle type="source" position={Position.Bottom} id="input" className='handle bottom' />
             </div>
+
           }
           {
-            label === 'Date Time' && 
+            label === 'Date Time' &&
             <div className='p-2'>
               <Handle type="target" position={Position.Top} id='date' className='handle top' />
               {
@@ -221,8 +224,8 @@ function CustomNode(props) {
                     <></>
                   )}
                 </div>
-                
-                
+
+
               </div>
             )
           }
@@ -234,24 +237,24 @@ function CustomNode(props) {
                 {
                   nodedata.qu_data.length > 0
                     ? nodedata.qu_data.map((data, no) => (
-                        <div key={no} className='m-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 rounded my-1 focus:ring-4 focus:ring-gray-200 text-xs px-4 py-1'>
-                          <span>{data.name}</span>
-                          <Handle
-                            type="source"
-                            position={Position.Right}
-                            id={`quick-answer-${no}`}
-                            className='handle right'
-                            style={{ top: (no + 1) * 31 + 46 }}
-                          />
-                          <Handle
-                            type="target"
-                            position={Position.Left}
-                            id={`quick-answer-${no}`}
-                            className='handle left'
-                            style={{ top: (no + 1) * 31 + 46 }}
-                          />
-                        </div>
-                      ))
+                      <div key={no} className='m-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 rounded my-1 focus:ring-4 focus:ring-gray-200 text-xs px-4 py-1'>
+                        <span>{data.name}</span>
+                        <Handle
+                          type="source"
+                          position={Position.Right}
+                          id={`quick-answer-${no}`}
+                          className='handle right'
+                          style={{ top: (no + 1) * 31 + 46 }}
+                        />
+                        <Handle
+                          type="target"
+                          position={Position.Left}
+                          id={`quick-answer-${no}`}
+                          className='handle left'
+                          style={{ top: (no + 1) * 31 + 46 }}
+                        />
+                      </div>
+                    ))
                     : <></>
                 }
               </div>
@@ -273,24 +276,24 @@ function CustomNode(props) {
                 {
                   nodedata.answer_buttons.length > 0
                     ? nodedata.answer_buttons.map((data, no) => (
-                        <div key={no} className='m-2 text-gray-900 bg-white border border-[#9d174d] focus:outline-none hover:bg-[#9d174d] rounded my-1 hover:text-white text-[#9d174d] text-xs px-4 py-[5px]'>
-                          <span>{data.name}</span>
-                          <Handle
-                            type="source"
-                            position={Position.Right}
-                            id={`answer-text-${no}`}
-                            className='handle right'
-                            style={{ top: (no + 1) * 32 + 24 }}
-                          />
-                          <Handle
-                            type="target"
-                            position={Position.Left}
-                            id={`answer-text-${no}`}
-                            className='handle left'
-                            style={{ top: (no + 1) * 32 + 24 }}
-                          />
-                        </div>
-                      ))
+                      <div key={no} className='m-2 text-gray-900 bg-white border border-[#9d174d] focus:outline-none hover:bg-[#9d174d] rounded my-1 hover:text-white text-[#9d174d] text-xs px-4 py-[5px]'>
+                        <span>{data.name}</span>
+                        <Handle
+                          type="source"
+                          position={Position.Right}
+                          id={`answer-text-${no}`}
+                          className='handle right'
+                          style={{ top: (no + 1) * 32 + 24 }}
+                        />
+                        <Handle
+                          type="target"
+                          position={Position.Left}
+                          id={`answer-text-${no}`}
+                          className='handle left'
+                          style={{ top: (no + 1) * 32 + 24 }}
+                        />
+                      </div>
+                    ))
                     : <></>
                 }
               </div>
@@ -309,22 +312,22 @@ function CustomNode(props) {
               {
                 nodedata.media_content
                   ? <div className='relative border rounded p-2'>
-                      {
-                        nodedata.media_type === 'video'
-                          ? <video className='w-full h-auto rounded' controls>
-                              <source src={URL.createObjectURL(nodedata.media_content)} type="video/mp4" />
-                            </video>
-                          : nodedata.media_type === 'image'
-                            ? <img src={URL.createObjectURL(nodedata.media_content)} className='w-full h-auto rounded' alt='Media' />
-                            : <div className='p-2 py-4 text-xs'>{nodedata.media_name}</div>
-                      }
-                    </div>
+                    {
+                      nodedata.media_type === 'video'
+                        ? <video className='w-full h-auto rounded' controls>
+                          <source src={URL.createObjectURL(nodedata.media_content)} type="video/mp4" />
+                        </video>
+                        : nodedata.media_type === 'image'
+                          ? <img src={URL.createObjectURL(nodedata.media_content)} className='w-full h-auto rounded' alt='Media' />
+                          : <div className='p-2 py-4 text-xs'>{nodedata.media_name}</div>
+                    }
+                  </div>
                   : <div className='w-full h-full border-0 bg-[#F0F2F4] py-6 rounded-b' >
-                      <div className="flex flex-col items-center justify-center w-fit h-auto z-[5] relative mx-auto rounded-lg cursor-pointer bg-white hover:bg-[#fafafa]">
-                        <img src={'/imgs/empty-img.png'} className='border-0 rounded-lg w-8' alt='Empty' />
-                      </div>
-                      <p className='text-center text-[#555]'><i>Empty</i></p>
+                    <div className="flex flex-col items-center justify-center w-fit h-auto z-[5] relative mx-auto rounded-lg cursor-pointer bg-white hover:bg-[#fafafa]">
+                      <img src={'/imgs/empty-img.png'} className='border-0 rounded-lg w-8' alt='Empty' />
                     </div>
+                    <p className='text-center text-[#555]'><i>Empty</i></p>
+                  </div>
               }
               <Handle type="source" position={Position.Bottom} id="media" className='handle bottom' />
             </div>

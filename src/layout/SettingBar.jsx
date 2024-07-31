@@ -957,10 +957,10 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                     )}
                   </select>
                 </div>
-                <div className='settings-footer'>
-                  <button className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 
+                <div className='settings-footer py-2'>
+                  <button className='bg-transparent m-1 hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 
                   px-4 text-sm border border-blue-500 hover:border-transparent rounded' onClick={() => save('web')}>Save</button>
-                  <button className='bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 
+                  <button className='bg-transparent m-1 hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 
                   px-4 text-sm border border-red-500 hover:border-transparent rounded' onClick={() => cancel('web')}>Cancel</button>
                 </div>
               </div>

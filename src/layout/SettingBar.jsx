@@ -24,8 +24,8 @@ function formatDateTime(date) {
 function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variables }) {
   const { data, id } = selectedNodeData;
   const { setNodes, sublabel, label, nodedata } = data;
-  const [sublabel1,setsublabel]=useState(sublabel);
-  
+  const [sublabel1, setsublabel] = useState(sublabel);
+
   const [selectOptions, setSelectOptions] = useState([...variables]);
   const [messageContent, setMessageContent] = useState(RichTextEditor.createEmptyValue());
   const [qaQuestion, setQaQuestion] = useState(RichTextEditor.createEmptyValue());
@@ -407,7 +407,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
       -translate-x-full sm:translate-x-0 border-r border-gray-200" aria-label="Sidebar">
         <div className="h-full overflow-y-auto">
           <div className='settings-header'>
-            <div className='flex items-center'>
+            <div className='flex items-center m-2'>
               {label === 'Message' && <img src="imgs/message-icon.png" alt="Message Icon" width={24} />}
               {label === 'Questions' && <img src="imgs/ask-icon.png" alt="Question Icon" width={24} />}
               {label === 'Options' && <img src="imgs/options-icon.png" alt="Options Icon" width={24} />}
@@ -418,16 +418,19 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
               {label === 'Web Service' && <img src="imgs/web-icon.png" alt="Web Service Icon" width={24} />}
               {label === 'Date Time' && <img src="imgs/schedule-icon.png" alt="Date Time Icon" width={24} />}
               {label === 'Link' && <img src="imgs/broken-link-10497.png" alt="Link Icon" width={24} />}
+              <div></div>
+            </div>
+            <div className='my-2 mx-4' >
               <input
                 type='text'
                 value={sublabel1}
                 onChange={(e) => setsublabel(e.target.value)}
-                className="w-full p-2 border rounded mb-4"
+                className="ml-2 w-full p-2 border-x-2 border-y-2 rounded py-2 "
+                placeholder="Enter sublabel"
               />
             </div>
-            <i className='fa fa-close' onClick={() => setShowSettingBar(false)}></i>
           </div>
-          <div className='settings-body'>
+          <div className='settings-body py-2 px-2 border-x-2'>
             {label === 'Message' &&
               <>
                 <RichTextEditor
@@ -437,10 +440,10 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                   toolbarConfig={toolbarConfig}
                   className="font-[400] custom-rich-editor"
                 />
-                <div className='settings-footer'>
-                  <button className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 
+                <div className='settings-footer py-2'>
+                  <button className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold m-1 hover:text-white py-1 
                   px-4 text-sm border border-blue-500 hover:border-transparent rounded' onClick={() => save('message')}>Save</button>
-                  <button className='bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 
+                  <button className='bg-transparent hover:bg-red-500 text-red-700 font-semibold m-1 hover:text-white py-1 
                   px-4 text-sm border border-red-500 hover:border-transparent rounded' onClick={() => cancel('message')}>Cancel</button>
                 </div>
               </>
@@ -459,7 +462,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                       type="radio"
                       value="date"
                       checked={dateTimeOption === 'date'}
-                      onChange={(e) =>{ setDateTimeOption(e.target.value); setsublabel('Date')}}
+                      onChange={(e) => { setDateTimeOption(e.target.value); setsublabel('Date') }}
                       className="mr-2"
                     />
                     Date
@@ -469,7 +472,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                       type="radio"
                       value="time"
                       checked={dateTimeOption === 'time'}
-                      onChange={(e) =>{ setDateTimeOption(e.target.value); setsublabel('Time')}}
+                      onChange={(e) => { setDateTimeOption(e.target.value); setsublabel('Time') }}
                       className="mr-2"
                     />
                     Time
@@ -479,16 +482,16 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                       type="radio"
                       value="dateTime"
                       checked={dateTimeOption === 'dateTime'}
-                      onChange={(e) =>{ setDateTimeOption(e.target.value); setsublabel('Date And Time')}}
+                      onChange={(e) => { setDateTimeOption(e.target.value); setsublabel('Date And Time') }}
                       className="mr-2"
                     />
                     Date and Time
                   </label>
                 </div>
-                <div className='settings-footer'>
-                  <button className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 
+                <div className='settings-footer py-2'>
+                  <button className='bg-transparent hover:bg-blue-500 text-blue-700 m-1 font-semibold hover:text-white py-1 
                   px-4 text-sm border border-blue-500 hover:border-transparent rounded' onClick={() => save('date')}>Save</button>
-                  <button className='bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 
+                  <button className='bg-transparent hover:bg-red-500 text-red-700 m-1 font-semibold hover:text-white py-1 
                   px-4 text-sm border border-red-500 hover:border-transparent rounded' onClick={() => cancel('date')}>Cancel</button>
                 </div>
               </div>

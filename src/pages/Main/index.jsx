@@ -99,7 +99,18 @@ const Main = () => {
     }
   }, [location.state, reactFlowInstance]);
 
-  const onConnect = useCallback((params) => setEdges((eds) => addEdge({ ...params, animated: true }, eds)), []);
+  const onConnect = useCallback((params) => {
+    const sourceNodeConnections = edges.filter(edge => edge.source === params.source).length;
+
+    if (sourceNodeConnections >= 1) {
+      alert('Output node can only connect to one node.');
+      return;
+    }
+
+    setEdges((eds) => addEdge({ ...params, animated: true }, eds));
+  }, [edges]);
+
+
   const onDragOver = useCallback((event) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'move';
@@ -188,7 +199,7 @@ const Main = () => {
         id: getId(),
         type: 'customNode',
         position,
-        data: { label: `${label}`,sublabel:`${sublabel}`, nodedata, setNodes, getId, selectNode },
+        data: { label: `${label}`, sublabel: `${sublabel}`, nodedata, setNodes, getId, selectNode },
       };
 
       setNodes((nds) => nds.concat(newNode));

@@ -109,7 +109,7 @@ const Main = () => {
     setShowSettingBar(false);
     setSelectedNodeData(props);
     if (props.data.label === 'Input') {
-      setShowSettingBar(false);
+      setShowSettingBar(true);
     } else {
       setShowSettingBar(true);
     }

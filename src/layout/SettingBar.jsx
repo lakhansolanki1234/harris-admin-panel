@@ -21,7 +21,7 @@ function formatDateTime(date) {
   return `${year}-${month}-${day} ${hours}:${minutes}`;
 }
 
-function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variables }) {
+function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variables, nodes }) {
   const { data, id } = selectedNodeData;
   const { setNodes, sublabel, label, nodedata } = data;
   const [sublabel1, setsublabel] = useState(sublabel);
@@ -52,6 +52,12 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
   const [linkTarget, setLinkTarget] = useState('');
   const [dateTimeOption, setDateTimeOption] = useState(nodedata.dateTimeOption || 'dateTime');
   const [maxchar, setmaxchar] = useState('');
+  const dropdownOptions = nodes
+    .filter(node => node.data.label === 'Input' || node.data.label === 'Date Time')
+    .map(node => ({
+      value: node.id,
+      text: node.data.sublabel
+    }));
 
   const handleOptionChange = (index, value) => {
     const newOptionsData = [...optionsData];
@@ -80,6 +86,8 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
   };
 
   useEffect(() => {
+    console.log(nodes)
+    console.log(dropdownOptions);
     setQaQuestion(RichTextEditor.createValueFromString(nodedata?.qa_q, 'html'));
     setMessageContent(RichTextEditor.createValueFromString(nodedata?.content, 'html'));
     setAnswerContent(RichTextEditor.createValueFromString(nodedata?.answer_content, 'html'));
@@ -98,7 +106,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
     if (nodedata?.media_content) setMedia({ ...media, data: nodedata.media_content, type: nodedata.media_type, fileName: nodedata.media_name });
     if (nodedata?.api_url) setApiUrl(nodedata.api_url);
     if (nodedata?.api_method) setApiMethod(nodedata.api_method);
-    if (nodedata?.api_params) setApiParams([...nodedata.api_params]);
+    if (nodedata?.api_body) setApiParams([...nodedata.api_body]);
     if (nodedata?.api_headers) setApiHeaders([...nodedata.api_headers]);
     if (nodedata?.api_res_variable) setResApiVariable(nodedata.api_res_variable);
     if (nodedata?.answer_buttons) setAnswerButtons([...nodedata.answer_buttons]);
@@ -335,7 +343,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                   api_url: apiUrl,
                   api_method: apiMethod,
                   api_headers: apiHeaders,
-                  api_params: apiParams,
+                  api_body: apiParams,
                   api_res_variable: resApiVariable,
                   api_res_data: null,
                 }
@@ -882,11 +890,20 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                             </div>
                             <div className='w-1/2'>
                               <p className='text-xs'>Value</p>
-                              <input className='text-left border p-1 w-full outline-none focus:border-gray-400 mr-1' value={val.value}
+                              <select
+                                className='text-left border p-1 w-full outline-none focus:border-gray-400 mr-1'
+                                value={val.value}
                                 onChange={(e) => {
                                   apiParams[no].value = e.target.value;
                                   setApiParams([...apiParams]);
-                                }} />
+                                }}
+                              >
+                                {dropdownOptions.map(option => (
+                                  <option key={option.value} value={option.value}>
+                                    {option.text}
+                                  </option>
+                                ))}
+                              </select>
                             </div>
                           </div>
                           <div className='py-5 px-1'>

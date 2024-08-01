@@ -95,7 +95,7 @@ function CustomNode(props) {
         nodedata['api_url'] = 'https://example...';
         nodedata['api_method'] = 'GET';
         nodedata['api_headers'] = [];
-        nodedata['api_params'] = [];
+        nodedata['api_body'] = [];
         nodedata['api_res_variable'] = null;
         nodedata['api_res_data'] = null;
         break;

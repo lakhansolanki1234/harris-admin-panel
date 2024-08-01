@@ -126,7 +126,6 @@ const Main = () => {
   }, [edges]);
   
 
-
   const onDragOver = useCallback((event) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'move';
@@ -145,8 +144,6 @@ const Main = () => {
   const onDrop = useCallback(
     (event) => {
       event.preventDefault();
-
-
       const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
       const type = event.dataTransfer.getData('type');
       const label = event.dataTransfer.getData('label');
@@ -204,7 +201,7 @@ const Main = () => {
           nodedata['api_url'] = 'https://example...';
           nodedata['api_method'] = 'GET';
           nodedata['api_headers'] = [];
-          nodedata['api_params'] = [];
+          nodedata['api_body'] = [];
           nodedata['api_res_variable'] = null;
           nodedata['api_res_data'] = null;
           break;
@@ -362,6 +359,7 @@ const Main = () => {
           selectedNodeData={selectedNodeData}
           variables={variables}
           setVariables={setVariables}
+          nodes={nodes}
         />
       ) : (
         <Toolbar />

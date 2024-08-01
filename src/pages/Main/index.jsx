@@ -32,8 +32,7 @@ const minimapStyle = {
   height: 120,
 };
 
-let id = 0;
-const getId = () => `dndnode_${id++}`;
+
 const nodeTypes = {
   customNode: CustomNode,
 };
@@ -54,6 +53,14 @@ const Main = () => {
   ]);
   const [conversation, setConversation] = useState([]);
 
+  const nextIdRef = useRef(0); // Use a ref to store the next ID
+
+  const getId = () => {
+    const id = nextIdRef.current;
+    nextIdRef.current += 1; // Increment the ref value
+    return `dndnode_${id}`;
+  };
+
   useEffect(() => {
     setConversation([{ id: initialNodes[0].id, label: initialNodes[0].data.label, content: initialNodes[0].data.nodedata }]);
   }, [nodes]);
@@ -68,6 +75,13 @@ const Main = () => {
       } else if (location.state.action === 'loadSpecific') {
         const { chatFlowKey } = location.state;
         const flow = JSON.parse(localStorage.getItem(chatFlowKey));
+        if (flow.nodes.length > 0) {
+          const nodelength = flow.nodes.length - 1;
+          const id = flow.nodes[nodelength].id;
+          const number = id.split('_').pop();
+          nextIdRef.current = number + 1;
+        }
+
         if (flow) {
           const { x = 0, y = 0, zoom = 1 } = flow.viewport;
 
@@ -129,6 +143,7 @@ const Main = () => {
   const onDrop = useCallback(
     (event) => {
       event.preventDefault();
+
 
       const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
       const type = event.dataTransfer.getData('type');

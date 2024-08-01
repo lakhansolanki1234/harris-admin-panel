@@ -38,9 +38,9 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
   const [answerContent, setAnswerContent] = useState(RichTextEditor.createEmptyValue());
   const [answerButtons, setAnswerButtons] = useState([]);
   const [media, setMedia] = useState({ data: null, type: '', fileName: '' });
-  const [isSaveResAsVal, setIsSaveResAsVal] = useState(true);
+
   const [apiUrl, setApiUrl] = useState('');
-  const [apiMethod, setApiMethod] = useState('');
+  const [apiMethod, setApiMethod] = useState('get');
   const [apiParams, setApiParams] = useState([{ key: '', value: '' }]);
   const [apiHeaders, setApiHeaders] = useState([{ key: '', value: '' }]);
   const [resApiVariable, setResApiVariable] = useState(variables[0]?.key);
@@ -862,17 +862,25 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                   <p className='mb-2 text-sm'>URL & Method</p>
                   <strong className='text-xs'>Select the method and type the url</strong>
                   <div className='relative'>
-                    <select id="answer_vals" className="w-16 absolute cursor-pointer bg-[#4338ca] border-0 text-white
-                  outline-none block p-1" onChange={(e) => { setApiMethod(e.target.value) }}>
-                      <option value="get" selected={apiMethod === 'get'}>GET</option>
-                      <option value="post" selected={apiMethod === 'post'}>POST</option>
+                    <select
+                      id="answer_vals"
+                      className="w-16 absolute cursor-pointer bg-[#4338ca] border-0 text-white outline-none block p-1"
+                      onChange={(e) => setApiMethod(e.target.value)}
+                      value={apiMethod}
+                    >
+                      <option value="get">GET</option>
+                      <option value="post">POST</option>
+                      <option value="put">PUT</option>
+                      <option value="delete">DELETE</option>
                     </select>
-                    <input className='pl-[66px] text-left border p-1 w-full outline-none focus:border-gray-400 mr-1'
-                      onChange={(e) => { setApiUrl(e.target.value) }} value={apiUrl}
+                    <input
+                      className='pl-[66px] text-left border p-1 w-full outline-none focus:border-gray-400 mr-1'
+                      onChange={(e) => setApiUrl(e.target.value)}
+                      value={apiUrl}
                     />
                   </div>
                   <hr className='my-2' />
-                  {apiMethod === 'post' && (
+                  {apiMethod !== 'get' && (
                     <>
                       <p className='mb-2 text-sm'>Send body</p>
                       {apiParams.map((val, no) => (
@@ -880,11 +888,15 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                           <div className='flex justify-between w-11/12'>
                             <div className='w-1/2 mr-1'>
                               <p className='text-xs'>Key</p>
-                              <input className='text-left border p-1 w-full outline-none focus:border-gray-400 mr-1' value={val.key}
+                              <input
+                                className='text-left border p-1 w-full outline-none focus:border-gray-400 mr-1'
+                                value={val.key}
                                 onChange={(e) => {
-                                  apiParams[no].key = e.target.value;
-                                  setApiParams([...apiParams]);
-                                }} />
+                                  const newParams = [...apiParams];
+                                  newParams[no].key = e.target.value;
+                                  setApiParams(newParams);
+                                }}
+                              />
                             </div>
                             <div className='w-1/2'>
                               <p className='text-xs'>Value</p>
@@ -892,11 +904,12 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                                 className='text-left border p-1 w-full outline-none focus:border-gray-400 mr-1'
                                 value={val.value}
                                 onChange={(e) => {
-                                  apiParams[no].value = e.target.value;
-                                  setApiParams([...apiParams]);
+                                  const newParams = [...apiParams];
+                                  newParams[no].value = e.target.value;
+                                  setApiParams(newParams);
                                 }}
                               >
-                                {dropdownOptions.map(option => (
+                                {dropdownOptions.map((option) => (
                                   <option key={option.value} value={option.value}>
                                     {option.text}
                                   </option>
@@ -905,22 +918,26 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                             </div>
                           </div>
                           <div className='py-5 px-1'>
-                            <i className='fa fa-trash mt-1 cursor-pointer hover:text-[#888]'
+                            <i
+                              className='fa fa-trash mt-1 cursor-pointer hover:text-[#888]'
                               onClick={() => {
-                                apiParams.splice(no, 1);
-                                setApiParams([...apiParams]);
-                              }}></i>
+                                const newParams = apiParams.filter((_, index) => index !== no);
+                                setApiParams(newParams);
+                              }}
+                            ></i>
                           </div>
                         </div>
                       ))}
-                      <button className='bg-transparent hover:bg-[#4338ca] text-[#4338ca] font-semibold hover:text-white py-1 
-                  px-4 text-xs border border-[#4338ca] hover:border-transparent rounded' onClick={() => {
-                          apiParams.push({ key: '', value: '' })
-                          setApiParams([...apiParams]);
-                        }}>
+                      <button
+                        className='bg-transparent hover:bg-[#4338ca] text-[#4338ca] font-semibold hover:text-white py-1 px-4 text-xs border border-[#4338ca] hover:border-transparent rounded'
+                        onClick={() => {
+                          setApiParams([...apiParams, { key: '', value: '' }]);
+                        }}
+                      >
                         <i className='fa fa-plus mr-1'></i>Add New
                       </button>
-                    </>)}
+                    </>
+                  )}
                   <hr className='my-2' />
                   <p className='mb-2 text-sm'>Send Headers</p>
                   {apiHeaders.map((val, no) => (
@@ -928,44 +945,63 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                       <div className='flex justify-between w-11/12'>
                         <div className='w-1/2 mr-1'>
                           <p className='text-xs'>Key</p>
-                          <input className='text-left border p-1 w-full outline-none focus:border-gray-400 mr-1' value={val.key}
+                          <input
+                            className='text-left border p-1 w-full outline-none focus:border-gray-400 mr-1'
+                            value={val.key}
                             onChange={(e) => {
-                              apiHeaders[no].key = e.target.value;
-                              setApiHeaders([...apiHeaders]);
-                            }} />
+                              const newHeaders = [...apiHeaders];
+                              newHeaders[no].key = e.target.value;
+                              setApiHeaders(newHeaders);
+                            }}
+                          />
                         </div>
                         <div className='w-1/2'>
                           <p className='text-xs'>Value</p>
-                          <input className='text-left border p-1 w-full outline-none focus:border-gray-400 mr-1' value={val.value}
+                          <input
+                            className='text-left border p-1 w-full outline-none focus:border-gray-400 mr-1'
+                            value={val.value}
                             onChange={(e) => {
-                              apiHeaders[no].value = e.target.value;
-                              setApiHeaders([...apiHeaders]);
-                            }} />
+                              const newHeaders = [...apiHeaders];
+                              newHeaders[no].value = e.target.value;
+                              setApiHeaders(newHeaders);
+                            }}
+                          />
                         </div>
                       </div>
                       <div className='py-5 px-1'>
-                        <i className='fa fa-trash mt-1 cursor-pointer hover:text-[#888]'
+                        <i
+                          className='fa fa-trash mt-1 cursor-pointer hover:text-[#888]'
                           onClick={() => {
-                            apiHeaders.splice(no, 1);
-                            setApiHeaders([...apiHeaders]);
-                          }}></i>
+                            const newHeaders = apiHeaders.filter((_, index) => index !== no);
+                            setApiHeaders(newHeaders);
+                          }}
+                        ></i>
                       </div>
                     </div>
                   ))}
-                  <button className='bg-transparent hover:bg-[#4338ca] text-[#4338ca] font-semibold hover:text-white py-1 
-                  px-4 text-xs border border-[#4338ca] hover:border-transparent rounded' onClick={() => {
-                      apiHeaders.push({ key: '', value: '' })
-                      setApiHeaders([...apiHeaders]);
-                    }}>
+                  <button
+                    className='bg-transparent hover:bg-[#4338ca] text-[#4338ca] font-semibold hover:text-white py-1 px-4 text-xs border border-[#4338ca] hover:border-transparent rounded'
+                    onClick={() => {
+                      setApiHeaders([...apiHeaders, { key: '', value: '' }]);
+                    }}
+                  >
                     <i className='fa fa-plus mr-1'></i>Add New
                   </button>
                   <hr className='my-2' />
                 </div>
                 <div className='settings-footer py-2'>
-                  <button className='bg-transparent m-1 hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 
-                  px-4 text-sm border border-blue-500 hover:border-transparent rounded' onClick={() => save('web')}>Save</button>
-                  <button className='bg-transparent m-1 hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 
-                  px-4 text-sm border border-red-500 hover:border-transparent rounded' onClick={() => cancel('web')}>Cancel</button>
+                  <button
+                    className='bg-transparent m-1 hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-4 text-sm border border-blue-500 hover:border-transparent rounded'
+                    onClick={() => save('web')}
+                  >
+                    Save
+                  </button>
+                  <button
+                    className='bg-transparent m-1 hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 px-4 text-sm border border-red-500 hover:border-transparent rounded'
+                    onClick={() => cancel('web')}
+                  >
+                    Cancel
+                  </button>
                 </div>
               </div>
             }

@@ -344,8 +344,6 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                   api_method: apiMethod,
                   api_headers: apiHeaders,
                   api_body: apiParams,
-                  api_res_variable: resApiVariable,
-                  api_res_data: null,
                 }
               }
             }

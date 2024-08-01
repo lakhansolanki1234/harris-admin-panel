@@ -202,8 +202,6 @@ const Main = () => {
           nodedata['api_method'] = 'GET';
           nodedata['api_headers'] = [];
           nodedata['api_body'] = [];
-          nodedata['api_res_variable'] = null;
-          nodedata['api_res_data'] = null;
           break;
         default:
           break;

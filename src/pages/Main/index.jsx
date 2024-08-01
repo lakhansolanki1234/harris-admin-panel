@@ -79,7 +79,7 @@ const Main = () => {
           const nodelength = flow.nodes.length - 1;
           const id = flow.nodes[nodelength].id;
           const number = id.split('_').pop();
-          nextIdRef.current = number + 1;
+          nextIdRef.current = parseInt(number) + 1;
         }
 
         if (flow) {
@@ -114,15 +114,17 @@ const Main = () => {
   }, [location.state, reactFlowInstance]);
 
   const onConnect = useCallback((params) => {
-    const sourceNodeConnections = edges.filter(edge => edge.source === params.source).length;
-
-    if (sourceNodeConnections >= 1) {
+    // Check if the sourceHandle (output handle) already has a connection
+    const sourceHandleConnections = edges.filter(edge => edge.source === params.source && edge.sourceHandle === params.sourceHandle).length;
+  
+    if (sourceHandleConnections >= 1) {
       alert('Output node can only connect to one node.');
       return;
     }
-
+  
     setEdges((eds) => addEdge({ ...params, animated: true }, eds));
   }, [edges]);
+  
 
 
   const onDragOver = useCallback((event) => {

@@ -224,8 +224,6 @@ function CustomNode(props) {
                     <></>
                   )}
                 </div>
-
-
               </div>
             )
           }

@@ -365,10 +365,10 @@ function CustomNode(props) {
           )}
           {
             label === 'Web Service' &&
-            <div className='p-2'>
+            <div className='p-2 overflow-wrap word-wrap'>
               <Handle type="target" position={Position.Top} id='web-service' className='handle top' />
-              <p className='text-[#555]'>Service API</p>
-              <p className='mt-1 text-sm'>{nodedata.api_url}</p>
+              <p className='text-[#555] word-wrap'>Service API</p>
+              <p className='mt-1 text-sm break-words '>{nodedata.api_url}</p>
               <Handle type="source" position={Position.Bottom} id="web-service" className='handle bottom' />
             </div>
           }

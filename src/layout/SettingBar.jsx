@@ -9,7 +9,7 @@ const toolbarConfig = {
     { label: 'Italic', style: 'ITALIC' },
     { label: 'Underline', style: 'UNDERLINE' }
   ],
-}
+};
 
 function formatDateTime(date) {
   const d = new Date(date);
@@ -52,6 +52,12 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
   const [linkTarget, setLinkTarget] = useState('');
   const [dateTimeOption, setDateTimeOption] = useState(nodedata.dateTimeOption || 'dateTime');
   const [maxchar, setmaxchar] = useState('');
+
+  // State for validation
+  const [apiUrlError, setApiUrlError] = useState(false);
+  const [apiParamsError, setApiParamsError] = useState(false);
+  const [apiMethodError, setApiMethodError] = useState(false);
+
   const dropdownOptions = nodes
     .filter(node => node.data.label === 'Input' || node.data.label === 'Date Time')
     .map(node => ({
@@ -86,13 +92,13 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
   };
 
   useEffect(() => {
-    console.log(nodes)
+    console.log(nodes);
     console.log(dropdownOptions);
     setQaQuestion(RichTextEditor.createValueFromString(nodedata?.qa_q, 'html'));
     setMessageContent(RichTextEditor.createValueFromString(nodedata?.content, 'html'));
     setAnswerContent(RichTextEditor.createValueFromString(nodedata?.answer_content, 'html'));
     setQuContent(RichTextEditor.createValueFromString(nodedata?.qu_content, 'html'));
-    setsublabel(sublabel)
+    setsublabel(sublabel);
 
     if (nodedata?.content) setdate(nodedata?.content);
     if (nodedata?.qa_a) setQaAnswer(nodedata?.qa_a);
@@ -136,6 +142,21 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
   };
 
   const save = (type) => {
+    // Validation for required fields
+    let valid = true;
+
+    if (type === 'web') {
+      setApiUrlError(!apiUrl);
+      setApiMethodError(!apiMethod);
+      setApiParamsError(apiParams.some(param => !param.key || !param.value));
+
+      valid = apiUrl && apiMethod && !apiParams.some(param => !param.key || !param.value);
+    }
+
+    if (!valid) {
+      return;
+    }
+
     switch (type) {
       case 'message':
         setNodes(nds =>
@@ -148,7 +169,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                   ...node.data.nodedata,
                   content: messageContent.toString('html')
                 }
-              }
+              };
             }
             return node;
           })
@@ -166,7 +187,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                   ...node.data.nodedata,
                   content: maxchar
                 }
-              }
+              };
             }
             return node;
           })
@@ -185,7 +206,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                   content: datetime,
                   dateTimeOption: dateTimeOption // Save the dateTimeOption
                 }
-              }
+              };
             }
             return node;
           })
@@ -226,7 +247,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                   qa_q: qaQuestion.toString('html'),
                   qa_a: qaAnswer,
                 }
-              }
+              };
             }
             return node;
           })
@@ -244,7 +265,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                   ...node.data.nodedata,
                   content: optionsData[0].data
                 }
-              }
+              };
             }
             return node;
           })
@@ -286,7 +307,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                   qu_data: quData,
                   qu_content: quContent.toString('html'),
                 }
-              }
+              };
             }
             return node;
           })
@@ -305,7 +326,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                   answer_content: answerContent.toString('html'),
                   answer_buttons: answerButtons
                 }
-              }
+              };
             }
             return node;
           })
@@ -324,7 +345,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                   media_type: media.type,
                   media_name: media.fileName,
                 }
-              }
+              };
             }
             return node;
           })
@@ -345,7 +366,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                   api_headers: apiHeaders,
                   api_body: apiParams,
                 }
-              }
+              };
             }
             return node;
           })
@@ -368,7 +389,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
         setShowSettingBar(false);
         break;
       case 'Input':
-        setmaxchar('')
+        setmaxchar('');
         setShowSettingBar(false);
         break;
       case 'date':
@@ -395,7 +416,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
         break;
       case 'media':
         setShowSettingBar(false);
-        setMedia({ data: null, type: '', fileName: '' })
+        setMedia({ data: null, type: '', fileName: '' });
         break;
       case 'advisor':
         setShowSettingBar(false);
@@ -859,12 +880,12 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
               <div className='p-2'>
                 <p className='text-[#555] text-sm px-1'>Web Hook Settings</p>
                 <div className='body border text-sm p-1 mt-2'>
-                  <p className='mb-2 text-sm'>URL & Method</p>
-                  <strong className='text-xs'>Select the method and type the url</strong>
+                  <p className='mb-2 text-sm'>URL & Method<span className="text-red-500">*</span></p>
+                  <strong className='text-xs'>Select the method and type the url<span className="text-red-500">*</span></strong>
                   <div className='relative'>
                     <select
                       id="answer_vals"
-                      className="w-16 absolute cursor-pointer bg-[#4338ca] border-0 text-white outline-none block p-1"
+                      className={`w-16 absolute cursor-pointer ${apiMethodError ? 'border-red-500' : 'bg-[#4338ca]'} border-0 text-white outline-none block p-1`}
                       onChange={(e) => setApiMethod(e.target.value)}
                       value={apiMethod}
                     >
@@ -874,7 +895,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                       <option value="delete">DELETE</option>
                     </select>
                     <input
-                      className='pl-[66px] text-left border p-1 w-full outline-none focus:border-gray-400 mr-1'
+                      className={`pl-[66px] text-left border p-1 w-full word-wrap overflow-wrap outline-none focus:border-gray-400 mr-1 ${apiUrlError ? 'border-red-500' : ''}`}
                       onChange={(e) => setApiUrl(e.target.value)}
                       value={apiUrl}
                     />
@@ -882,14 +903,14 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                   <hr className='my-2' />
                   {apiMethod !== 'get' && (
                     <>
-                      <p className='mb-2 text-sm'>Send body</p>
+                      <p className='mb-2 text-sm'>Send body<span className="text-red-500">*</span></p>
                       {apiParams.map((val, no) => (
-                        <div className='flex justify-between flex' key={no}>
+                        <div className='flex justify-between' key={no}>
                           <div className='flex justify-between w-11/12'>
                             <div className='w-1/2 mr-1'>
-                              <p className='text-xs'>Key</p>
+                              <p className='text-xs'>Key<span className="text-red-500">*</span></p>
                               <input
-                                className='text-left border p-1 w-full outline-none focus:border-gray-400 mr-1'
+                                className={`text-left border p-1 w-full outline-none focus:border-gray-400 mr-1 ${apiParamsError && !val.key ? 'border-red-500' : ''}`}
                                 value={val.key}
                                 onChange={(e) => {
                                   const newParams = [...apiParams];
@@ -899,9 +920,9 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                               />
                             </div>
                             <div className='w-1/2'>
-                              <p className='text-xs'>Value</p>
+                              <p className='text-xs'>Value<span className="text-red-500">*</span></p>
                               <select
-                                className='text-left border p-1 w-full outline-none focus:border-gray-400 mr-1'
+                                className={`text-left border p-1 w-full outline-none focus:border-gray-400 mr-1 ${apiParamsError && !val.value ? 'border-red-500' : ''}`}
                                 value={val.value}
                                 onChange={(e) => {
                                   const newParams = [...apiParams];

@@ -38,6 +38,7 @@ const nodeTypes = {
 
 const Main = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const reactFlowWrapper = useRef(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
@@ -51,6 +52,7 @@ const Main = () => {
     { key: 'Phone', value: '123145432452364' },
   ]);
   const [conversation, setConversation] = useState([]);
+  const [currentChatFlowKey, setCurrentChatFlowKey] = useState(null); // Track the current chat flow key
 
   const nextIdRef = useRef(0); // Use a ref to store the next ID
 
@@ -69,6 +71,7 @@ const Main = () => {
       if (location.state.action === 'createNew') {
         setNodes(initialNodes);
         setEdges([]);
+        setCurrentChatFlowKey(null); // Reset current chat flow key
       } else if (location.state.action === 'loadPrevious') {
         onRestore();
       } else if (location.state.action === 'loadSpecific') {
@@ -105,6 +108,7 @@ const Main = () => {
               }
             }, 100);
           }
+          setCurrentChatFlowKey(chatFlowKey); // Set current chat flow key
         } else {
           toast.error('Failed to restore the chat flow!');
         }
@@ -113,14 +117,13 @@ const Main = () => {
   }, [location.state, reactFlowInstance]);
 
   const onConnect = useCallback((params) => {
-    // Check if the sourceHandle (output handle) already has a connection
     const sourceHandleConnections = edges.filter(edge => edge.source === params.source && edge.sourceHandle === params.sourceHandle).length;
-  
+
     if (sourceHandleConnections >= 1) {
       alert('Output node can only connect to one node.');
       return;
     }
-  
+
     setEdges((eds) => addEdge({ ...params, animated: true }, eds));
   }, [edges]);
 
@@ -132,11 +135,7 @@ const Main = () => {
   const selectNode = (props) => {
     setShowSettingBar(false);
     setSelectedNodeData(props);
-    if (props.data.label === 'Input') {
-      setShowSettingBar(true);
-    } else {
-      setShowSettingBar(true);
-    }
+    setShowSettingBar(true);
   };
 
   const onDrop = useCallback(
@@ -296,16 +295,31 @@ const Main = () => {
   };
 
   const onSave = async () => {
-    const chatFlowName = window.prompt('Enter the name of your chat flow');
-    const chatFlowDescription = window.prompt('Enter the description of your chat flow');
+    let chatFlowName;
+    let chatFlowDescription;
 
-    if (chatFlowName) {
+    // Check if we are updating an existing flow or creating a new one
+    if (currentChatFlowKey) {
+      // Updating existing flow, no need to ask for name and description
       const flow = reactFlowInstance.toObject();
-      const flowWithDescription = { ...flow, description: chatFlowDescription };
-      localStorage.setItem(`chatflow_${chatFlowName}`, JSON.stringify(flowWithDescription));
-      toast.success('Chat Flow Saved Successfully!');
+      const existingFlow = JSON.parse(localStorage.getItem(currentChatFlowKey));
+      const flowWithDescription = { ...flow, description: existingFlow.description };
+      localStorage.setItem(currentChatFlowKey, JSON.stringify(flowWithDescription));
+      toast.success('Chat Flow Updated Successfully!');
     } else {
-      toast.error('Chat Flow name is required to save!');
+      // Creating new flow, ask for name and description
+      chatFlowName = window.prompt('Enter the name of your chat flow');
+      chatFlowDescription = window.prompt('Enter the description of your chat flow');
+
+      if (chatFlowName) {
+        const flow = reactFlowInstance.toObject();
+        const flowWithDescription = { ...flow, description: chatFlowDescription };
+        localStorage.setItem(`chatflow_${chatFlowName}`, JSON.stringify(flowWithDescription));
+        setCurrentChatFlowKey(`chatflow_${chatFlowName}`); // Set the current chat flow key
+        toast.success('Chat Flow Saved Successfully!');
+      } else {
+        toast.error('Chat Flow name is required to save!');
+      }
     }
   };
 
@@ -341,6 +355,7 @@ const Main = () => {
             }
           }, 100);
         }
+        setCurrentChatFlowKey(`chatflow_${selectedChatFlow}`); // Set the current chat flow key
       } else {
         toast.error('No such Chat Flow found!');
       }

@@ -96,6 +96,8 @@ function CustomNode(props) {
         nodedata['api_method'] = 'GET';
         nodedata['api_headers'] = [];
         nodedata['api_body'] = [];
+        nodedata['api_responses'] = [];
+        nodedata['api_outputs'] = { yes: '', no: '' }; 
         break;
       default:
         break;
@@ -369,7 +371,13 @@ function CustomNode(props) {
               <Handle type="target" position={Position.Top} id='web-service' className='handle top' />
               <p className='text-[#555] word-wrap'>Service API</p>
               <p className='mt-1 text-sm break-words '>{nodedata.api_url}</p>
-              <Handle type="source" position={Position.Bottom} id="web-service" className='handle bottom' />
+              <div className='flex justify-between mt-2'>
+                <div className='text-[#555]'>Yes</div>
+              <Handle type="source" position={Position.Right} id="yes" className='handle right' style={{ top: '75%' }} />
+              </div>
+                <div className='text-[#555]'>No</div>
+              <Handle type="source" position={Position.Right} id="no" className='handle right' style={{ top: '85%' }} />
+
             </div>
           }
         </div>

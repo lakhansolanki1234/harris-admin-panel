@@ -12,7 +12,6 @@ function App() {
         <Route path="/" element={<LoginPage />} />
         <Route path="/homepage" element={<LoginPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        {/* Add more routes as needed */}
       </Routes>
     </Router>
     </>

@@ -57,6 +57,10 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
   const [apiUrlError, setApiUrlError] = useState(false);
   const [apiParamsError, setApiParamsError] = useState(false);
   const [apiMethodError, setApiMethodError] = useState(false);
+  const [apiResponsesError, setApiResponsesError] = useState(false);
+
+  // State for send response
+  const [apiResponses, setApiResponses] = useState([{ key: '', value: '', type: '' }]);
 
   const dropdownOptions = nodes
     .filter(node => node.data.label === 'Input' || node.data.label === 'Date Time')
@@ -117,6 +121,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
     if (nodedata?.api_res_variable) setResApiVariable(nodedata.api_res_variable);
     if (nodedata?.answer_buttons) setAnswerButtons([...nodedata.answer_buttons]);
     if (nodedata?.dateTimeOption) setDateTimeOption(nodedata.dateTimeOption);
+    if (nodedata?.api_responses) setApiResponses([...nodedata.api_responses]);
   }, [id]);
 
   const variableChangeHandler = (e, type, id) => {
@@ -149,8 +154,9 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
       setApiUrlError(!apiUrl);
       setApiMethodError(!apiMethod);
       setApiParamsError(apiParams.some(param => !param.key || !param.value));
+      setApiResponsesError(apiResponses.some(res => !res.key || !res.value));
 
-      valid = apiUrl && apiMethod && !apiParams.some(param => !param.key || !param.value);
+      valid = apiUrl && apiMethod && !apiParams.some(param => !param.key || !param.value) && !apiResponses.some(res => !res.key || !res.value);
     }
 
     if (!valid) {
@@ -365,6 +371,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                   api_method: apiMethod,
                   api_headers: apiHeaders,
                   api_body: apiParams,
+                  api_responses: apiResponses
                 }
               };
             }
@@ -435,6 +442,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
         setApiParams([]);
         setApiHeaders([]);
         setResApiVariable(variables[0]?.key);
+        setApiResponses([{ key: '', value: '', type: '' }]);
         break;
       default:
         break;
@@ -449,25 +457,26 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
       dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
         <span className="sr-only">Open sidebar</span>
         <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-          <path clipRule="evenodd" fillRule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 a.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 a.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+          <path clipRule="evenodd" fillRule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 a.75 0 010 1.5H2.75A.75.75 a.75 0 012 4.75zm0 10.5a.75.75 a.75 0 01.75-.75h7.5a.75.75 a.75 0 010 1.5h-7.5a.75.75 a.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 a.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
         </svg>
       </button>
 
-      <aside id="sidebar-multi-level-sidebar" className="fixed top-[76px] left-0 z-40 w-64 h-screen transition-transform 
-      -translate-x-full sm:translate-x-0 border-r border-gray-200" aria-label="Sidebar">
+      <aside id="sidebar-multi-level-sidebar" className="fixed top-[76px] left-0 z-40 w-80 h-screen transition-transform 
+      -translate-x-full sm:translate-x-0 border-r bg-white border-gray-200" aria-label="Sidebar">
         <div className="h-full overflow-y-auto">
           <div className='settings-header'>
             <div className='flex items-center m-2'>
-              {label === 'Message' && <img src="imgs/message-icon.png" alt="Message Icon" width={24} />}
-              {label === 'Questions' && <img src="imgs/ask-icon.png" alt="Question Icon" width={24} />}
-              {label === 'Options' && <img src="imgs/options-icon.png" alt="Options Icon" width={24} />}
-              {label === 'Quick Answers' && <img src="imgs/qa-icon.png" alt="Quick Answers Icon" width={24} />}
-              {label === 'Answer with Text' && <img src="imgs/text-icon.png" alt="Answer with Text Icon" width={24} />}
-              {label === 'Upload Media' && <img src="imgs/media-icon.png" alt="Upload Media Icon" width={24} />}
-              {label === 'Talk with advisor' && <img src="imgs/talk-icon.png" alt="Talk with Advisor Icon" width={24} />}
-              {label === 'Web Service' && <img src="imgs/web-icon.png" alt="Web Service Icon" width={24} />}
-              {label === 'Date Time' && <img src="imgs/schedule-icon.png" alt="Date Time Icon" width={24} />}
-              {label === 'Link' && <img src="imgs/broken-link-10497.png" alt="Link Icon" width={24} />}
+              {label === 'Message' && <img src="imgs/message-icon.png" className='w-2/3' alt="Message Icon" width={24} />}
+              {label === 'Questions' && <img src="imgs/ask-icon.png" className='w-2/3'  alt="Question Icon" width={24} />}
+              {label === 'Options' && <img src="imgs/options-icon.png"className='w-2/3' alt="Options Icon" width={24} />}
+              {label === 'Quick Answers' && <img src="imgs/qa-icon.png"className='w-2/3' alt="Quick Answers Icon" width={24} />}
+              {label === 'Answer with Text' && <img src="imgs/text-icon.png"className='w-2/3' alt="Answer with Text Icon" width={24} />}
+              {label === 'Upload Media' && <img src="imgs/media-icon.png"className='w-2/3' alt="Upload Media Icon" width={24} />}
+              {label === 'Talk with advisor' && <img src="imgs/talk-icon.png"className='w-2/3' alt="Talk with Advisor Icon" width={24} />}
+              {label === 'Web Service' && <img src="imgs/web-icon.png"className='w-2/3' alt="Web Service Icon" width={24} />}
+              {label === 'Date Time' && <img src="imgs/schedule-icon.png" className='w-2/3'alt="Date Time Icon" width={24} />}
+              {label === 'Link' && <img src="imgs/broken-link-10497.png"className='w-2/3' alt="Link Icon" width={24} />}
+              {label === 'Input' && <img src="imgs/message-icon.png" className='w-2/3' alt="Message Icon" width={24} />}
               <div></div>
             </div>
             <div className='my-2 mx-4' >
@@ -475,7 +484,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                 type='text'
                 value={sublabel1}
                 onChange={(e) => setsublabel(e.target.value)}
-                className="ml-2 w-full p-2 border-x-2 border-y-2 rounded py-2 "
+                className="ml-2 w-52 p-2 border-x-2 border-y-2 rounded py-2 "
                 placeholder="Enter sublabel"
               />
             </div>
@@ -877,7 +886,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
               </>
             )}
             {label === 'Web Service' &&
-              <div className='p-2'>
+              <div className='p-2 w-76'>
                 <p className='text-[#555] text-sm px-1'>Web Hook Settings</p>
                 <div className='body border text-sm p-1 mt-2'>
                   <p className='mb-2 text-sm'>URL & Method<span className="text-red-500">*</span></p>
@@ -885,7 +894,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                   <div className='relative'>
                     <select
                       id="answer_vals"
-                      className={`w-16 absolute cursor-pointer ${apiMethodError ? 'border-red-500' : 'bg-[#4338ca]'} border-0 text-white outline-none block p-1`}
+                      className={`w-20 absolute cursor-pointer ${apiMethodError ? 'border-red-500' : 'bg-[#4338ca]'} border-0 text-white outline-none block p-1`}
                       onChange={(e) => setApiMethod(e.target.value)}
                       value={apiMethod}
                     >
@@ -895,7 +904,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                       <option value="delete">DELETE</option>
                     </select>
                     <input
-                      className={`pl-[66px] text-left border p-1 w-full word-wrap overflow-wrap outline-none focus:border-gray-400 mr-1 ${apiUrlError ? 'border-red-500' : ''}`}
+                      className={`pl-[76px] text-left border p-1 w-full word-wrap overflow-wrap outline-none focus:border-gray-400 mr-1 ${apiUrlError ? 'border-red-500' : ''}`}
                       onChange={(e) => setApiUrl(e.target.value)}
                       value={apiUrl}
                     />
@@ -906,7 +915,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                       <p className='mb-2 text-sm'>Send body<span className="text-red-500">*</span></p>
                       {apiParams.map((val, no) => (
                         <div className='flex justify-between' key={no}>
-                          <div className='flex justify-between w-11/12'>
+                          <div className='flex justify-between w-full'>
                             <div className='w-1/2 mr-1'>
                               <p className='text-xs'>Key<span className="text-red-500">*</span></p>
                               <input
@@ -960,10 +969,76 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                     </>
                   )}
                   <hr className='my-2' />
+                  <p className='mb-2 text-sm'>Send Response (if successful)<span className="text-red-500">*</span></p>
+                  {apiResponses.map((res, no) => (
+                    <div className='flex justify-between' key={no}>
+                      <div className='flex justify-between w-full'>
+                        <div className='w-1/4 mr-1'>
+                          <p className='text-xs'>Key<span className="text-red-500">*</span></p>
+                          <input
+                            className={`text-left border p-1 w-full outline-none focus:border-gray-400 mr-1 ${apiResponsesError && !res.key ? 'border-red-500' : ''}`}
+                            value={res.key}
+                            onChange={(e) => {
+                              const newResponses = [...apiResponses];
+                              newResponses[no].key = e.target.value;
+                              setApiResponses(newResponses);
+                            }}
+                          />
+                        </div>
+                        <div className='w-1/3'>
+                          <p className='text-xs'>Type<span className="text-red-500">*</span></p>
+                          <select
+                            className={`text-left border p-1 w-full outline-none focus:border-gray-400 mr-1 ${apiResponsesError && !res.type ? 'border-red-500' : ''}`}
+                            value={res.type}
+                            onChange={(e) => {
+                              const newResponses = [...apiResponses];
+                              newResponses[no].type = e.target.value;
+                              setApiResponses(newResponses);
+                            }}
+                          >
+                            <option value=''>Choose one of these</option>
+                            <option value='Text'>Text</option>
+                            <option value='Number'>Number</option>
+                          </select>
+                        </div>
+                        <div className='w-1/4 mr-1'>
+                          <p className='text-xs'>Value</p>
+                          <input
+                            className='text-left border p-1 w-full outline-none focus:border-gray-400 mr-1'
+                            value={res.value}
+                            onChange={(e) => {
+                              const newResponses = [...apiResponses];
+                              newResponses[no].value = e.target.value;
+                              setApiResponses(newResponses);
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <div className='py-5 px-1'>
+                        <i
+                          className='fa fa-trash mt-1 cursor-pointer hover:text-[#888]'
+                          onClick={() => {
+                            const newResponses = apiResponses.filter((_, index) => index !== no);
+                            setApiResponses(newResponses);
+                          }}
+                        ></i>
+                      </div>
+                    </div>
+                  ))}
+                  <button
+                    className='bg-transparent hover:bg-[#4338ca] text-[#4338ca] font-semibold hover:text-white py-1 px-4 text-xs border border-[#4338ca] hover:border-transparent rounded'
+                    onClick={() => {
+                      setApiResponses([...apiResponses, { key: '', value: '', type: '' }]);
+                    }}
+                  >
+                    <i className='fa fa-plus mr-1'></i>Add New
+                  </button>
+
+                  <hr className='my-2' />
                   <p className='mb-2 text-sm'>Send Headers</p>
                   {apiHeaders.map((val, no) => (
                     <div className='flex justify-between flex' key={no}>
-                      <div className='flex justify-between w-11/12'>
+                      <div className='flex justify-between w-full'>
                         <div className='w-1/2 mr-1'>
                           <p className='text-xs'>Key</p>
                           <input

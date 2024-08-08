@@ -32,7 +32,6 @@ const minimapStyle = {
   height: 120,
 };
 
-
 const nodeTypes = {
   customNode: CustomNode,
 };
@@ -124,7 +123,6 @@ const Main = () => {
   
     setEdges((eds) => addEdge({ ...params, animated: true }, eds));
   }, [edges]);
-  
 
   const onDragOver = useCallback((event) => {
     event.preventDefault();
@@ -202,6 +200,10 @@ const Main = () => {
           nodedata['api_method'] = 'GET';
           nodedata['api_headers'] = [];
           nodedata['api_body'] = [];
+          nodedata['content'] = [
+            { source: '', value: 'yes', target: '' },
+            { source: '', value: 'no', target: '' },
+          ]; // Add default output labels
           break;
         default:
           break;
@@ -229,15 +231,37 @@ const Main = () => {
       // Update sourceHandle for options in node.data.nodedata.content
       if (node.data && node.data.nodedata && Array.isArray(node.data.nodedata.content)) {
         node.data.nodedata.content.forEach(option => {
-          const edge = outgoingEdges.find(edge => edge.sourceHandle === option.id);
+          const edge = outgoingEdges.find(edge => edge.sourceHandle === option.value);
           if (edge) {
             option.target = edge.target;
+            option.source = node.id; // Add source field
             option.sourceHandle = edge.sourceHandle; // Assign sourceHandle if found
           } else {
             option.target = ""; // Handle case where there's no matching edge (optional)
             option.sourceHandle = ""; // Ensure sourceHandle is cleared if no match
           }
         });
+      }
+
+      // Include the yes and no handles in the JSON for Web Service nodes
+      if (node.data.label === 'Web Service') {
+        const yesEdge = outgoingEdges.find(edge => edge.sourceHandle === 'yes');
+        const noEdge = outgoingEdges.find(edge => edge.sourceHandle === 'no');
+
+        node.data.nodedata.content = [
+          {
+            source: node.id,
+            value: 'yes',
+            target: yesEdge ? yesEdge.target : '',
+            sourceHandle: 'yes',
+          },
+          {
+            source: node.id,
+            value: 'no',
+            target: noEdge ? noEdge.target : '',
+            sourceHandle: 'no',
+          },
+        ];
       }
 
       // Replace id with SourceId
@@ -270,7 +294,6 @@ const Main = () => {
       });
     toast.success('Export successfully!');
   };
-
 
   const onSave = async () => {
     const chatFlowName = window.prompt('Enter the name of your chat flow');

@@ -46,8 +46,8 @@ function Toolbar() {
             </li>
             <li>
               <button className="toolbar-button" onDragStart={(event) => onDragStart(event, 'Web Service')} draggable>
-                <img src="imgs/broken-link-10497.png" alt="A" width={24} />
-                <span className="ml-3">API</span>
+                <img src="imgs/web-icon.png" alt="A" width={24} />
+                <span className="ml-3">Web Service</span>
               </button>
             </li>
           </ul>

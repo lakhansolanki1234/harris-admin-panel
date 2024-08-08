@@ -140,6 +140,7 @@ function CustomNode(props) {
           {label === 'Message' && <img src="imgs/message-icon.png" className='h-5 mr-2' alt="A" width={20} />}
           {label === 'Upload Media' && <img src="imgs/media-icon.png" className='h-5 mr-2' alt="A" width={20} />}
           {label === 'Input' && <img src="imgs/message-icon.png" className='h-5 mr-2' alt="A" width={20} />}
+          {label === 'Web Service' && <img src="imgs/web-icon.png" className='h-5 mr-2' alt="A" width={20} />}
           {sublabel}
         </p>
         <div className='node-content'>

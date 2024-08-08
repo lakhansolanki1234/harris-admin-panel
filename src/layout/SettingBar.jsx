@@ -149,22 +149,24 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
   const save = (type) => {
     // Validation for required fields
     let valid = true;
-
+  
     if (type === 'web') {
       setApiUrlError(!apiUrl);
       setApiMethodError(!apiMethod);
       setApiParamsError(apiParams.some(param => !param.key || !param.value));
-      setApiResponsesError(apiResponses.some(res => !res.key || !res.value));
-
-      valid = apiUrl && apiMethod && !apiParams.some(param => !param.key || !param.value) && !apiResponses.some(res => !res.key || !res.value);
+      setApiResponsesError(apiResponses.some(res => !res.key || !res.type)); // Only check for key and type
+  
+      valid = apiUrl && apiMethod && !apiParams.some(param => !param.key || !param.value) && !apiResponses.some(res => !res.key || !res.type);
     }
-
+  
     if (!valid) {
       return;
     }
-
+  
     switch (type) {
-      case 'message':
+      // Other cases...
+  
+      case 'web':
         setNodes(nds =>
           nds.map((node) => {
             if (node.id === id) {
@@ -173,7 +175,11 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                 sublabel: sublabel1,
                 nodedata: {
                   ...node.data.nodedata,
-                  content: messageContent.toString('html')
+                  api_url: apiUrl,
+                  api_method: apiMethod,
+                  api_headers: apiHeaders,
+                  api_body: apiParams,
+                  api_responses: apiResponses // Save the responses
                 }
               };
             }
@@ -181,6 +187,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
           })
         );
         toast.success('Saved successfully!');
+        setShowSettingBar(false);
         break;
       case 'Input':
         setNodes(nds =>
@@ -199,6 +206,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
           })
         );
         toast.success('Saved successfully!');
+        setShowSettingBar(false);
         break;
       case 'date':
         setNodes(nds =>
@@ -218,6 +226,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
           })
         );
         toast.success('Saved successfully!');
+        setShowSettingBar(false);
         break;
       case 'advisor':
         setNodes((nds) =>
@@ -240,6 +249,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
           })
         );
         toast.success('Saved successfully!');
+        setShowSettingBar(false);
         break;
       case 'question-answer':
         setNodes(nds =>
@@ -259,6 +269,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
           })
         );
         toast.success('Saved successfully!');
+        setShowSettingBar(false);
         break;
       case 'options':
         setNodes(nds =>
@@ -277,6 +288,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
           })
         );
         toast.success('Saved successfully!');
+        setShowSettingBar(false);
         break;
       case 'anchor':
         setNodes((nds) =>
@@ -300,6 +312,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
           })
         );
         toast.success('Saved successfully!');
+        setShowSettingBar(false);
         break;
       case 'quick-answer':
         setNodes(nds =>
@@ -319,6 +332,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
           })
         );
         toast.success('Saved successfully!');
+        setShowSettingBar(false);
         break;
       case 'answer-text':
         setNodes(nds =>
@@ -379,6 +393,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
           })
         );
         toast.success('Saved successfully!');
+        setShowSettingBar(false);
         break;
       default:
         break;
@@ -879,10 +894,10 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                     />
                   </div>
                 </div>
-                <div className='settings-footer'>
-                  <button className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-4 text-sm border border-blue-500 hover:border-transparent rounded' onClick={() => save('Input')}>Save</button>
-                  <button className='bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 px-4 text-sm border border-red-500 hover:border-transparent rounded' onClick={() => cancel('Input')}>Cancel</button>
-                </div>
+                <div className=' flex-col mt-4 justify-end'>
+                    <button className='mx-1 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-4 text-sm border border-blue-500 hover:border-transparent rounded' onClick={() => save('options')}>Save</button>
+                    <button className='mx-1 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 px-4 text-sm border border-red-500 hover:border-transparent rounded' onClick={() => cancel('options')}>Cancel</button>
+                  </div>
               </>
             )}
             {label === 'Web Service' &&
@@ -1013,7 +1028,7 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                               newResponses[no].value = e.target.value;
                               setApiResponses(newResponses);
                             }}
-                            disabled={res.type === 'AutoGeneratedId'} // Disable input when type is AutoGeneratedId
+                            disabled={res.type === 'AutoGeneratedId'} 
                           />
                         </div>
 

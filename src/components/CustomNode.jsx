@@ -97,7 +97,7 @@ function CustomNode(props) {
         nodedata['api_headers'] = [];
         nodedata['api_body'] = [];
         nodedata['api_responses'] = [];
-        nodedata['api_outputs'] = { yes: '', no: '' }; 
+        nodedata['api_outputs'] = { yes: '', no: '' };
         break;
       default:
         break;
@@ -222,12 +222,13 @@ function CustomNode(props) {
                       </div>
                     ))
                   ) : (
-                    <></>
+                    <p className='empty-message'><i>Please add options</i></p>
                   )}
                 </div>
               </div>
             )
           }
+
           {
             label === 'Quick Answers' &&
             <div className='p-2'>
@@ -374,9 +375,9 @@ function CustomNode(props) {
               <p className='mt-1 text-sm break-words '>{nodedata.api_url}</p>
               <div className='flex justify-between mt-2'>
                 <div className='text-[#555]'>Yes</div>
-              <Handle type="source" position={Position.Right} id="yes" className='handle right' style={{ top: '75%' }} />
+                <Handle type="source" position={Position.Right} id="yes" className='handle right' style={{ top: '75%' }} />
               </div>
-                <div className='text-[#555]'>No</div>
+              <div className='text-[#555]'>No</div>
               <Handle type="source" position={Position.Right} id="no" className='handle right' style={{ top: '85%' }} />
 
             </div>

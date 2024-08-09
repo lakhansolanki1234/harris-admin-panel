@@ -165,6 +165,26 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
   
     switch (type) {
       // Other cases...
+
+      case 'message':
+        setNodes(nds =>
+          nds.map((node) => {
+            if (node.id === id) {
+              node.data = {
+                ...node.data,
+                sublabel: sublabel1,
+                nodedata: {
+                  ...node.data.nodedata,
+                  content: messageContent.toString('html'), // Save the message content
+                },
+              };
+            }
+            return node;
+          })
+        );
+        toast.success('Message saved successfully!');
+        setShowSettingBar(false);
+        break;
   
       case 'web':
         setNodes(nds =>
@@ -189,25 +209,27 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
         toast.success('Saved successfully!');
         setShowSettingBar(false);
         break;
-      case 'Input':
-        setNodes(nds =>
-          nds.map((node) => {
-            if (node.id === id) {
-              node.data = {
-                ...node.data,
-                sublabel: sublabel1,
-                nodedata: {
-                  ...node.data.nodedata,
-                  content: maxchar
-                }
-              };
-            }
-            return node;
-          })
-        );
-        toast.success('Saved successfully!');
-        setShowSettingBar(false);
-        break;
+        
+        case 'Input':
+          setNodes(nds =>
+            nds.map((node) => {
+              if (node.id === id && node.data) {
+                node.data = {
+                  ...node.data,
+                  sublabel: sublabel1,
+                  nodedata: {
+                    ...node.data.nodedata,
+                    content: maxchar
+                  }
+                };
+              }
+              return node;
+            })
+          );
+          toast.success('Saved successfully!');
+          setShowSettingBar(false);
+          break;
+        
       case 'date':
         setNodes(nds =>
           nds.map((node) => {
@@ -895,8 +917,8 @@ function SettingBar({ setShowSettingBar, selectedNodeData, setVariables, variabl
                   </div>
                 </div>
                 <div className=' flex-col mt-4 justify-end'>
-                    <button className='mx-1 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-4 text-sm border border-blue-500 hover:border-transparent rounded' onClick={() => save('options')}>Save</button>
-                    <button className='mx-1 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 px-4 text-sm border border-red-500 hover:border-transparent rounded' onClick={() => cancel('options')}>Cancel</button>
+                    <button className='mx-1 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-4 text-sm border border-blue-500 hover:border-transparent rounded' onClick={() => save('Input')}>Save</button>
+                    <button className='mx-1 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 px-4 text-sm border border-red-500 hover:border-transparent rounded' onClick={() => cancel('Input')}>Cancel</button>
                   </div>
               </>
             )}
